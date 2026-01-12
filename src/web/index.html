@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemara Policy Writing Training - Interactive AI-Assisted Course</title>
+    <link rel="icon" type="image/png" href="assets/logo-transparent.png">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css">
+    <!-- Intel One Mono Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Intel+One+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <img src="assets/logo-transparent.png" alt="Gemara Training Logo" class="logo-image">
+                <div class="logo-text">
+                    <h1>Gemara Policy Writing Training</h1>
+                    <p class="subtitle">AI-Assisted Interactive Course for Compliance Professionals</p>
+                </div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <span class="progress-text" id="progress-text">0% Complete</span>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Sidebar Navigation -->
+            <nav class="sidebar">
+                <div class="nav-section">
+                    <h3>Course Modules</h3>
+                    <ul class="module-list">
+                        <li class="module-item" data-module="1">
+                            <span class="module-status" id="status-1">○</span>
+                            <span class="module-title">Module 1: Gemara Framework</span>
+                            <span class="module-time">30 min</span>
+                        </li>
+                        <li class="module-item" data-module="2">
+                            <span class="module-status" id="status-2">○</span>
+                            <span class="module-title">Module 2: Layer 1 & 2 Foundations</span>
+                            <span class="module-time">45 min</span>
+                        </li>
+                        <li class="module-item" data-module="3">
+                            <span class="module-status" id="status-3">○</span>
+                            <span class="module-title">Module 3: Policy Writing Fundamentals</span>
+                            <span class="module-time">90 min</span>
+                        </li>
+                        <li class="module-item" data-module="4">
+                            <span class="module-status" id="status-4">○</span>
+                            <span class="module-title">Module 4: Advanced Policy Authoring</span>
+                            <span class="module-time">120 min</span>
+                        </li>
+                        <li class="module-item" data-module="5">
+                            <span class="module-status" id="status-5">○</span>
+                            <span class="module-title">Module 5: Real-World Implementation</span>
+                            <span class="module-time">60 min</span>
+                        </li>
+                        <li class="module-item" data-module="6">
+                            <span class="module-status" id="status-6">○</span>
+                            <span class="module-title">Module 6: Continuous Improvement</span>
+                            <span class="module-time">30 min</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <h3>AI Assistant</h3>
+                    <div class="ai-status">
+                        <div class="ai-indicator" id="ai-indicator">
+                            <span class="status-dot"></span>
+                            <span id="ai-status-text">Not Connected</span>
+                        </div>
+                        <button class="btn btn-primary btn-small" id="connect-ai-btn">Connect AI Agent</button>
+                    </div>
+                </div>
+
+                <div class="nav-section">
+                    <h3>Quick Links</h3>
+                    <ul class="quick-links">
+                        <li><a href="#" id="show-outline">Course Outline</a></li>
+                        <li><a href="#" id="show-resources">Resources</a></li>
+                        <li><a href="#" id="show-help">Help & Support</a></li>
+                        <li><a href="#" id="show-certificate">My Certificate</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Content Area -->
+            <main class="content">
+                <!-- Welcome Screen -->
+                <div id="welcome-screen" class="screen active">
+                    <div class="welcome-content">
+                        <h2>Welcome to Gemara Policy Writing Training</h2>
+                        <div class="intro-box">
+                            <h3>What You'll Learn</h3>
+                            <p>This interactive course teaches compliance professionals how to write effective Layer 3 organizational policies using the Gemara logical model with AI assistance.</p>
+
+                            <div class="features-grid">
+                                <div class="feature">
+                                    <div class="feature-icon">📚</div>
+                                    <h4>Comprehensive Curriculum</h4>
+                                    <p>6 modules covering all aspects of policy writing</p>
+                                </div>
+                                <div class="feature">
+                                    <div class="feature-icon">🤖</div>
+                                    <h4>AI-Assisted Learning</h4>
+                                    <p>Work with Claude or Cursor IDE throughout the course</p>
+                                </div>
+                                <div class="feature">
+                                    <div class="feature-icon">💻</div>
+                                    <h4>Hands-On Practice</h4>
+                                    <p>10 interactive exercises using real tools</p>
+                                </div>
+                                <div class="feature">
+                                    <div class="feature-icon">📊</div>
+                                    <h4>Visual Learning</h4>
+                                    <p>Interactive diagrams and visualizations</p>
+                                </div>
+                            </div>
+
+                            <h3>Prerequisites</h3>
+                            <ul class="checklist">
+                                <li>
+                                    <input type="checkbox" id="prereq-1">
+                                    <label for="prereq-1">Basic understanding of cybersecurity concepts</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" id="prereq-2">
+                                    <label for="prereq-2">Familiarity with YAML syntax (tutorial provided if needed)</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" id="prereq-3">
+                                    <label for="prereq-3">Access to Claude or Cursor IDE</label>
+                                </li>
+                                <li>
+                                    <input type="checkbox" id="prereq-4">
+                                    <label for="prereq-4">gemara-mcp-server installed (setup guide available)</label>
+                                </li>
+                            </ul>
+
+                            <div class="cta-section">
+                                <button class="btn btn-large btn-primary" id="start-course-btn">Start Course</button>
+                                <button class="btn btn-large btn-secondary" id="setup-guide-btn">Setup Guide</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module Content Container -->
+                <div id="module-container" class="screen">
+                    <!-- Module content will be loaded here dynamically -->
+                </div>
+
+                <!-- Quiz Container -->
+                <div id="quiz-container" class="screen">
+                    <!-- Quiz content will be loaded here dynamically -->
+                </div>
+
+                <!-- Exercise Container -->
+                <div id="exercise-container" class="screen">
+                    <!-- Exercise content will be loaded here dynamically -->
+                </div>
+
+                <!-- AI Interaction Panel -->
+                <div id="ai-panel" class="ai-panel">
+                    <div class="ai-panel-header">
+                        <h3>AI Assistant</h3>
+                        <button class="close-btn" id="close-ai-panel">×</button>
+                    </div>
+                    <div class="ai-panel-content">
+                        <div class="ai-messages" id="ai-messages">
+                            <!-- AI conversation will appear here -->
+                        </div>
+                        <div class="ai-input-area">
+                            <textarea id="ai-input" placeholder="Ask the AI assistant for help..."></textarea>
+                            <button class="btn btn-primary" id="send-ai-btn">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>Gemara Policy Writing Training | Powered by <a href="https://github.com/ossf/gemara" target="_blank">Gemara Framework</a> & <a href="https://github.com/complytime/gemara-mcp-server" target="_blank">gemara-mcp-server</a></p>
+                <p class="version">Version 1.0.0</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- External Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/yaml/yaml.min.js"></script>
+
+    <!-- Application Scripts -->
+    <script src="js/app.js"></script>
+    <script src="js/modules.js"></script>
+    <script src="js/quiz.js"></script>
+    <script src="js/ai-integration.js"></script>
+    <script src="js/progress.js"></script>
+</body>
+</html>
