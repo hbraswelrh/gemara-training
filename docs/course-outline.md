@@ -10,19 +10,25 @@ This interactive hybrid training course teaches compliance professionals how to 
 **Duration**: 30 minutes | **Type**: Web-based with visual diagrams
 
 ### Learning Objectives
-- Understand the 6-layer Gemara model
+- Understand the 7-layer Gemara model
 - Recognize how layers interact and build upon each other
 - Identify the role of Layer 3 policies in the overall GRC framework
 
 ### Content
 1.1. Introduction to GRC Engineering Model for Automated Risk Assessment
-1.2. The Six Layers Explained
-   - Layer 1: Guidance (NIST, ISO 27001, etc.)
-   - Layer 2: Controls (Technology-specific security controls)
-   - Layer 3: Policy (Organization-tailored governance rules) **← COURSE FOCUS**
-   - Layer 4: Evaluation (Assessment of implementations)
-   - Layer 5: Enforcement (Prevention and remediation)
-   - Layer 6: Audit (Policy adherence review)
+1.2. The Seven Layers Explained
+   **Definition Layers (1-3)** - Inform the execution of sensitive activities:
+   - Layer 1: Vectors & Guidance (Foundational knowledge or regulations)
+   - Layer 2: Threats & Controls (Technology-specific objectives)
+   - Layer 3: Risk & Policy (Organization-specific rules) **← COURSE FOCUS**
+
+   **Sensitive Activities (Layer 4)**:
+   - Layer 4: Sensitive Activities (Actions that might introduce risk)
+
+   **Measurement Layers (5-7)** - Inform next steps by providing measurements:
+   - Layer 5: Intent & Behavior Evaluation (Inspection of sensitive activities)
+   - Layer 6: Preventive & Remediative Enforcement (Corrective actions for noncompliance)
+   - Layer 7: Audit & Continuous Monitoring (Efficacy review of all previous outputs)
 1.3. Interactive Layer Visualization
 1.4. How Layers Map to Each Other
 
@@ -364,7 +370,7 @@ This interactive hybrid training course teaches compliance professionals how to 
 
 ## Success Criteria
 Upon completion, participants will be able to:
-1. Explain the Gemara 6-layer model and its benefits
+1. Explain the Gemara 7-layer model and its benefits
 2. Navigate Layer 1 guidance and Layer 2 control documents
 3. Write clear, effective Layer 3 organizational policies
 4. Use gemara-mcp-server tools proficiently

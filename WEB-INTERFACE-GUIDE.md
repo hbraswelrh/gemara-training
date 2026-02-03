@@ -139,9 +139,10 @@ You should see: `store_layer3_yaml`, `validate_gemara_yaml`, etc.
 ## Course Structure
 
 ### Module 1: Understanding Gemara (30 min)
-- Interactive 6-layer diagram
+- Interactive 7-layer diagram
 - Hover effects on layers
 - Visual flow demonstrations
+- Layer groupings: Definition (1-3), Sensitive Activities (4), Measurement (5-7)
 
 ### Module 2: Layer 1 & 2 Foundations (45 min)
 - Framework comparison cards

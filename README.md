@@ -8,14 +8,20 @@ This comprehensive training program teaches compliance professionals how to writ
 
 ### What is Gemara?
 
-Gemara (GRC Engineering Model for Automated Risk Assessment) is a framework that organizes cybersecurity governance, risk, and compliance activities into six interconnected layers:
+Gemara (GRC Engineering Model for Automated Risk Assessment) is a framework that organizes cybersecurity governance, risk, and compliance activities into seven interconnected layers:
 
-1. **Layer 1: Guidance** - Industry best practices (NIST, ISO 27001, etc.)
-2. **Layer 2: Controls** - Technology-specific security controls
-3. **Layer 3: Policy** - Organization-tailored governance rules ⭐ (Course Focus)
-4. **Layer 4: Evaluation** - Assessment of implementations
-5. **Layer 5: Enforcement** - Prevention and remediation
-6. **Layer 6: Audit** - Compliance review
+**Definition Layers (1-3)** - Inform the execution of sensitive activities:
+1. **Layer 1: Vectors & Guidance** - Foundational knowledge or regulations
+2. **Layer 2: Threats & Controls** - Technology-specific objectives
+3. **Layer 3: Risk & Policy** - Organization-specific rules ⭐ (Course Focus)
+
+**Sensitive Activities (Layer 4)**:
+4. **Layer 4: Sensitive Activities** - Actions that might introduce risk
+
+**Measurement Layers (5-7)** - Inform next steps by providing measurements:
+5. **Layer 5: Intent & Behavior Evaluation** - Inspection of sensitive activities
+6. **Layer 6: Preventive & Remediative Enforcement** - Corrective actions for noncompliance
+7. **Layer 7: Audit & Continuous Monitoring** - Efficacy review of all previous outputs
 
 ## Features
 
@@ -158,7 +164,7 @@ The command-line interface provides interactive exercises and policy templates:
 ## Course Structure
 
 ### Module 1: Understanding the Gemara Framework (30 min)
-Learn the 6-layer model and how layers interact. Includes interactive visualizations and quizzes.
+Learn the 7-layer model and how layers interact. Includes interactive visualizations and quizzes.
 
 ### Module 2: Layer 1 & Layer 2 Foundations (45 min)
 Explore industry guidance and threat-informed controls with AI-assisted discovery exercises.
@@ -179,7 +185,7 @@ Learn policy lifecycle management, stay current with frameworks, and explore adv
 
 By completing this course, you will be able to:
 
-✅ Explain the Gemara 6-layer model and its benefits
+✅ Explain the Gemara 7-layer model and its benefits
 ✅ Navigate Layer 1 guidance and Layer 2 control documents
 ✅ Write clear, effective Layer 3 organizational policies
 ✅ Use gemara-mcp-server tools proficiently

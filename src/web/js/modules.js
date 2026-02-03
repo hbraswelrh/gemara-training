@@ -12,7 +12,7 @@ class ModuleManager {
                 duration: "30 minutes",
                 type: "Web-based with visual diagrams",
                 objectives: [
-                    "Understand the 6-layer Gemara model",
+                    "Understand the 7-layer Gemara model",
                     "Recognize how layers interact and build upon each other",
                     "Identify the role of Layer 3 policies in the overall GRC framework"
                 ],
@@ -188,43 +188,80 @@ class ModuleManager {
                 <p>Traditional GRC processes involve significant manual effort, rework, and disconnected tools. Gemara solves this by creating a standardized logical model that enables automated interoperability between compliance activities.</p>
             </div>
 
-            <h3>The Six Layers</h3>
+            <h3>The Seven Layers</h3>
             <div class="layer-diagram" id="layer-diagram">
+                <div class="layer-category">
+                    <h4>Measurement Layers (5-7)</h4>
+                    <p class="category-desc">Inform next steps by providing measurements</p>
+                </div>
+                <div class="layer" data-layer="7">
+                    <div class="layer-number">Layer 7</div>
+                    <div class="layer-title">Audit & Continuous Monitoring</div>
+                    <div class="layer-desc">Efficacy review of all previous outputs</div>
+                </div>
                 <div class="layer" data-layer="6">
                     <div class="layer-number">Layer 6</div>
-                    <div class="layer-title">Audit</div>
-                    <div class="layer-desc">Review of organizational policy adherence</div>
+                    <div class="layer-title">Preventive & Remediative Enforcement</div>
+                    <div class="layer-desc">Corrective actions for noncompliance</div>
                 </div>
                 <div class="layer" data-layer="5">
                     <div class="layer-number">Layer 5</div>
-                    <div class="layer-title">Enforcement</div>
-                    <div class="layer-desc">Prevention or remediation based on evaluation findings</div>
+                    <div class="layer-title">Intent & Behavior Evaluation</div>
+                    <div class="layer-desc">Inspection of sensitive activities</div>
+                </div>
+                <div class="layer-category">
+                    <h4>Sensitive Activities (Layer 4)</h4>
                 </div>
                 <div class="layer" data-layer="4">
                     <div class="layer-number">Layer 4</div>
-                    <div class="layer-title">Evaluation</div>
-                    <div class="layer-desc">Assessment of code, configurations, and deployments</div>
+                    <div class="layer-title">Sensitive Activities</div>
+                    <div class="layer-desc">Actions that might introduce risk</div>
+                </div>
+                <div class="layer-category">
+                    <h4>Definition Layers (1-3)</h4>
+                    <p class="category-desc">Inform the execution of sensitive activities</p>
                 </div>
                 <div class="layer focus-layer" data-layer="3">
                     <div class="layer-number">Layer 3</div>
-                    <div class="layer-title">Policy ⭐</div>
-                    <div class="layer-desc">Organization-tailored governance rules based on risk appetite</div>
+                    <div class="layer-title">Risk & Policy ⭐</div>
+                    <div class="layer-desc">Organization-specific rules based on risk appetite</div>
                 </div>
                 <div class="layer" data-layer="2">
                     <div class="layer-number">Layer 2</div>
-                    <div class="layer-title">Controls</div>
-                    <div class="layer-desc">Technology-specific security controls informed by Layer 1</div>
+                    <div class="layer-title">Threats & Controls</div>
+                    <div class="layer-desc">Technology-specific objectives informed by Layer 1</div>
                 </div>
                 <div class="layer" data-layer="1">
                     <div class="layer-number">Layer 1</div>
-                    <div class="layer-title">Guidance</div>
-                    <div class="layer-desc">High-level cybersecurity best practices (NIST, ISO 27001, etc.)</div>
+                    <div class="layer-title">Vectors & Guidance</div>
+                    <div class="layer-desc">Foundational knowledge or regulations</div>
                 </div>
             </div>
 
             <style>
                 .layer-diagram {
                     margin: var(--spacing-xl) 0;
+                }
+                .layer-category {
+                    margin: var(--spacing-lg) 0 var(--spacing-sm) 0;
+                    padding: var(--spacing-sm) var(--spacing-md);
+                    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%);
+                    border-left: 3px solid rgba(139, 92, 246, 0.6);
+                    border-radius: var(--radius-sm);
+                }
+                .layer-category h4 {
+                    margin: 0 0 var(--spacing-xs) 0;
+                    font-size: 0.95rem;
+                    font-weight: 700;
+                    color: rgba(139, 92, 246, 1);
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+                .layer-category .category-desc {
+                    margin: 0;
+                    font-size: 0.85rem;
+                    color: var(--text-muted);
+                    font-style: italic;
                 }
                 .layer {
                     background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
@@ -261,20 +298,36 @@ class ModuleManager {
             </style>
 
             <h3>How Layers Interact</h3>
-            <p>Each layer builds upon the previous ones, creating a traceable chain from high-level industry guidance down to specific technical implementations:</p>
+            <p>The seven layers are organized into three groups, creating a traceable chain from foundational guidance through sensitive activities to continuous monitoring:</p>
 
-            <ol>
-                <li><strong>Layer 1 (Guidance)</strong> provides industry best practices from frameworks like NIST, ISO 27001, and CIS Controls</li>
-                <li><strong>Layer 2 (Controls)</strong> translates guidance into specific, technology-focused security controls</li>
-                <li><strong>Layer 3 (Policy)</strong> tailors controls to your organization's specific risk appetite and operational context</li>
-                <li><strong>Layer 4 (Evaluation)</strong> assesses whether implementations comply with policies</li>
-                <li><strong>Layer 5 (Enforcement)</strong> takes action based on evaluation results</li>
-                <li><strong>Layer 6 (Audit)</strong> reviews the entire process for compliance and effectiveness</li>
-            </ol>
+            <div class="info-box">
+                <h4>Definition Layers (1-3)</h4>
+                <p>These layers inform the execution of sensitive activities:</p>
+                <ol>
+                    <li><strong>Layer 1 (Vectors & Guidance)</strong> provides foundational knowledge and regulations from frameworks like NIST, ISO 27001, and CIS Controls</li>
+                    <li><strong>Layer 2 (Threats & Controls)</strong> translates guidance into technology-specific objectives addressing known threats</li>
+                    <li><strong>Layer 3 (Risk & Policy)</strong> tailors controls to your organization's specific risk appetite and operational context</li>
+                </ol>
+            </div>
+
+            <div class="info-box">
+                <h4>Sensitive Activities (Layer 4)</h4>
+                <p><strong>Layer 4 (Sensitive Activities)</strong> represents actions that might introduce risk, such as code commits, configuration changes, or deployment activities</p>
+            </div>
+
+            <div class="info-box">
+                <h4>Measurement Layers (5-7)</h4>
+                <p>These layers inform next steps by providing measurements:</p>
+                <ol start="5">
+                    <li><strong>Layer 5 (Intent & Behavior Evaluation)</strong> inspects sensitive activities to assess compliance with policies</li>
+                    <li><strong>Layer 6 (Preventive & Remediative Enforcement)</strong> takes corrective actions for noncompliance</li>
+                    <li><strong>Layer 7 (Audit & Continuous Monitoring)</strong> reviews the efficacy of all previous outputs</li>
+                </ol>
+            </div>
 
             <div class="info-box success">
-                <h4>Your Focus: Layer 3 Policies</h4>
-                <p>As a compliance professional, you'll primarily work with Layer 3, writing organizational policies that bridge the gap between industry controls (Layer 2) and your organization's specific needs.</p>
+                <h4>Your Focus: Layer 3 Risk & Policy</h4>
+                <p>As a compliance professional, you'll primarily work with Layer 3, writing organizational policies that bridge the gap between threat-informed controls (Layer 2) and your organization's specific needs.</p>
             </div>
 
             <h3>Machine-Readable Format</h3>
@@ -297,8 +350,9 @@ class ModuleManager {
             <h3>Key Takeaways</h3>
             <ul>
                 <li>Gemara provides a standardized, machine-readable framework for GRC</li>
-                <li>The 6-layer model creates traceability from guidance to implementation</li>
-                <li>Layer 3 policies are where compliance professionals add organizational context</li>
+                <li>The 7-layer model creates traceability from guidance through sensitive activities to continuous monitoring</li>
+                <li>Layer 3 (Risk & Policy) is where compliance professionals add organizational context</li>
+                <li>The model is organized into Definition Layers (1-3), Sensitive Activities (4), and Measurement Layers (5-7)</li>
                 <li>YAML format enables automation and tool integration</li>
             </ul>
         `;
@@ -1549,7 +1603,7 @@ risks:
                 <h4>Gemara Policy Writing Certification</h4>
                 <p>This certificate demonstrates your ability to:</p>
                 <ul>
-                    <li>Understand and apply the Gemara 6-layer model</li>
+                    <li>Understand and apply the Gemara 7-layer model</li>
                     <li>Write effective Layer 3 organizational policies</li>
                     <li>Leverage AI assistance for policy development</li>
                     <li>Map policies to compliance frameworks</li>

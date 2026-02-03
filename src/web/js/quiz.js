@@ -29,7 +29,7 @@ class QuizManager {
                         question: "Which layer represents organizational policies tailored to risk appetite?",
                         options: ["Layer 1", "Layer 2", "Layer 3", "Layer 4"],
                         correct: 2,
-                        explanation: "Layer 3 contains organizational policies that are tailored to the organization's specific risk appetite and operational context."
+                        explanation: "Layer 3 (Risk & Policy) contains organizational policies that are tailored to the organization's specific risk appetite and operational context."
                     },
                     {
                         question: "What format does Gemara use for machine-readable artifacts?",
@@ -38,10 +38,10 @@ class QuizManager {
                         explanation: "Gemara uses YAML (Yet Another Markup Language) for all its machine-readable artifacts."
                     },
                     {
-                        question: "Which layer contains industry best practices from frameworks like NIST and ISO 27001?",
-                        options: ["Layer 1: Guidance", "Layer 2: Controls", "Layer 3: Policy", "Layer 6: Audit"],
+                        question: "Which layer contains foundational knowledge and regulations from frameworks like NIST and ISO 27001?",
+                        options: ["Layer 1: Vectors & Guidance", "Layer 2: Threats & Controls", "Layer 3: Risk & Policy", "Layer 7: Audit & Continuous Monitoring"],
                         correct: 0,
-                        explanation: "Layer 1 (Guidance) contains high-level cybersecurity best practices from standards bodies like NIST and ISO."
+                        explanation: "Layer 1 (Vectors & Guidance) contains foundational knowledge and regulations from standards bodies like NIST and ISO."
                     },
                     {
                         question: "What is the primary benefit of using a machine-readable format for GRC?",
@@ -55,21 +55,26 @@ class QuizManager {
                         explanation: "Machine-readable formats enable automated validation, programmatic querying, and integration with development tools and workflows."
                     },
                     {
-                        question: "In what order do the layers build upon each other?",
+                        question: "How are the seven Gemara layers organized?",
                         options: [
-                            "Guidance → Controls → Policy → Evaluation → Enforcement → Audit",
-                            "Policy → Guidance → Controls → Evaluation → Audit → Enforcement",
-                            "Audit → Enforcement → Evaluation → Policy → Controls → Guidance",
-                            "Controls → Policy → Guidance → Enforcement → Evaluation → Audit"
+                            "Definition Layers (1-3), Sensitive Activities (4), Measurement Layers (5-7)",
+                            "All layers are equal with no grouping",
+                            "Input Layers (1-4), Output Layers (5-7)",
+                            "Planning Layers (1-2), Execution Layers (3-5), Review Layers (6-7)"
                         ],
                         correct: 0,
-                        explanation: "The layers build in order from Layer 1 (Guidance) through Layer 6 (Audit), with each layer building on the previous."
+                        explanation: "Gemara organizes the seven layers into three groups: Definition Layers (1-3) inform execution, Sensitive Activities (4) are actions that might introduce risk, and Measurement Layers (5-7) inform next steps."
                     },
                     {
-                        question: "Which layer involves assessment of code, configurations, and deployments?",
-                        options: ["Layer 2: Controls", "Layer 3: Policy", "Layer 4: Evaluation", "Layer 5: Enforcement"],
-                        correct: 2,
-                        explanation: "Layer 4 (Evaluation) assesses whether implementations comply with policies defined in Layer 3."
+                        question: "What does Layer 4 (Sensitive Activities) represent?",
+                        options: [
+                            "Industry best practices and guidance",
+                            "Actions that might introduce risk, such as code commits or configuration changes",
+                            "Automated compliance scanning",
+                            "Policy writing and documentation"
+                        ],
+                        correct: 1,
+                        explanation: "Layer 4 (Sensitive Activities) represents actions that might introduce risk, such as code commits, configuration changes, or deployment activities."
                     },
                     {
                         question: "Who is the primary audience for Layer 3 policies?",
@@ -83,15 +88,15 @@ class QuizManager {
                         explanation: "Layer 3 policies are written for all employees and stakeholders affected by them, which is why they must be clear and understandable."
                     },
                     {
-                        question: "What is the primary purpose of Layer 5 (Enforcement)?",
+                        question: "What is the primary purpose of Layer 5 (Intent & Behavior Evaluation)?",
                         options: [
-                            "To audit compliance with policies",
+                            "To audit the entire compliance program",
                             "To write new policies",
-                            "To take action based on evaluation findings (prevention or remediation)",
+                            "To inspect sensitive activities and assess compliance with policies",
                             "To provide industry guidance"
                         ],
                         correct: 2,
-                        explanation: "Layer 5 (Enforcement) takes action based on evaluation results, either preventing violations or remediating identified issues."
+                        explanation: "Layer 5 (Intent & Behavior Evaluation) inspects sensitive activities to assess whether they comply with policies defined in Layer 3."
                     },
                     {
                         question: "What problem does Gemara primarily solve?",
