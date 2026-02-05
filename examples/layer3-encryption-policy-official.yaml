@@ -1,0 +1,215 @@
+metadata:
+  id: "encryption-transit-policy-001"
+  description: "Establish requirements for encrypting sensitive data during network transmission to protect against unauthorized interception and ensure regulatory compliance"
+  version: "1.0.0"
+  author:
+    id: security-team
+    name: "Information Security Team"
+    type: Human
+    contact:
+      name: "Security Director"
+      affiliation: "Information Security Department"
+      email: "security@healthcare-org.com"
+  mapping-references:
+    - id: "HIPAA-164"
+      title: "HIPAA Security Rule"
+      version: "164.312(e)"
+      description: "Transmission Security Standards"
+      url: "https://www.hhs.gov/hipaa/for-professionals/security/laws-regulations/index.html"
+    - id: "NIST-800-52"
+      title: "NIST Special Publication 800-52"
+      version: "Rev. 2"
+      description: "Guidelines for the Selection, Configuration, and Use of TLS"
+      url: "https://csrc.nist.gov/publications/detail/sp/800-52/rev-2/final"
+
+title: "Data Encryption in Transit Policy"
+contacts:
+  responsible:
+    - name: "IT Infrastructure Director"
+      primary: true
+      affiliation: "Information Technology"
+      email: "it-director@healthcare-org.com"
+    - name: "Application Development Manager"
+      primary: false
+      affiliation: "Engineering"
+      email: "dev-manager@healthcare-org.com"
+  accountable:
+    - name: "Chief Information Security Officer"
+      primary: true
+      affiliation: "Executive Team"
+      email: "ciso@healthcare-org.com"
+  consulted:
+    - name: "Compliance Officer"
+      affiliation: "Legal & Compliance"
+      email: "compliance@healthcare-org.com"
+    - name: "Privacy Officer"
+      affiliation: "Privacy & Data Protection"
+      email: "privacy@healthcare-org.com"
+  informed:
+    - name: "All Technical Staff"
+      affiliation: "IT & Engineering Departments"
+
+scope:
+  in:
+    technologies:
+      - "Web Applications"
+      - "APIs"
+      - "Email Systems"
+      - "Remote Access Solutions"
+      - "File Transfer Systems"
+    geopolitical:
+      - "United States"
+      - "European Union"
+    sensitivity:
+      - "PHI"
+      - "PII"
+      - "Confidential"
+    users:
+      - "Employees"
+      - "Contractors"
+      - "Third-party Vendors"
+  out:
+    technologies:
+      - "Legacy Systems (sunset by 2026)"
+      - "Internal Development/Test (non-production)"
+    sensitivity:
+      - "Public"
+
+imports:
+  guidance:
+    - reference-id: "HIPAA-164"
+      constraints:
+        - id: "encrypt-phi-transit"
+          target-id: "164.312(e)(1)"
+          text: "All ePHI transmitted over electronic networks MUST use encryption that renders the data unusable, unreadable, or indecipherable to unauthorized individuals"
+        - id: "annual-review"
+          target-id: "164.312(e)(2)(ii)"
+          text: "Encryption mechanisms MUST be reviewed at least annually and updated when vulnerabilities are identified"
+    - reference-id: "NIST-800-52"
+      constraints:
+        - id: "tls-minimum"
+          target-id: "TLS-1.2"
+          text: "TLS 1.2 is the minimum acceptable version; TLS 1.3 is strongly recommended"
+        - id: "cipher-suites"
+          target-id: "Section-3.3"
+          text: "Only cipher suites from NIST-approved list may be used"
+
+adherence:
+  evaluation-methods:
+    - type: automated
+      description: "Automated SSL/TLS configuration scanning using Qualys SSL Labs or equivalent"
+      executor:
+        id: security-scanner
+        name: "Security Scanning System"
+        type: Software
+    - type: manual
+      description: "Quarterly manual review of encryption configurations and certificate management"
+      executor:
+        id: security-team
+        name: "Security Team"
+        type: Human
+    - type: behavioral
+      description: "Network traffic analysis to detect unencrypted sensitive data transmission"
+      executor:
+        id: network-monitoring
+        name: "Network Monitoring System"
+        type: Software
+
+  assessment-plans:
+    - id: "assess-web-tls"
+      requirement-id: "tls-web-apps"
+      frequency: "weekly"
+      evaluation-methods:
+        - type: automated
+          description: "Automated TLS configuration scan of all public-facing web applications"
+      evidence-requirements: "SSL Labs scan results showing A grade or higher for all production web applications"
+      parameters:
+        - id: "min-grade"
+          label: "Minimum SSL Labs Grade"
+          description: "Minimum acceptable SSL Labs security grade"
+          accepted-values: ["A+", "A", "A-"]
+
+    - id: "assess-api-encryption"
+      requirement-id: "api-encryption"
+      frequency: "weekly"
+      evaluation-methods:
+        - type: automated
+          description: "API endpoint encryption verification"
+      evidence-requirements: "All API endpoints must enforce HTTPS with valid certificates"
+
+    - id: "assess-email-encryption"
+      requirement-id: "email-phi"
+      frequency: "monthly"
+      evaluation-methods:
+        - type: manual
+          description: "Sample email transmissions containing PHI to verify encryption"
+      evidence-requirements: "Email logs showing S/MIME or TLS encryption for PHI transmissions"
+
+    - id: "assess-remote-access"
+      requirement-id: "vpn-encryption"
+      frequency: "quarterly"
+      evaluation-methods:
+        - type: manual
+          description: "VPN and remote access configuration review"
+      evidence-requirements: "VPN configuration documentation showing AES-256 or equivalent encryption"
+
+  enforcement-methods:
+    - type: gate
+      description: "Deployment pipeline blocks deployment of applications not enforcing TLS 1.2+"
+      executor:
+        id: cicd-pipeline
+        name: "CI/CD Pipeline"
+        type: Software
+    - type: autoremediation
+      description: "Automatic disabling of deprecated TLS versions detected on servers"
+      executor:
+        id: config-management
+        name: "Configuration Management System"
+        type: Software-Assisted
+
+  non-compliance: |
+    Systems found transmitting sensitive data without proper encryption will be:
+
+    CRITICAL SEVERITY (unencrypted PHI/PII):
+    - Immediately isolated from the network pending remediation
+    - Escalated to CISO within 1 hour
+    - Require incident report and root cause analysis
+    - May trigger breach notification requirements
+
+    HIGH SEVERITY (weak encryption TLS 1.0/1.1):
+    - System owner notified immediately
+    - 30-day remediation deadline
+    - Weekly status reports to CISO
+    - May not be renewed for production use
+
+    MEDIUM SEVERITY (expired certificates, weak ciphers):
+    - System owner notified within 24 hours
+    - 14-day remediation deadline
+    - Tracked in compliance dashboard
+
+implementation-plan:
+  notification-process: "All affected system owners will receive email notification 90 days before policy effective date with implementation guidance and support resources available"
+  evaluation-timeline:
+    start: "2026-03-01T00:00:00Z"
+    notes: "Initial baseline assessment of all systems begins March 1, 2026. Systems will be scanned and owners notified of non-compliance findings with 90-day remediation period."
+  enforcement-timeline:
+    start: "2026-06-01T00:00:00Z"
+    notes: "Enforcement begins June 1, 2026. After this date, non-compliant systems may be blocked from production deployment or network access."
+
+risks:
+  mitigated:
+    - reference-id: "threat-catalog-001"
+      entries:
+        - reference-id: "MITM-attack"
+        - reference-id: "eavesdropping"
+        - reference-id: "packet-sniffing"
+        - reference-id: "session-hijacking"
+
+  accepted:
+    - risk:
+        reference-id: "threat-catalog-001"
+        entry-id: "performance-overhead"
+      scope:
+        technologies:
+          - "Internal Development/Test"
+      justification: "Encryption overhead in non-production development environments is accepted as impact is minimal and data is non-sensitive. Production systems are not exempted."

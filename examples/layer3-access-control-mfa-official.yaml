@@ -1,0 +1,262 @@
+metadata:
+  id: "access-control-mfa-policy-001"
+  description: "Establish multi-factor authentication requirements for accessing organizational systems and sensitive data to prevent unauthorized access"
+  version: "2.0.0"
+  author:
+    id: iam-team
+    name: "Identity and Access Management Team"
+    type: Human
+    contact:
+      name: "IAM Director"
+      affiliation: "Information Security"
+      email: "iam@financial-services.com"
+  mapping-references:
+    - id: "PCI-DSS-4"
+      title: "Payment Card Industry Data Security Standard"
+      version: "4.0.1"
+      description: "Requirement 8 - Identify users and authenticate access to system components"
+      url: "https://www.pcisecuritystandards.org/"
+    - id: "NIST-800-63B"
+      title: "NIST Digital Identity Guidelines"
+      version: "800-63B"
+      description: "Authentication and Lifecycle Management"
+      url: "https://pages.nist.gov/800-63-3/sp800-63b.html"
+    - id: "SOC2-CC6"
+      title: "SOC 2 Trust Services Criteria"
+      version: "2017"
+      description: "CC6 - Logical and Physical Access Controls"
+      url: "https://www.aicpa.org/soc4so"
+
+title: "Multi-Factor Authentication (MFA) Policy"
+contacts:
+  responsible:
+    - name: "IAM Engineering Lead"
+      primary: true
+      affiliation: "Information Security - IAM"
+      email: "iam-lead@financial-services.com"
+    - name: "IT Operations Manager"
+      primary: false
+      affiliation: "IT Operations"
+      email: "it-ops@financial-services.com"
+  accountable:
+    - name: "Chief Information Security Officer"
+      primary: true
+      affiliation: "Executive Team"
+      email: "ciso@financial-services.com"
+  consulted:
+    - name: "Help Desk Manager"
+      affiliation: "IT Support"
+      email: "helpdesk@financial-services.com"
+  informed:
+    - name: "All Employees"
+      affiliation: "Company-wide"
+    - name: "Third-party Contractors"
+      affiliation: "External"
+
+scope:
+  in:
+    technologies:
+      - "VPN Access"
+      - "Cloud Applications (Office 365, Salesforce, etc.)"
+      - "Payment Processing Systems"
+      - "Administrative Interfaces"
+      - "Remote Desktop Access"
+      - "Source Code Repositories"
+    geopolitical:
+      - "United States"
+      - "Canada"
+      - "United Kingdom"
+    sensitivity:
+      - "Payment Card Data"
+      - "PII"
+      - "Confidential"
+      - "Internal"
+    users:
+      - "Employees"
+      - "Contractors"
+      - "System Administrators"
+      - "Developers"
+      - "Third-party Vendors"
+  out:
+    technologies:
+      - "Guest WiFi"
+      - "Public-facing Marketing Website"
+    sensitivity:
+      - "Public"
+    users:
+      - "Customers (customer-facing applications use separate authentication policy)"
+
+imports:
+  catalogs:
+    - reference-id: "internal-access-controls-catalog"
+      constraints:
+        - id: "mfa-required"
+          target-id: "AC-MFA-001"
+          text: "Multi-factor authentication MUST be enforced for all remote access and privileged account access"
+        - id: "phishing-resistant"
+          target-id: "AC-MFA-002"
+          text: "Phishing-resistant MFA methods (FIDO2, hardware tokens) MUST be available for high-risk users"
+      assessment-requirement-modifications:
+        - id: "mod-ac-mfa-001"
+          target-id: "AC-MFA-001.1"
+          modification-type: "clarification"
+          modification-rationale: "Clarify acceptable MFA methods and implementation timeline"
+          text: "MFA implementation must use authenticator apps (TOTP), hardware security keys (FIDO2/WebAuthn), or SMS as fallback only"
+          applicability: ["remote-access", "cloud-applications", "privileged-access"]
+          recommendation: "Prefer hardware security keys for administrators; authenticator apps for general users; SMS only as temporary fallback"
+
+  guidance:
+    - reference-id: "PCI-DSS-4"
+      constraints:
+        - id: "pci-mfa-cardholder"
+          target-id: "8.4.2"
+          text: "MFA MUST be implemented for all access to the cardholder data environment"
+        - id: "pci-mfa-remote"
+          target-id: "8.4.3"
+          text: "MFA MUST be implemented for all remote network access originating from outside the network"
+    - reference-id: "NIST-800-63B"
+      constraints:
+        - id: "nist-authenticator-assurance"
+          target-id: "AAL2"
+          text: "Systems processing sensitive data MUST meet Authenticator Assurance Level 2 (AAL2) requiring multi-factor authentication"
+
+adherence:
+  evaluation-methods:
+    - type: automated
+      description: "Automated MFA enrollment status monitoring via identity provider APIs"
+      executor:
+        id: okta-api-scanner
+        name: "Okta API Integration"
+        type: Software
+    - type: automated
+      description: "Authentication log analysis to detect non-MFA authentication attempts"
+      executor:
+        id: siem-system
+        name: "Security Information and Event Management System"
+        type: Software
+    - type: manual
+      description: "Quarterly user access reviews to verify MFA enrollment and usage"
+      executor:
+        id: iam-team
+        name: "IAM Team"
+        type: Human
+
+  assessment-plans:
+    - id: "assess-mfa-enrollment"
+      requirement-id: "mfa-enrollment-rate"
+      frequency: "daily"
+      evaluation-methods:
+        - type: automated
+          description: "Check MFA enrollment percentage across all active users"
+      evidence-requirements: "Identity provider reports showing ≥99% MFA enrollment rate for all active accounts"
+      parameters:
+        - id: "min-enrollment-rate"
+          label: "Minimum MFA Enrollment Rate"
+          description: "Minimum percentage of users enrolled in MFA"
+          accepted-values: ["99%", "100%"]
+
+    - id: "assess-mfa-usage"
+      requirement-id: "mfa-enforcement"
+      frequency: "weekly"
+      evaluation-methods:
+        - type: automated
+          description: "Analyze authentication logs for non-MFA logins to in-scope systems"
+      evidence-requirements: "Authentication logs showing zero successful logins without MFA for in-scope systems"
+
+    - id: "assess-privileged-mfa"
+      requirement-id: "admin-mfa"
+      frequency: "weekly"
+      evaluation-methods:
+        - type: automated
+          description: "Verify all privileged account access uses MFA"
+      evidence-requirements: "100% of privileged account authentications show MFA factors used"
+
+    - id: "assess-mfa-methods"
+      requirement-id: "approved-methods"
+      frequency: "quarterly"
+      evaluation-methods:
+        - type: manual
+          description: "Review MFA methods in use and verify alignment with approved list"
+      evidence-requirements: "Report of MFA methods showing only approved authenticator types"
+      parameters:
+        - id: "approved-mfa-types"
+          label: "Approved MFA Methods"
+          description: "List of acceptable MFA authentication methods"
+          accepted-values: ["FIDO2/WebAuthn", "TOTP/Authenticator App", "Hardware Token", "SMS (fallback only)"]
+
+  enforcement-methods:
+    - type: automated
+      description: "Identity provider enforces MFA at authentication time - cannot bypass"
+      executor:
+        id: okta-enforcement
+        name: "Okta Identity Platform"
+        type: Software
+    - type: gate
+      description: "VPN gateway rejects connections without valid MFA"
+      executor:
+        id: vpn-gateway
+        name: "VPN Gateway"
+        type: Software
+    - type: manual
+      description: "Account suspension for users not enrolled in MFA within grace period"
+      executor:
+        id: iam-team
+        name: "IAM Team"
+        type: Software-Assisted
+
+  non-compliance: |
+    MFA policy violations are handled as follows:
+
+    CRITICAL VIOLATIONS (MFA disabled on production systems):
+    - Immediate escalation to CISO
+    - System access may be restricted until MFA is restored
+    - Incident investigation required
+    - Potential security breach notification
+
+    HIGH VIOLATIONS (User not enrolled in MFA beyond grace period):
+    - Account automatically suspended after 7-day grace period
+    - Manager notification sent
+    - Requires CISO approval to reinstate without MFA
+    - Annual security awareness training required
+
+    MEDIUM VIOLATIONS (Weak MFA method in use - SMS only):
+    - User receives upgrade notice
+    - 30-day period to switch to stronger MFA method
+    - After 30 days, SMS MFA disabled and account suspended until upgraded
+
+    EXCEPTIONS:
+    - Temporary exceptions may be granted for up to 14 days by IT Security Manager
+    - Requires documented business justification and compensating controls
+    - Must be approved in writing by CISO for extensions beyond 14 days
+
+implementation-plan:
+  notification-process: |
+    Phase 1 (Complete): Initial MFA rollout communication sent to all users with training materials
+    Phase 2 (In Progress): Monthly reminders to non-enrolled users with enrollment instructions
+    Phase 3 (Ongoing): New hire onboarding includes mandatory MFA enrollment on day 1
+  evaluation-timeline:
+    start: "2025-01-01T00:00:00Z"
+    end: "2025-12-31T23:59:59Z"
+    notes: "Continuous evaluation through 2025 with monthly reporting to executive team on enrollment rates and compliance status"
+  enforcement-timeline:
+    start: "2025-03-01T00:00:00Z"
+    notes: "Full enforcement began March 1, 2025. No new accounts can be created without MFA enrollment. Existing accounts had 90-day grace period (expired May 30, 2025)."
+
+risks:
+  mitigated:
+    - reference-id: "threat-model-iam"
+      entries:
+        - reference-id: "credential-theft"
+        - reference-id: "phishing-attacks"
+        - reference-id: "brute-force-attacks"
+        - reference-id: "session-replay"
+        - reference-id: "insider-threat-unauthorized-access"
+
+  accepted:
+    - risk:
+        reference-id: "threat-model-iam"
+        entry-id: "sms-interception"
+      scope:
+        technologies:
+          - "SMS-based MFA (fallback only)"
+      justification: "SMS-based MFA is vulnerable to SIM swapping and interception attacks. This risk is accepted as SMS is only permitted as a temporary fallback method, and users are strongly encouraged to upgrade to TOTP or FIDO2. SMS MFA accounts are flagged for quarterly review and users are nudged to upgrade."

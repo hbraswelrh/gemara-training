@@ -1,252 +1,104 @@
-# Gemara Schema Reference
+# Gemara Official Schema Reference
 
-Official schema documentation from https://github.com/ossf/gemara/tree/main/schemas
+**Schema Version:** v0.17.0-dev
+**Source:** https://github.com/gemaraproj/gemara
+**Status:** Experimental (subject to change)
+
+This document describes the official Gemara Layer 3 Policy schema as defined in the [gemaraproj/gemara](https://github.com/gemaraproj/gemara) repository.
 
 ## Layer 3 Policy Structure
 
-### Required Fields
+### Complete Schema Definition
 
 ```yaml
-title: string                    # Policy title
-metadata: #Metadata              # See metadata section below
-contacts: #Contacts              # RACI framework contacts
-scope: #Scope                    # What applies and what doesn't
-imports: #Imports                # Dependencies on other documents
-adherence: #Adherence            # Compliance mechanisms
+# Layer 3 Policy Document (from layer-3.cue)
+title: string                      # REQUIRED: Policy title
+metadata: #Metadata                # REQUIRED: Policy metadata
+contacts: #Contacts                # REQUIRED: RACI roles
+scope: #Scope                      # REQUIRED: Applicability
+imports: #Imports                  # REQUIRED: Dependencies
+adherence: #Adherence              # REQUIRED: Compliance mechanisms
+implementation-plan: #ImplementationPlan  # OPTIONAL
+risks: #Risks                      # OPTIONAL
 ```
 
-### Optional Fields
+---
+
+## Required Fields
+
+### 1. `title` (string)
+
+The human-readable name of the policy.
 
 ```yaml
-implementation-plan: #ImplementationPlan
-risks: #Risks
+title: "Multi-Factor Authentication Policy"
 ```
 
-### Metadata (Required)
+### 2. `metadata` (#Metadata)
+
+Descriptive information about the policy artifact.
+
+**Required metadata fields:**
+- `id` (string) - Unique identifier for this policy
+- `description` (string) - High-level summary of purpose and scope
+- `author` (#Actor) - Person or group responsible for authoring
+
+**Optional metadata fields:**
+- `version` (string) - Version identifier
+- `date` (#Date) - ISO 8601 date
+- `mapping-references` - External standards/frameworks referenced
+- `applicability-categories` - Classification tags
+- `draft` (boolean) - Draft status indicator
+- `lexicon` (string) - Terms and definitions
+
+#### Example:
 
 ```yaml
 metadata:
-  id: string                     # Required: Unique identifier
-  description: string            # Required: Policy description
-  author:                        # Required: Author information
-    id: string
-    name: string
-    type: Human | Organization
-    contact:
-      name: string
-      affiliation: string
-      email: string
-  version: string                # Optional
-  date: #Date                    # Optional
-  mapping-references:            # Optional
-    - id: string
-      title: string
-      version: string
-      description: string
-      url: string
-  applicability-categories: []   # Optional
-  draft: boolean                 # Optional
-  lexicon: string                # Optional
-```
-
-### Contacts (RACI Framework - Required)
-
-```yaml
-contacts:
-  responsible:                   # Required: Who implements
-    - name: string
-      primary: boolean
-      affiliation: string
-      email: string
-  accountable:                   # Required: Who evaluates
-    - name: string
-      primary: boolean
-      affiliation: string
-      email: string
-  consulted:                     # Optional: Advisory resources
-    - name: string
-      affiliation: string
-      email: string
-  informed:                      # Optional: Stakeholders
-    - name: string
-      affiliation: string
-```
-
-### Scope (Required)
-
-```yaml
-scope:
-  in:                            # What applies
-    technologies: [string]
-    geopolitical: [string]
-    data-sensitivity: [string]
-    user-roles: [string]
-    groups: [string]
-  out:                           # What doesn't apply
-    technologies: [string]
-    geopolitical: [string]
-    data-sensitivity: [string]
-    user-roles: [string]
-    groups: [string]
-```
-
-### Imports (Required)
-
-```yaml
-imports:
-  policies: [string]             # External policy references
-  catalogs:                      # Control catalogs
-    - id: string
-      location: string
-  guidance:                      # Guidance documents
-    - id: string
-      location: string
-```
-
-### Adherence (Required)
-
-```yaml
-adherence:
-  evaluation-methods: [string]   # How to assess
-  assessment-plans: [string]     # When to evaluate
-  enforcement-methods: [string]  # How to enforce
-  non-compliance: string         # What happens on violation
-```
-
-### Implementation Plan (Optional)
-
-```yaml
-implementation-plan:
-  notification-processes: [string]
-  evaluation-timeline:
-    start: string
-    end: string
-  enforcement-timeline:
-    start: string
-    end: string
-```
-
-### Risks (Optional)
-
-```yaml
-risks:
-  mitigated:
-    - reference: string
-      risk-id: string
-  accepted:
-    - justification: string
-      scope:
-        technologies: [string]
-        geopolitical: [string]
-```
-
-## Layer 2 Control Catalog Structure
-
-### Required Fields for Catalog
-
-```yaml
-title: string                    # Catalog title
-```
-
-### Optional Fields for Catalog
-
-```yaml
-metadata: #Metadata
-families: [#Family]
-controls: [#Control]
-threats: [#Threat]
-capabilities: [#Capability]
-imported-controls: [#MultiMapping]
-imported-threats: [#MultiMapping]
-imported-capabilities: [#MultiMapping]
-```
-
-### Control Structure
-
-```yaml
-id: string                       # Required
-title: string                    # Required
-objective: string                # Required
-family: string                   # Required
-assessment-requirements:         # Required
-  - id: string
-    text: string
-    applicability: [string]
-    recommendation: string       # Optional
-guideline-mappings:              # Optional
-  - reference: string
-    target-id: string
-threat-mappings:                 # Optional
-  - reference: string
-    target-id: string
-```
-
-## Layer 1 Guidance Document Structure
-
-### Required Fields
-
-```yaml
-title: string                    # Document title
-metadata: #Metadata
-document-type:                   # One of:
-  - Standard
-  - Regulation
-  - "Best Practice"
-  - Framework
-```
-
-### Optional Fields
-
-```yaml
-front-matter: string             # Introductory text
-families: [#Family]              # Groupings
-guidelines: [#Guideline]         # Individual rules
-exemptions: [#Exemption]         # Where guidance doesn't apply
-```
-
-### Guideline Structure
-
-```yaml
-id: string
-title: string
-description: string
-family: string                   # Must match a defined family
-extends: string                  # Optional: Another guideline ID
-mappings:                        # Optional
-  - reference: string
-    target-id: string
-```
-
-## Example: Complete Layer 3 Policy
-
-```yaml
-metadata:
-  id: "mfa-policy-001"
-  description: "Multi-factor authentication policy for remote access"
-  version: "1.0.0"
+  id: "security-policy-001"
+  description: "Establish comprehensive information security controls"
+  version: "2.1.0"
   author:
     id: security-team
     name: "Security Team"
     type: Human
     contact:
-      name: "CISO"
+      name: "Security Team Lead"
       affiliation: "Security Department"
-      email: "ciso@company.com"
+      email: "security-lead@company.com"
   mapping-references:
     - id: "NIST-800-53"
       title: "NIST Special Publication 800-53"
       version: "Rev. 5"
+      description: "Security and Privacy Controls"
       url: "https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final"
+```
 
-title: "Multi-Factor Authentication Policy"
-purpose: "Require MFA for all remote access to protect against credential theft"
+### 3. `contacts` (#Contacts)
 
+RACI (Responsible, Accountable, Consulted, Informed) framework for policy roles.
+
+**Required contact types:**
+- `responsible` - Person/group implementing technical controls
+- `accountable` - Person/group evaluating and enforcing controls
+
+**Optional contact types:**
+- `consulted` - Advisory resources
+- `informed` - Stakeholders receiving updates
+
+#### Example:
+
+```yaml
 contacts:
   responsible:
     - name: "IT Director"
       primary: true
       affiliation: "Information Technology"
       email: "it-director@company.com"
+    - name: "Compliance Officer"
+      primary: false
+      affiliation: "Legal & Compliance"
+      email: "compliance@company.com"
   accountable:
     - name: "Chief Information Security Officer"
       primary: true
@@ -259,84 +111,364 @@ contacts:
   informed:
     - name: "All Employees"
       affiliation: "Company-wide"
+```
 
+### 4. `scope` (#Scope)
+
+Defines what is included (`in`) and excluded (`out`) from policy applicability.
+
+**Dimensions available:**
+- `technologies` - Technology categories or services
+- `geopolitical` - Geographic regions
+- `sensitivity` - Data classification levels
+- `users` - User roles
+- `groups` - User groups
+
+#### Example:
+
+```yaml
 scope:
   in:
-    technologies: ["VPN", "Cloud Applications", "Email"]
-    user-roles: ["Employees", "Contractors", "Third-party"]
+    technologies:
+      - "Cloud Computing"
+      - "Mobile Devices"
+      - "Web Applications"
+    geopolitical:
+      - "United States"
+      - "European Union"
+    sensitivity:
+      - "PHI"
+      - "PII"
+      - "Confidential"
+    users:
+      - "Employees"
+      - "Contractors"
   out:
-    technologies: ["On-premises only systems"]
-    user-roles: ["Service accounts"]
+    technologies:
+      - "Legacy Systems"
+    sensitivity:
+      - "Public"
+```
 
+### 5. `imports` (#Imports)
+
+External dependencies: policies, control catalogs, and guidance documents.
+
+**Import types:**
+- `policies` - Other Layer 3 policies
+- `catalogs` - Layer 2 control catalogs
+- `guidance` - Layer 1 guidance documents
+
+#### Catalog Imports (#CatalogImport):
+
+```yaml
 imports:
   catalogs:
-    - id: "nist-800-53-controls"
-      location: "https://example.com/catalogs/nist-800-53.yaml"
-  guidance:
-    - id: "nist-csf"
-      location: "https://example.com/guidance/nist-csf.yaml"
+    - reference-id: "internal-controls-catalog"
+      exclusions:
+        - "LEGACY-001"
+        - "DEPRECATED-002"
+      constraints:
+        - id: "constraint-001"
+          target-id: "CTRL-IAM-001"
+          text: "MFA MUST be enforced for all privileged access"
+      assessment-requirement-modifications:
+        - id: "mod-001"
+          target-id: "CTRL-IAM-001.1"
+          modification-type: "clarification"
+          modification-rationale: "Clarify MFA methods"
+          text: "Use FIDO2 or TOTP; SMS only as fallback"
+          applicability: ["production"]
+          recommendation: "Prefer hardware tokens"
+```
 
+#### Guidance Imports (#GuidanceImport):
+
+```yaml
+imports:
+  guidance:
+    - reference-id: "NIST-800-53"
+      exclusions:
+        - "AC-25"  # Out of scope
+      constraints:
+        - id: "audit-frequency"
+          target-id: "AU-2"
+          text: "Audit logs MUST be reviewed at least weekly"
+```
+
+### 6. `adherence` (#Adherence)
+
+Defines how the policy is evaluated and enforced.
+
+**Components:**
+- `evaluation-methods` - How compliance is assessed
+- `assessment-plans` - Specific evaluation procedures
+- `enforcement-methods` - How compliance is ensured
+- `non-compliance` - Consequences of violations
+
+#### Evaluation Methods (#AcceptedMethod):
+
+```yaml
 adherence:
   evaluation-methods:
-    - "Automated compliance scans"
-    - "Quarterly access reviews"
+    - type: manual
+      description: "Quarterly access reviews"
+      executor:
+        id: security-team
+        name: "Security Team"
+        type: Human
+    - type: automated
+      description: "Daily automated scans"
+      executor:
+        id: scanner
+        name: "Vulnerability Scanner"
+        type: Software
+    - type: behavioral
+      description: "Runtime monitoring"
+    - type: autoremediation
+      description: "Automatic fixing"
+    - type: gate
+      description: "Block non-compliant deployments"
+```
+
+#### Assessment Plans (#AssessmentPlan):
+
+```yaml
+adherence:
   assessment-plans:
-    - "Monthly MFA enrollment reports"
-    - "Quarterly authentication log reviews"
-  enforcement-methods:
-    - "Conditional access policies"
-    - "Account suspension for non-compliance"
-  non-compliance: "Accounts without MFA will be disabled after 30-day grace period"
+    - id: "assess-mfa-enrollment"
+      requirement-id: "mfa-req-001"
+      frequency: "daily"
+      evaluation-methods:
+        - type: automated
+          description: "Check MFA enrollment rate"
+      evidence-requirements: "MFA enrollment ≥99%"
+      parameters:
+        - id: "min-rate"
+          label: "Minimum Enrollment Rate"
+          description: "Required MFA enrollment percentage"
+          accepted-values: ["99%", "100%"]
+```
 
+#### Non-Compliance:
+
+```yaml
+adherence:
+  non-compliance: |
+    CRITICAL: Immediate system isolation + CISO notification
+    HIGH: 30-day remediation deadline
+    MEDIUM: 90-day remediation deadline
+```
+
+---
+
+## Optional Fields
+
+### 7. `implementation-plan` (#ImplementationPlan)
+
+Timeline for policy rollout and enforcement.
+
+```yaml
 implementation-plan:
-  notification-processes:
-    - "Email notification to all users"
-    - "Training sessions for new enrollees"
+  notification-process: "All users notified 90 days before enforcement"
   evaluation-timeline:
-    start: "2024-02-01"
-    end: "2024-03-01"
+    start: "2026-03-01T00:00:00Z"
+    end: "2026-12-31T23:59:59Z"
+    notes: "Baseline assessment period"
   enforcement-timeline:
-    start: "2024-03-01"
-    end: "2024-12-31"
+    start: "2026-06-01T00:00:00Z"
+    notes: "Full enforcement begins; non-compliant systems blocked"
 ```
 
-## Key Differences from Common Mistakes
+### 8. `risks` (#Risks)
 
-### ❌ Incorrect (Not Gemara Schema)
+Documents mitigated and accepted risks.
+
+#### Mitigated Risks:
 
 ```yaml
-policy_statement: "Users must use MFA"  # Wrong field name
-requirements:                           # Not in schema
-  - id: "req-001"
-    description: "Something"
-derived_from_controls:                  # Wrong field name
-  - control_id: ctrl-001
+risks:
+  mitigated:
+    - reference-id: "threat-catalog-001"
+      entries:
+        - reference-id: "MITM-attack"
+        - reference-id: "credential-theft"
 ```
 
-### ✅ Correct (Gemara Schema)
+#### Accepted Risks:
 
 ```yaml
-purpose: "Require MFA for remote access"  # Correct field name
-adherence:                                # Correct structure
-  evaluation-methods: ["Scans"]
-  enforcement-methods: ["Conditional access"]
-imports:                                  # Correct field name
-  catalogs:
-    - id: "control-catalog"
-      location: "..."
+risks:
+  accepted:
+    - risk:
+        reference-id: "threat-catalog-001"
+        entry-id: "legacy-system-vulnerability"
+      scope:
+        technologies:
+          - "Legacy Mainframe"
+      justification: "System scheduled for decommission in 6 months; compensating controls in place (network segmentation, enhanced monitoring)"
 ```
+
+---
+
+## Complete Example
+
+See `examples/layer3-encryption-policy-official.yaml` and `examples/layer3-access-control-mfa-official.yaml` for complete, validated policy examples.
+
+---
 
 ## Validation
 
-Use the gemara-mcp-server `validate_gemara_yaml` tool to validate your policies against the official schema.
+Policies can be validated using the official CUE schemas:
 
 ```bash
-# In Claude or Cursor IDE
-"Validate this Layer 3 policy using validate_gemara_yaml"
+# Install CUE
+go install cuelang.org/go/cmd/cue@latest
+
+# Validate a policy
+cue vet -d '#Policy' policy.yaml layer-3.cue
 ```
 
-## Resources
+---
 
-- **Official Schemas**: https://github.com/ossf/gemara/tree/main/schemas
-- **Test Examples**: https://github.com/ossf/gemara/tree/main/test-data
-- **Lexicon**: https://github.com/ossf/gemara/blob/main/lexicon.md
+## Layer 2 Control Catalog Structure
+
+### Required Fields for Catalog
+
+```yaml
+title: string                      # Catalog title
+metadata: #Metadata                # Catalog metadata
+```
+
+### Optional Fields
+
+```yaml
+families: [#Family]                # Control families
+controls: [#Control]               # Control definitions
+imported-controls: [#MultiEntryMapping]  # External controls
+```
+
+### Control Structure (#Control)
+
+```yaml
+id: string                         # REQUIRED: Unique ID
+title: string                      # REQUIRED: Control title
+objective: string                  # REQUIRED: What it achieves
+family: string                     # REQUIRED: Family reference
+assessment-requirements:           # REQUIRED: Verification steps
+  - id: string
+    text: string                   # MUST condition
+    applicability: [string]        # When it applies
+    recommendation: string         # Optional guidance
+guideline-mappings:                # OPTIONAL: Layer 1 links
+  - reference-id: string
+    entries:
+      - reference-id: string
+        strength: 1-10             # 1=weak, 10=strong
+        remarks: string
+threat-mappings:                   # OPTIONAL: Threat links
+  - reference-id: string
+    entries:
+      - reference-id: string
+```
+
+---
+
+## Layer 1 Guidance Document Structure
+
+### Required Fields
+
+```yaml
+title: string                      # Document title
+metadata: #Metadata                # Document metadata
+document-type: string              # Type of document
+```
+
+**Document Types:**
+- `Standard`
+- `Regulation`
+- `Best Practice`
+- `Framework`
+
+### Optional Fields
+
+```yaml
+categories: [#Category]            # Organization structure
+guidance-items: [#GuidanceItem]    # Specific guidance entries
+```
+
+---
+
+## Common Types
+
+### #Actor
+
+```yaml
+id: string
+name: string
+type: "Human" | "Software" | "Software-Assisted"
+version: string                    # Optional
+description: string                # Optional
+uri: string                        # Optional
+contact: #Contact                  # Optional
+```
+
+### #Contact
+
+```yaml
+name: string
+affiliation: string                # Optional
+email: #Email                      # Optional
+primary: boolean                   # Optional
+```
+
+### #Date and #Datetime
+
+- `#Date`: ISO 8601 date (YYYY-MM-DD)
+- `#Datetime`: ISO 8601 datetime with timezone (2026-01-15T14:30:00Z)
+
+---
+
+## Important Notes
+
+### Schema Status
+
+The Gemara schema is marked as **experimental** and may change without notice. Always refer to the official repository for the latest schema definitions:
+
+- **Repository:** https://github.com/gemaraproj/gemara
+- **Documentation:** https://gemara.openssf.org
+- **Schemas:** https://github.com/gemaraproj/gemara/tree/main (*.cue files)
+
+### Tool Compatibility
+
+**Note:** Some Gemara tools (including `gemara-mcp-server`) may use different or older schema versions. Always verify which schema version a tool expects before creating artifacts.
+
+The official schema is the authoritative source and should be used for:
+- New policy development
+- Training and education
+- Long-term artifact storage
+- Interoperability with other Gemara tools
+
+### Migration Path
+
+If you have existing policies in a different format:
+1. Review the official schema structure above
+2. Map your existing fields to official schema fields
+3. Use constraints and assessment-requirement-modifications for custom requirements
+4. Validate against official CUE schemas
+5. Test with multiple Gemara-compatible tools
+
+---
+
+## Additional Resources
+
+- **CUE Language:** https://cuelang.org/
+- **Go SDK:** https://pkg.go.dev/github.com/gemaraproj/go-gemara
+- **OpenSSF Gemara:** https://openssf.org/
+- **Community:** OpenSSF Slack #gemara channel
+
+---
+
+*Last updated: 2026-02-05*
+*Schema version: v0.17.0-dev*
+*Source: github.com/gemaraproj/gemara*

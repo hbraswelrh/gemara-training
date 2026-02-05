@@ -1,0 +1,152 @@
+metadata:
+  id: pol-sec-encryption-transit-001
+  version: "1.0"
+  description: "Encryption in transit policy for protecting sensitive healthcare data during transmission"
+  author:
+    id: "training-demo"
+    name: "Gemara Training Participant"
+    type: "Human"
+  effective-date: "2026-02-05"
+  review-date: "2027-02-05"
+  status: "active"
+
+title: "Data Encryption in Transit Policy"
+
+policy-statement:
+  purpose: >
+    This policy establishes requirements for encrypting sensitive data during
+    network transmission to protect against unauthorized interception and
+    ensure compliance with HIPAA, PCI-DSS, and other applicable regulations.
+
+  scope:
+    applies-to:
+      - "All employees, contractors, and third-party vendors"
+      - "All systems processing, storing, or transmitting sensitive data"
+    environments:
+      - "production"
+      - "staging"
+      - "development"
+    data-classifications:
+      - "PHI (Protected Health Information)"
+      - "PII (Personally Identifiable Information)"
+      - "Payment Card Data"
+      - "Confidential Business Data"
+
+  requirements:
+    - id: req-encrypt-001
+      text: "All web applications and APIs handling sensitive data MUST enforce TLS 1.2 or higher for all connections"
+      priority: "critical"
+      enforcement: "mandatory"
+
+    - id: req-encrypt-002
+      text: "TLS 1.0 and TLS 1.1 MUST be disabled on all systems handling sensitive data"
+      priority: "critical"
+      enforcement: "mandatory"
+
+    - id: req-encrypt-003
+      text: "Internal network communications between application tiers containing sensitive data MUST use encryption"
+      priority: "high"
+      enforcement: "mandatory"
+
+    - id: req-encrypt-004
+      text: "Email containing sensitive data MUST be encrypted using S/MIME or PGP"
+      priority: "high"
+      enforcement: "mandatory"
+
+    - id: req-encrypt-005
+      text: "Remote access sessions (VPN, SSH, RDP) MUST use strong encryption algorithms (AES-256 or equivalent)"
+      priority: "critical"
+      enforcement: "mandatory"
+
+    - id: req-encrypt-006
+      text: "File transfers containing sensitive data MUST use SFTP, FTPS, or HTTPS - plain FTP is prohibited"
+      priority: "critical"
+      enforcement: "mandatory"
+
+  exceptions:
+    process: "Exceptions require written approval from the CISO and must document compensating controls"
+    approval-authority: "Chief Information Security Officer (CISO)"
+    review-period: "90 days"
+    documentation-required:
+      - "Business justification"
+      - "Risk assessment"
+      - "Compensating controls"
+      - "Remediation timeline"
+
+  roles-and-responsibilities:
+    - role: "System Owners"
+      responsibilities:
+        - "Ensure all systems under their control comply with encryption requirements"
+        - "Perform annual reviews of encryption configurations"
+
+    - role: "Security Team"
+      responsibilities:
+        - "Monitor compliance through automated scanning and audits"
+        - "Review and approve exception requests"
+        - "Provide guidance on encryption standards and implementation"
+
+    - role: "Development Teams"
+      responsibilities:
+        - "Implement TLS/SSL correctly in all applications"
+        - "Validate encryption in code reviews and security testing"
+
+risk-context:
+  threats-addressed:
+    - "Man-in-the-middle attacks"
+    - "Network eavesdropping and packet sniffing"
+    - "Data interception during transmission"
+    - "Unauthorized access to sensitive data in transit"
+
+  business-impact-if-not-followed:
+    - "HIPAA violations (up to $1.5M in penalties per violation category)"
+    - "PCI-DSS non-compliance (loss of payment processing capability)"
+    - "Data breach notification requirements"
+    - "Reputational damage and loss of patient trust"
+    - "Legal liability for exposed patient data"
+
+compliance-mappings:
+  - framework: "HIPAA"
+    requirements:
+      - id: "164.312(e)(1)"
+        description: "Transmission Security - implement technical security measures to guard against unauthorized access to ePHI transmitted over electronic networks"
+
+  - framework: "PCI-DSS"
+    requirements:
+      - id: "Requirement 4"
+        description: "Protect cardholder data with strong cryptography during transmission over open, public networks"
+
+  - framework: "NIST-CSF"
+    requirements:
+      - id: "PR.DS-2"
+        description: "Data-in-transit is protected"
+
+derived-from-controls:
+  - layer: 2
+    control-id: "cloud-encryption-transit"
+    source: "pci-cloud-controls"
+
+enforcement:
+  monitoring:
+    - method: "Automated TLS/SSL configuration scanning (weekly)"
+    - method: "Network traffic analysis for unencrypted sensitive data"
+    - method: "Application security testing during deployment"
+
+  violations:
+    - severity: "critical"
+      response: "Immediate investigation and remediation within 24 hours"
+      escalation: "CISO notification required"
+
+  audit-frequency: "Quarterly"
+
+related-documents:
+  - type: "standard"
+    title: "Encryption Standards and Cipher Suite Requirements"
+    id: "std-crypto-001"
+
+  - type: "procedure"
+    title: "TLS Certificate Management Procedure"
+    id: "proc-cert-mgmt-001"
+
+  - type: "guideline"
+    title: "Developer's Guide to Implementing HTTPS"
+    id: "guide-https-dev-001"
