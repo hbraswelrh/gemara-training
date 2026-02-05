@@ -3,7 +3,7 @@ class GoogleSheetsIntegration {
     constructor() {
         // Set this to your Google Apps Script web app URL after deployment
         this.scriptUrl = 'REPLACE_WITH_YOUR_GOOGLE_APPS_SCRIPT_URL';
-        this.enabled = false; // Will be enabled once scriptUrl is set
+        this.enabled = true; // Will be enabled once scriptUrl is set
     }
 
     /**
@@ -12,7 +12,7 @@ class GoogleSheetsIntegration {
      */
     async sendQuizResults(quizData) {
         // Skip if not configured
-        if (!this.enabled || this.scriptUrl === 'REPLACE_WITH_YOUR_GOOGLE_APPS_SCRIPT_URL') {
+        if (!this.enabled || this.scriptUrl === 'https://script.google.com/a/macros/redhat.com/s/AKfycbwCKLSAtVOYuLE4Q5Ve4hrJ0BvsqNB2Jq_iMnYO6wpjq0qEvBywL9OOcDQqTroojpj9/exec') {
             console.log('Google Sheets integration not configured. Quiz data:', quizData);
             return;
         }
