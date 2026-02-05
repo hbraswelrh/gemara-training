@@ -503,6 +503,19 @@ class QuizManager {
         const percentage = ((this.score / quiz.questions.length) * 100).toFixed(0);
         const passed = percentage >= quiz.passingScore;
 
+        // Send quiz results to Google Sheets
+        if (window.googleSheetsIntegration) {
+            const quizData = window.googleSheetsIntegration.prepareQuizData(
+                this.currentQuiz,
+                quiz,
+                this.answers,
+                this.score,
+                percentage,
+                passed
+            );
+            window.googleSheetsIntegration.sendQuizResults(quizData);
+        }
+
         const container = document.getElementById('quiz-container');
 
         container.innerHTML = `
