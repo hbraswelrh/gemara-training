@@ -712,9 +712,6 @@ threats:
             <div class="code-editor-container">
                 <div class="editor-header">
                     <span class="editor-title">Example: Complete Layer 3 Policy</span>
-                    <div class="editor-actions">
-                        <button class="btn btn-small btn-secondary" id="validate-yaml">Validate</button>
-                    </div>
                 </div>
                 <textarea class="yaml-editor">metadata:
   id: "mfa-policy-001"
@@ -1082,19 +1079,11 @@ risks:
             <div class="exercises-list">
                 <div class="exercise-card">
                     <div class="exercise-header">
-                        <h4>Exercise 5: Compliance Gap Analysis</h4>
-                        <span class="difficulty">Intermediate</span>
-                    </div>
-                    <p>Use AI to analyze your control set and identify missing policies</p>
-                    <button class="btn btn-primary btn-small" onclick="window.app.startExercise(5)">Start Exercise</button>
-                </div>
-                <div class="exercise-card">
-                    <div class="exercise-header">
                         <h4>Exercise 6: Policy Modernization</h4>
                         <span class="difficulty">Intermediate</span>
                     </div>
                     <p>Transform a legacy policy document into Gemara format</p>
-                    <button class="btn btn-primary btn-small" onclick="window.app.startExercise(6)">Start Exercise</button>
+                    <button class="btn btn-primary btn-small" onclick="window.moduleManager.startInteractiveExercise(6)">Start Exercise</button>
                 </div>
                 <div class="exercise-card">
                     <div class="exercise-header">
@@ -1102,7 +1091,7 @@ risks:
                         <span class="difficulty">Advanced</span>
                     </div>
                     <p>Build a complete policy family for access control</p>
-                    <button class="btn btn-primary btn-small" onclick="window.app.startExercise(7)">Start Exercise</button>
+                    <button class="btn btn-primary btn-small" onclick="window.moduleManager.startInteractiveExercise(7)">Start Exercise</button>
                 </div>
                 <div class="exercise-card">
                     <div class="exercise-header">
@@ -1110,7 +1099,7 @@ risks:
                         <span class="difficulty">Advanced</span>
                     </div>
                     <p>Create end-to-end traceability from guidance to policy</p>
-                    <button class="btn btn-primary btn-small" onclick="window.app.startExercise(8)">Start Exercise</button>
+                    <button class="btn btn-primary btn-small" onclick="window.moduleManager.startInteractiveExercise(8)">Start Exercise</button>
                 </div>
             </div>
 
@@ -1170,7 +1159,7 @@ risks:
                         <p><strong>Scenario:</strong> A regional bank needs to implement PCI-DSS requirements for cardholder data protection.</p>
                         <p><strong>Challenge:</strong> Balance strict security requirements with operational efficiency for 500+ employees.</p>
                         <p><strong>Your Task:</strong> Create Layer 3 policies that satisfy PCI-DSS while accommodating the bank's legacy systems.</p>
-                        <button class="btn btn-secondary btn-small" onclick="window.app.loadCaseStudy(1)">View Full Case Study</button>
+                        <button class="btn btn-secondary btn-small" onclick="window.moduleManager.loadCaseStudy(1)">View Full Case Study</button>
                     </div>
                 </div>
 
@@ -1183,7 +1172,7 @@ risks:
                         <p><strong>Scenario:</strong> A hospital system is migrating to cloud-based EHR and needs updated policies.</p>
                         <p><strong>Challenge:</strong> Ensure HIPAA compliance while enabling mobile access for physicians.</p>
                         <p><strong>Your Task:</strong> Develop policies for cloud data storage, mobile device usage, and access controls.</p>
-                        <button class="btn btn-secondary btn-small" onclick="window.app.loadCaseStudy(2)">View Full Case Study</button>
+                        <button class="btn btn-secondary btn-small" onclick="window.moduleManager.loadCaseStudy(2)">View Full Case Study</button>
                     </div>
                 </div>
 
@@ -1196,7 +1185,7 @@ risks:
                         <p><strong>Scenario:</strong> A growing SaaS startup needs SOC 2 Type II certification to win enterprise customers.</p>
                         <p><strong>Challenge:</strong> Build comprehensive policy framework quickly with limited compliance team.</p>
                         <p><strong>Your Task:</strong> Create policies covering all SOC 2 Trust Service Criteria using AI assistance.</p>
-                        <button class="btn btn-secondary btn-small" onclick="window.app.loadCaseStudy(3)">View Full Case Study</button>
+                        <button class="btn btn-secondary btn-small" onclick="window.moduleManager.loadCaseStudy(3)">View Full Case Study</button>
                     </div>
                 </div>
             </div>
@@ -1341,6 +1330,1087 @@ risks:
                 <p>After completing this module's exercises, you'll have real-world experience applying Gemara policy writing to complex compliance scenarios. One more module to go!</p>
             </div>
         `;
+    }
+
+    startInteractiveExercise(exerciseNum) {
+        const exercises = {
+            6: {
+                title: "Exercise 6: Policy Modernization",
+                description: "Transform a legacy policy document into Gemara format",
+                question: `
+                    <h3>Scenario</h3>
+                    <p>You've been given the following legacy password policy document from 2015:</p>
+                    <div class="legacy-policy">
+                        <h4>Corporate Password Policy v1.2</h4>
+                        <p><strong>Purpose:</strong> To ensure account security through strong passwords.</p>
+                        <p><strong>Policy:</strong> All employees must use passwords that are at least 8 characters long, contain uppercase and lowercase letters, numbers, and special characters. Passwords must be changed every 90 days. Passwords cannot be reused within 12 months.</p>
+                        <p><strong>Responsible Party:</strong> IT Department</p>
+                        <p><strong>Effective Date:</strong> January 1, 2015</p>
+                    </div>
+                    <p><strong>Your Task:</strong> Convert this legacy policy into a proper Gemara Layer 3 YAML artifact. Include all required metadata, scope, adherence requirements, and map it to appropriate controls.</p>
+                `,
+                starterCode: `metadata:
+  id: "password-policy-001"
+  description: "Password requirements for user accounts"
+  version: "2.0.0"
+  author:
+    id: security-team
+    name: "Security Team"
+    type: Human
+    contact:
+      name: "IT Security Manager"
+      affiliation: "IT Department"
+      email: "security@company.com"
+  date:
+    created: "2024-01-15"
+    modified: "2024-01-15"
+  draft: false
+
+title: "Password Security Policy"
+purpose: ""
+
+# Add contacts, scope, adherence, and other required sections below
+`
+            },
+            7: {
+                title: "Exercise 7: Policy Family Creation",
+                description: "Build a complete policy family for access control",
+                question: `
+                    <h3>Scenario</h3>
+                    <p>Your organization needs a comprehensive access control policy family that covers:</p>
+                    <ul>
+                        <li>User account provisioning and de-provisioning</li>
+                        <li>Role-based access control (RBAC)</li>
+                        <li>Privileged access management</li>
+                        <li>Access reviews and recertification</li>
+                    </ul>
+                    <p><strong>Your Task:</strong> Create the first policy in this family - the User Account Lifecycle Policy. This policy should define how user accounts are created, modified, and terminated throughout the employee lifecycle.</p>
+                    <p><strong>Requirements:</strong></p>
+                    <ul>
+                        <li>Account provisioning must occur on or before first day of employment</li>
+                        <li>Account termination must occur within 4 hours of separation</li>
+                        <li>Access changes require manager approval</li>
+                        <li>All actions must be logged and auditable</li>
+                    </ul>
+                `,
+                starterCode: `metadata:
+  id: "iam-account-lifecycle-001"
+  description: ""
+  version: "1.0.0"
+  author:
+    id: security-team
+    name: "Security Team"
+    type: Human
+  date:
+    created: "2024-01-15"
+    modified: "2024-01-15"
+
+title: "User Account Lifecycle Management Policy"
+purpose: ""
+
+# Define the complete policy structure
+`
+            },
+            8: {
+                title: "Exercise 8: Cross-Layer Integration",
+                description: "Create end-to-end traceability from guidance to policy",
+                question: `
+                    <h3>Scenario</h3>
+                    <p>You need to create a Layer 3 policy that demonstrates full traceability:</p>
+                    <ul>
+                        <li><strong>Layer 1 Guidance:</strong> NIST CSF PR.AC-7 "Users, devices, and other assets are authenticated"</li>
+                        <li><strong>Layer 2 Control:</strong> IAM-AUTH-002 "Implement certificate-based authentication for privileged access"</li>
+                    </ul>
+                    <p><strong>Your Task:</strong> Create a Layer 3 policy that implements certificate-based authentication for system administrators accessing production systems. The policy must:</p>
+                    <ul>
+                        <li>Reference the Layer 1 guidance and Layer 2 control</li>
+                        <li>Define scope (what systems, what roles)</li>
+                        <li>Specify implementation requirements</li>
+                        <li>Include enforcement and compliance verification methods</li>
+                        <li>Address exceptions for emergency access</li>
+                    </ul>
+                `,
+                starterCode: `metadata:
+  id: "certificate-auth-policy-001"
+  description: "Certificate-based authentication requirements for privileged access"
+  version: "1.0.0"
+  author:
+    id: security-team
+    name: "Security Team"
+    type: Human
+  mapping-references:
+    - id: "NIST-CSF"
+      title: "NIST Cybersecurity Framework"
+      version: "1.1"
+      url: "https://www.nist.gov/cyberframework"
+
+title: "Certificate-Based Authentication Policy"
+purpose: ""
+
+imports:
+  catalogs:
+    - id: "iam-controls"
+      location: "https://company.com/catalogs/iam-controls.yaml"
+  guidance:
+    - id: "nist-csf"
+      location: "https://company.com/guidance/nist-csf.yaml"
+
+# Complete the policy with proper scope, adherence, and risk sections
+`
+            }
+        };
+
+        const exercise = exercises[exerciseNum];
+        if (!exercise) {
+            console.error(`Exercise ${exerciseNum} not found`);
+            return;
+        }
+
+        const container = document.getElementById('module-container');
+        container.innerHTML = `
+            <div class="exercise-container">
+                <div class="exercise-header">
+                    <h2>${exercise.title}</h2>
+                    <p class="exercise-description">${exercise.description}</p>
+                    <button class="btn btn-secondary" onclick="window.moduleManager.loadModule(4)">← Back to Module</button>
+                </div>
+
+                <div class="exercise-content">
+                    <div class="exercise-question">
+                        ${exercise.question}
+                    </div>
+
+                    <div class="exercise-workspace">
+                        <h3>Your Solution</h3>
+                        <div class="code-editor-container">
+                            <div class="editor-header">
+                                <span class="editor-title">policy.yaml</span>
+                                <div class="editor-actions">
+                                    <button class="btn btn-small btn-secondary" onclick="window.moduleManager.validateExercise(${exerciseNum})">Validate YAML</button>
+                                    <button class="btn btn-small btn-primary" onclick="window.moduleManager.submitExercise(${exerciseNum})">Submit Solution</button>
+                                </div>
+                            </div>
+                            <textarea class="yaml-editor" id="exercise-${exerciseNum}-editor">${exercise.starterCode}</textarea>
+                        </div>
+                        <div id="exercise-feedback" class="exercise-feedback"></div>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                .exercise-container {
+                    max-width: 1200px;
+                    margin: 0 auto;
+                }
+                .exercise-header {
+                    margin-bottom: var(--spacing-xl);
+                    padding-bottom: var(--spacing-lg);
+                    border-bottom: 2px solid var(--border-color);
+                }
+                .exercise-description {
+                    color: var(--text-secondary);
+                    font-size: 1.1rem;
+                    margin: var(--spacing-md) 0;
+                }
+                .exercise-content {
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    gap: var(--spacing-xl);
+                }
+                .exercise-question {
+                    background-color: var(--bg-color);
+                    padding: var(--spacing-xl);
+                    border-radius: var(--radius-lg);
+                    border-left: 4px solid var(--primary-color);
+                }
+                .legacy-policy {
+                    background-color: var(--surface-color);
+                    padding: var(--spacing-lg);
+                    border-radius: var(--radius-md);
+                    margin: var(--spacing-md) 0;
+                    border: 1px solid var(--border-color);
+                }
+                .legacy-policy h4 {
+                    color: var(--primary-color);
+                    margin-bottom: var(--spacing-md);
+                }
+                .exercise-workspace {
+                    background-color: var(--surface-color);
+                    padding: var(--spacing-xl);
+                    border-radius: var(--radius-lg);
+                }
+                .exercise-feedback {
+                    margin-top: var(--spacing-lg);
+                    padding: var(--spacing-md);
+                    border-radius: var(--radius-md);
+                    display: none;
+                }
+                .exercise-feedback.show {
+                    display: block;
+                }
+                .exercise-feedback.success {
+                    background-color: rgba(16, 185, 129, 0.1);
+                    border: 1px solid var(--secondary-color);
+                    color: var(--secondary-color);
+                }
+                .exercise-feedback.error {
+                    background-color: rgba(239, 68, 68, 0.1);
+                    border: 1px solid var(--danger-color);
+                    color: var(--danger-color);
+                }
+                .code-editor-container {
+                    margin: var(--spacing-lg) 0;
+                }
+                .submission-summary {
+                    background-color: rgba(16, 185, 129, 0.05);
+                    padding: var(--spacing-md);
+                    border-radius: var(--radius-sm);
+                    margin: var(--spacing-md) 0;
+                }
+                .submission-summary ul {
+                    margin: var(--spacing-sm) 0;
+                    padding-left: var(--spacing-lg);
+                }
+                .feedback-actions {
+                    margin-top: var(--spacing-lg);
+                    display: flex;
+                    gap: var(--spacing-md);
+                    flex-wrap: wrap;
+                }
+            </style>
+        `;
+
+        // Initialize the code editor
+        this.initializeCodeEditors();
+    }
+
+    getEditorContent(exerciseNum) {
+        const editor = document.querySelector(`#exercise-${exerciseNum}-editor`);
+        if (!editor) {
+            console.error(`Editor for exercise ${exerciseNum} not found`);
+            return null;
+        }
+
+        // Get content from CodeMirror instance if initialized, otherwise from textarea
+        return editor.editor ? editor.editor.getValue() : editor.value;
+    }
+
+    validateExercise(exerciseNum) {
+        const feedback = document.getElementById('exercise-feedback');
+        const yamlContent = this.getEditorContent(exerciseNum);
+
+        if (yamlContent === null) {
+            feedback.className = 'exercise-feedback show error';
+            feedback.innerHTML = `
+                <h4>✗ Validation Failed</h4>
+                <p>Could not access the editor content. Please refresh and try again.</p>
+            `;
+            return false;
+        }
+
+        try {
+            // Basic YAML validation
+            if (!yamlContent.trim()) {
+                throw new Error("YAML content is empty");
+            }
+
+            // Check for required top-level fields
+            const requiredFields = ['metadata:', 'title:', 'purpose:'];
+            const missingFields = requiredFields.filter(field => !yamlContent.includes(field));
+
+            if (missingFields.length > 0) {
+                throw new Error(`Missing required fields: ${missingFields.join(', ').replace(/:/g, '')}`);
+            }
+
+            // Check for required metadata fields
+            const metadataFields = ['id:', 'description:', 'version:', 'author:'];
+            const missingMetadata = metadataFields.filter(field => {
+                const metadataSection = yamlContent.substring(yamlContent.indexOf('metadata:'));
+                return !metadataSection.includes(field);
+            });
+
+            if (missingMetadata.length > 0) {
+                throw new Error(`Missing required metadata fields: ${missingMetadata.join(', ').replace(/:/g, '')}`);
+            }
+
+            // Check for common YAML syntax issues
+            const lines = yamlContent.split('\n');
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i];
+                // Skip empty lines and comments
+                if (line.trim() === '' || line.trim().startsWith('#')) continue;
+
+                // Check for tabs (YAML doesn't allow tabs for indentation)
+                if (line.includes('\t')) {
+                    throw new Error(`Line ${i + 1}: YAML does not allow tabs for indentation. Use spaces instead.`);
+                }
+            }
+
+            feedback.className = 'exercise-feedback show success';
+            feedback.innerHTML = `
+                <h4>✓ Validation Passed</h4>
+                <p>Your YAML structure looks good! All required fields are present.</p>
+                <p><strong>Note:</strong> This is a basic validation. When you submit, your policy will be evaluated against the full Gemara schema.</p>
+            `;
+            return true;
+        } catch (error) {
+            feedback.className = 'exercise-feedback show error';
+            feedback.innerHTML = `
+                <h4>✗ Validation Failed</h4>
+                <p>${error.message}</p>
+                <p><strong>Tip:</strong> Review the example policies in Module 3 for reference.</p>
+            `;
+            return false;
+        }
+    }
+
+    submitExercise(exerciseNum) {
+        const feedback = document.getElementById('exercise-feedback');
+        const yamlContent = this.getEditorContent(exerciseNum);
+
+        if (yamlContent === null) {
+            feedback.className = 'exercise-feedback show error';
+            feedback.innerHTML = `
+                <h4>✗ Submission Failed</h4>
+                <p>Could not access the editor content. Please refresh and try again.</p>
+            `;
+            return;
+        }
+
+        // First validate before submitting
+        const isValid = this.validateExercise(exerciseNum);
+
+        if (!isValid) {
+            // Validation already displayed error message
+            const currentFeedback = feedback.innerHTML;
+            feedback.innerHTML = currentFeedback.replace(
+                '</p>',
+                '</p><p><strong>Please fix validation errors before submitting.</strong></p>'
+            );
+            return;
+        }
+
+        // Store the submission data for future backend integration
+        const submissionData = {
+            exerciseNumber: exerciseNum,
+            timestamp: new Date().toISOString(),
+            yamlContent: yamlContent,
+            contentLength: yamlContent.length,
+            lineCount: yamlContent.split('\n').length
+        };
+
+        // Log for development purposes (will be replaced with API call)
+        console.log('Exercise Submission:', submissionData);
+
+        // Store in localStorage for now (temporary solution until backend is ready)
+        try {
+            const submissions = JSON.parse(localStorage.getItem('exerciseSubmissions') || '{}');
+            submissions[`exercise-${exerciseNum}`] = submissionData;
+            localStorage.setItem('exerciseSubmissions', JSON.stringify(submissions));
+        } catch (error) {
+            console.warn('Failed to store submission in localStorage:', error);
+        }
+
+        // Display success message
+        feedback.className = 'exercise-feedback show success';
+        feedback.innerHTML = `
+            <h4>✓ Exercise Submitted Successfully!</h4>
+            <p>Your solution has been submitted and saved.</p>
+            <div class="submission-summary">
+                <p><strong>Submission Summary:</strong></p>
+                <ul>
+                    <li>Exercise: ${exerciseNum}</li>
+                    <li>Timestamp: ${new Date().toLocaleString()}</li>
+                    <li>Lines of YAML: ${submissionData.lineCount}</li>
+                </ul>
+            </div>
+            <p><strong>Next Steps:</strong></p>
+            <ul>
+                <li>Your solution will be evaluated against the Gemara schema (feature in development)</li>
+                <li>Review the solution with AI assistance using the gemara-mcp-server</li>
+                <li>Compare with example solutions in the learning portal</li>
+                <li>Move on to the next exercise or return to the module</li>
+            </ul>
+            <div class="feedback-actions">
+                <button class="btn btn-primary" onclick="window.moduleManager.loadModule(4)">Return to Module 4</button>
+                <button class="btn btn-secondary" onclick="window.moduleManager.viewSubmission(${exerciseNum})">View Submission</button>
+            </div>
+        `;
+    }
+
+    viewSubmission(exerciseNum) {
+        try {
+            const submissions = JSON.parse(localStorage.getItem('exerciseSubmissions') || '{}');
+            const submission = submissions[`exercise-${exerciseNum}`];
+
+            if (!submission) {
+                alert('No submission found for this exercise.');
+                return;
+            }
+
+            // Create a modal or new view to display the submission
+            const modal = document.createElement('div');
+            modal.className = 'submission-modal';
+            modal.innerHTML = `
+                <div class="modal-overlay" onclick="this.parentElement.remove()"></div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Exercise ${exerciseNum} Submission</h3>
+                        <button class="modal-close" onclick="this.closest('.submission-modal').remove()">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Submitted:</strong> ${new Date(submission.timestamp).toLocaleString()}</p>
+                        <p><strong>Lines:</strong> ${submission.lineCount}</p>
+                        <pre><code class="language-yaml">${this.escapeHtml(submission.yamlContent)}</code></pre>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" onclick="this.closest('.submission-modal').remove()">Close</button>
+                    </div>
+                </div>
+                <style>
+                    .submission-modal {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        z-index: 1000;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                    .modal-overlay {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background: rgba(0, 0, 0, 0.5);
+                    }
+                    .modal-content {
+                        position: relative;
+                        background: var(--surface-color);
+                        border-radius: var(--radius-lg);
+                        max-width: 800px;
+                        max-height: 80vh;
+                        overflow-y: auto;
+                        box-shadow: var(--shadow-lg);
+                        margin: var(--spacing-lg);
+                    }
+                    .modal-header {
+                        padding: var(--spacing-lg);
+                        border-bottom: 1px solid var(--border-color);
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    }
+                    .modal-close {
+                        background: none;
+                        border: none;
+                        font-size: 2rem;
+                        cursor: pointer;
+                        color: var(--text-secondary);
+                    }
+                    .modal-body {
+                        padding: var(--spacing-lg);
+                    }
+                    .modal-body pre {
+                        background: var(--bg-color);
+                        padding: var(--spacing-md);
+                        border-radius: var(--radius-md);
+                        overflow-x: auto;
+                    }
+                    .modal-footer {
+                        padding: var(--spacing-lg);
+                        border-top: 1px solid var(--border-color);
+                        text-align: right;
+                    }
+                </style>
+            `;
+            document.body.appendChild(modal);
+        } catch (error) {
+            console.error('Error viewing submission:', error);
+            alert('Failed to load submission. Please try again.');
+        }
+    }
+
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    loadCaseStudy(caseNum) {
+        const caseStudies = {
+            1: {
+                title: "Case Study 1: Financial Services - PCI-DSS Compliance",
+                industry: "Finance",
+                organization: "Regional Community Bank",
+                background: `
+                    <h3>Organization Background</h3>
+                    <p><strong>Name:</strong> Regional Community Bank (RCB)</p>
+                    <p><strong>Size:</strong> 500+ employees across 25 branch locations</p>
+                    <p><strong>Technology Stack:</strong></p>
+                    <ul>
+                        <li>Legacy on-premises core banking system (15 years old)</li>
+                        <li>Cloud-based customer portal and mobile banking app</li>
+                        <li>Hybrid payment processing infrastructure</li>
+                        <li>Third-party vendors for ATM network and card processing</li>
+                    </ul>
+                    <p><strong>Compliance Status:</strong> Currently PCI-DSS 3.2.1 compliant, preparing for 4.0 migration</p>
+                `,
+                scenario: `
+                    <h3>The Challenge</h3>
+                    <p>RCB's annual PCI-DSS assessment is approaching, and the auditor has flagged several concerns:</p>
+                    <ul>
+                        <li>Existing policies were written 5 years ago and don't reflect current operations</li>
+                        <li>Cloud migration of customer portal introduced new cardholder data flows not documented in policies</li>
+                        <li>Legacy system limitations make some PCI-DSS 4.0 requirements difficult to implement</li>
+                        <li>Multiple third-party vendors with varying levels of compliance maturity</li>
+                        <li>Staff turnover has left gaps in security knowledge and policy awareness</li>
+                    </ul>
+
+                    <h3>Specific Requirements</h3>
+                    <div class="requirement-box">
+                        <h4>PCI-DSS Requirement 8: Identify users and authenticate access</h4>
+                        <p><strong>8.3:</strong> Secure all individual non-console administrative access and all remote access to the CDE using multi-factor authentication.</p>
+                        <p><strong>New in 4.0:</strong> MFA must be applied to all access into the CDE, not just remote access.</p>
+                    </div>
+                `,
+                tasks: `
+                    <h3>Your Tasks</h3>
+                    <ol>
+                        <li><strong>Policy Analysis:</strong> Review the existing access control policy and identify gaps relative to PCI-DSS 4.0 Requirement 8.3</li>
+                        <li><strong>Scope Definition:</strong> Define what systems are in the Cardholder Data Environment (CDE) and which users need MFA</li>
+                        <li><strong>Exception Handling:</strong> Determine how to handle legacy systems that cannot support modern MFA</li>
+                        <li><strong>Layer 3 Policy Creation:</strong> Write a Gemara Layer 3 policy that:
+                            <ul>
+                                <li>Implements PCI-DSS Requirement 8.3</li>
+                                <li>Accounts for hybrid cloud/on-premises environment</li>
+                                <li>Documents exceptions with compensating controls</li>
+                                <li>Includes enforcement and monitoring requirements</li>
+                            </ul>
+                        </li>
+                    </ol>
+                `,
+                resources: `
+                    <h3>Resources Provided</h3>
+                    <ul>
+                        <li>Current access control policy (legacy format)</li>
+                        <li>Network diagram showing CDE boundaries</li>
+                        <li>List of systems and their MFA capabilities</li>
+                        <li>PCI-DSS 4.0 requirement text</li>
+                    </ul>
+                `,
+                deliverables: `
+                    <h3>Expected Deliverables</h3>
+                    <ul>
+                        <li>Gap analysis document comparing current state to PCI-DSS 4.0</li>
+                        <li>Complete Layer 3 policy in Gemara YAML format</li>
+                        <li>Exception request form for legacy systems</li>
+                        <li>Implementation roadmap with timeline</li>
+                    </ul>
+                `
+            },
+            2: {
+                title: "Case Study 2: Healthcare - HIPAA Privacy & Security",
+                industry: "Healthcare",
+                organization: "Metro Health System",
+                background: `
+                    <h3>Organization Background</h3>
+                    <p><strong>Name:</strong> Metro Health System</p>
+                    <p><strong>Size:</strong> 3 hospitals, 20 clinics, 2,500 employees</p>
+                    <p><strong>Technology Stack:</strong></p>
+                    <ul>
+                        <li>Migrating from on-premises EHR to Epic cloud-hosted solution</li>
+                        <li>BYOD program for physicians using personal tablets and smartphones</li>
+                        <li>Third-party telehealth platform</li>
+                        <li>Multiple legacy medical devices and departmental systems</li>
+                    </ul>
+                    <p><strong>Compliance Status:</strong> HIPAA compliant with on-premises systems, cloud migration introduces new risks</p>
+                `,
+                scenario: `
+                    <h3>The Challenge</h3>
+                    <p>Metro Health is undergoing digital transformation while maintaining HIPAA compliance:</p>
+                    <ul>
+                        <li>Physicians demand mobile access to patient records from personal devices</li>
+                        <li>Cloud-based EHR introduces data residency and encryption questions</li>
+                        <li>Telehealth platform requires video/audio recording and storage</li>
+                        <li>Existing policies don't address cloud storage or mobile access</li>
+                        <li>Need to balance security with clinical workflow efficiency</li>
+                    </ul>
+
+                    <h3>Specific Requirements</h3>
+                    <div class="requirement-box">
+                        <h4>HIPAA Security Rule: 164.312(a)(2)(i) - Access Control</h4>
+                        <p><strong>Unique User Identification:</strong> Assign a unique name and/or number for identifying and tracking user identity.</p>
+                        <p><strong>164.312(e)(1) - Transmission Security:</strong> Implement technical security measures to guard against unauthorized access to ePHI transmitted over electronic networks.</p>
+                    </div>
+                `,
+                tasks: `
+                    <h3>Your Tasks</h3>
+                    <ol>
+                        <li><strong>Risk Assessment:</strong> Identify risks associated with mobile access to ePHI from personal devices</li>
+                        <li><strong>Policy Framework:</strong> Design a mobile device policy that satisfies HIPAA requirements while enabling physician productivity</li>
+                        <li><strong>Cloud Considerations:</strong> Address data encryption, access controls, and audit logging for cloud-hosted EHR</li>
+                        <li><strong>Layer 3 Policy Creation:</strong> Write Gemara Layer 3 policies for:
+                            <ul>
+                                <li>Mobile device access to ePHI</li>
+                                <li>Cloud data storage and transmission</li>
+                                <li>User authentication and authorization</li>
+                                <li>Audit logging and monitoring</li>
+                            </ul>
+                        </li>
+                    </ol>
+                `,
+                resources: `
+                    <h3>Resources Provided</h3>
+                    <ul>
+                        <li>HIPAA Security Rule requirements (164.312)</li>
+                        <li>Current mobile device policy (outdated)</li>
+                        <li>Epic cloud BAA (Business Associate Agreement)</li>
+                        <li>Mobile device management (MDM) capabilities</li>
+                        <li>Risk assessment template</li>
+                    </ul>
+                `,
+                deliverables: `
+                    <h3>Expected Deliverables</h3>
+                    <ul>
+                        <li>Risk assessment for mobile ePHI access</li>
+                        <li>Set of related Layer 3 policies in Gemara YAML format</li>
+                        <li>Mobile device enrollment procedure for physicians</li>
+                        <li>Monitoring and enforcement plan</li>
+                        <li>Training materials for end users</li>
+                    </ul>
+                `
+            },
+            3: {
+                title: "Case Study 3: SaaS Company - SOC 2 Type II",
+                industry: "Technology",
+                organization: "CloudFlow Analytics",
+                background: `
+                    <h3>Organization Background</h3>
+                    <p><strong>Name:</strong> CloudFlow Analytics</p>
+                    <p><strong>Size:</strong> 75 employees, fast-growing SaaS startup</p>
+                    <p><strong>Technology Stack:</strong></p>
+                    <ul>
+                        <li>AWS cloud-native architecture</li>
+                        <li>Microservices deployed via Kubernetes</li>
+                        <li>Multi-tenant SaaS platform</li>
+                        <li>Customer data analytics and reporting</li>
+                    </ul>
+                    <p><strong>Compliance Status:</strong> No formal compliance program, need SOC 2 to win enterprise customers</p>
+                `,
+                scenario: `
+                    <h3>The Challenge</h3>
+                    <p>CloudFlow is losing enterprise deals due to lack of SOC 2 certification:</p>
+                    <ul>
+                        <li>No documented security policies or procedures</li>
+                        <li>Small team with limited compliance expertise</li>
+                        <li>Rapid development pace with frequent deployments</li>
+                        <li>Need SOC 2 Type II within 6 months to secure Series B funding</li>
+                        <li>Must implement policies without slowing down product development</li>
+                    </ul>
+
+                    <h3>Specific Requirements</h3>
+                    <div class="requirement-box">
+                        <h4>SOC 2 Trust Service Criteria - Security (CC6)</h4>
+                        <p><strong>CC6.1:</strong> The entity implements logical access security software, infrastructure, and architectures over protected information assets to protect them from security events.</p>
+                        <p><strong>CC6.2:</strong> Prior to issuing system credentials and granting system access, the entity registers and authorizes new internal and external users.</p>
+                        <p><strong>CC6.3:</strong> The entity authorizes, modifies, or removes access based on job responsibilities.</p>
+                    </div>
+                `,
+                tasks: `
+                    <h3>Your Tasks</h3>
+                    <ol>
+                        <li><strong>Rapid Policy Development:</strong> Use AI assistance to accelerate policy creation for all SOC 2 Trust Service Criteria</li>
+                        <li><strong>Developer-Friendly Policies:</strong> Write policies that integrate with CI/CD pipelines and don't impede agile workflows</li>
+                        <li><strong>Evidence Collection:</strong> Design policies with built-in evidence collection for audit purposes</li>
+                        <li><strong>Layer 3 Policy Creation:</strong> Create a complete policy family covering:
+                            <ul>
+                                <li>Access control and user provisioning (CC6.1-6.3)</li>
+                                <li>Change management for production systems</li>
+                                <li>Incident response and security monitoring</li>
+                                <li>Data protection and encryption</li>
+                            </ul>
+                        </li>
+                    </ol>
+                `,
+                resources: `
+                    <h3>Resources Provided</h3>
+                    <ul>
+                        <li>SOC 2 Trust Service Criteria documentation</li>
+                        <li>AWS security best practices</li>
+                        <li>Kubernetes RBAC configuration</li>
+                        <li>Current development and deployment processes</li>
+                        <li>gemara-mcp-server for AI-assisted policy generation</li>
+                    </ul>
+                `,
+                deliverables: `
+                    <h3>Expected Deliverables</h3>
+                    <ul>
+                        <li>Complete policy framework in Gemara format covering all SOC 2 requirements</li>
+                        <li>Policy-as-code implementation integrated with CI/CD</li>
+                        <li>Evidence collection automation scripts</li>
+                        <li>User access management procedures</li>
+                        <li>6-month implementation roadmap to SOC 2 readiness</li>
+                    </ul>
+                `
+            }
+        };
+
+        const caseStudy = caseStudies[caseNum];
+        if (!caseStudy) {
+            console.error(`Case study ${caseNum} not found`);
+            return;
+        }
+
+        const container = document.getElementById('module-container');
+        container.innerHTML = `
+            <div class="case-study-detail">
+                <div class="case-study-header">
+                    <span class="industry-badge">${caseStudy.industry}</span>
+                    <h2>${caseStudy.title}</h2>
+                    <p class="organization-name">${caseStudy.organization}</p>
+                    <button class="btn btn-secondary" onclick="window.moduleManager.loadModule(5)">← Back to Module 5</button>
+                </div>
+
+                <div class="case-study-content">
+                    <div class="case-section">
+                        ${caseStudy.background}
+                    </div>
+
+                    <div class="case-section highlight">
+                        ${caseStudy.scenario}
+                    </div>
+
+                    <div class="case-section">
+                        ${caseStudy.tasks}
+                    </div>
+
+                    <div class="case-section-grid">
+                        <div class="case-section">
+                            ${caseStudy.resources}
+                        </div>
+                        <div class="case-section">
+                            ${caseStudy.deliverables}
+                        </div>
+                    </div>
+
+                    <div class="case-actions">
+                        <h3>Ready to Start?</h3>
+                        <p>This case study is designed for hands-on work with AI assistance. Use the gemara-mcp-server to help develop your solutions.</p>
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" onclick="window.moduleManager.startCaseStudyWorkspace(${caseNum})">Start Working on Case Study</button>
+                            <button class="btn btn-secondary" onclick="window.moduleManager.loadModule(5)">Return to Module 5</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                .case-study-detail {
+                    max-width: 1000px;
+                    margin: 0 auto;
+                }
+                .case-study-header {
+                    margin-bottom: var(--spacing-xl);
+                    padding-bottom: var(--spacing-lg);
+                    border-bottom: 2px solid var(--border-color);
+                }
+                .organization-name {
+                    font-size: 1.2rem;
+                    color: var(--text-secondary);
+                    margin: var(--spacing-sm) 0 var(--spacing-lg) 0;
+                }
+                .case-study-content {
+                    display: flex;
+                    flex-direction: column;
+                    gap: var(--spacing-xl);
+                }
+                .case-section {
+                    background-color: var(--surface-color);
+                    padding: var(--spacing-xl);
+                    border-radius: var(--radius-lg);
+                    border: 1px solid var(--border-color);
+                }
+                .case-section.highlight {
+                    background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%);
+                    border-left: 4px solid var(--primary-color);
+                }
+                .case-section h3 {
+                    color: var(--primary-color);
+                    margin-bottom: var(--spacing-md);
+                }
+                .case-section h4 {
+                    color: var(--accent-color);
+                    margin-top: var(--spacing-md);
+                    margin-bottom: var(--spacing-sm);
+                }
+                .case-section-grid {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: var(--spacing-lg);
+                }
+                .requirement-box {
+                    background-color: var(--bg-color);
+                    padding: var(--spacing-lg);
+                    border-radius: var(--radius-md);
+                    margin: var(--spacing-md) 0;
+                    border-left: 3px solid var(--secondary-color);
+                }
+                .requirement-box h4 {
+                    color: var(--secondary-color);
+                    margin-top: 0;
+                }
+                .case-actions {
+                    background-color: var(--surface-color);
+                    padding: var(--spacing-xl);
+                    border-radius: var(--radius-lg);
+                    text-align: center;
+                    border: 2px solid var(--primary-color);
+                }
+                .case-actions h3 {
+                    color: var(--primary-color);
+                    margin-bottom: var(--spacing-md);
+                }
+                .action-buttons {
+                    display: flex;
+                    gap: var(--spacing-md);
+                    justify-content: center;
+                    margin-top: var(--spacing-lg);
+                    flex-wrap: wrap;
+                }
+                @media (max-width: 768px) {
+                    .case-section-grid {
+                        grid-template-columns: 1fr;
+                    }
+                }
+            </style>
+        `;
+
+        // Scroll to top
+        window.scrollTo(0, 0);
+    }
+
+    startCaseStudyWorkspace(caseNum) {
+        const container = document.getElementById('module-container');
+        container.innerHTML = `
+            <div class="workspace-container">
+                <div class="workspace-header">
+                    <h2>Case Study ${caseNum} Workspace</h2>
+                    <button class="btn btn-secondary" onclick="window.moduleManager.loadCaseStudy(${caseNum})">← Back to Case Study</button>
+                </div>
+
+                <div class="workspace-content">
+                    <div class="info-box">
+                        <h3>AI-Assisted Workspace</h3>
+                        <p>This workspace is designed for collaborative work with AI assistance using the gemara-mcp-server.</p>
+                        <p><strong>Recommended Workflow:</strong></p>
+                        <ol>
+                            <li>Use AI to research relevant Layer 1 guidance and Layer 2 controls</li>
+                            <li>Draft policy statements with AI assistance</li>
+                            <li>Create YAML artifacts using the editor below</li>
+                            <li>Validate and refine with AI feedback</li>
+                            <li>Submit your completed work</li>
+                        </ol>
+                    </div>
+
+                    <div class="workspace-editor">
+                        <h3>Policy Development Area</h3>
+                        <div class="code-editor-container">
+                            <div class="editor-header">
+                                <span class="editor-title">case-study-${caseNum}-policy.yaml</span>
+                                <div class="editor-actions">
+                                    <button class="btn btn-small btn-secondary" onclick="window.moduleManager.saveCaseStudyWork(${caseNum})">Save Work</button>
+                                    <button class="btn btn-small btn-primary" onclick="window.moduleManager.submitCaseStudy(${caseNum})">Submit Case Study</button>
+                                </div>
+                            </div>
+                            <textarea class="yaml-editor" id="case-study-${caseNum}-editor"># Case Study ${caseNum} - Policy Solution
+# Start developing your policy here
+
+metadata:
+  id: ""
+  description: ""
+  version: "1.0.0"
+  author:
+    id: ""
+    name: ""
+    type: Human
+
+title: ""
+purpose: ""
+
+# Continue building your policy...
+</textarea>
+                        </div>
+                        <div id="case-study-feedback" class="exercise-feedback"></div>
+                    </div>
+
+                    <div class="workspace-notes">
+                        <h3>Notes & Documentation</h3>
+                        <textarea id="case-study-notes" placeholder="Take notes here about your approach, decisions made, assumptions, etc..."></textarea>
+                        <button class="btn btn-secondary btn-small" onclick="window.moduleManager.saveNotes(${caseNum})">Save Notes</button>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                .workspace-container {
+                    max-width: 1200px;
+                    margin: 0 auto;
+                }
+                .workspace-header {
+                    margin-bottom: var(--spacing-xl);
+                    padding-bottom: var(--spacing-lg);
+                    border-bottom: 2px solid var(--border-color);
+                }
+                .workspace-content {
+                    display: flex;
+                    flex-direction: column;
+                    gap: var(--spacing-xl);
+                }
+                .workspace-editor {
+                    background-color: var(--surface-color);
+                    padding: var(--spacing-xl);
+                    border-radius: var(--radius-lg);
+                }
+                .workspace-notes {
+                    background-color: var(--surface-color);
+                    padding: var(--spacing-xl);
+                    border-radius: var(--radius-lg);
+                }
+                .workspace-notes textarea {
+                    width: 100%;
+                    min-height: 200px;
+                    padding: var(--spacing-md);
+                    border: 1px solid var(--border-color);
+                    border-radius: var(--radius-md);
+                    font-family: var(--font-mono);
+                    font-size: 0.9rem;
+                    resize: vertical;
+                }
+            </style>
+        `;
+
+        // Initialize code editor
+        this.initializeCodeEditors();
+
+        // Try to load saved work
+        this.loadCaseStudyWork(caseNum);
+    }
+
+    saveCaseStudyWork(caseNum) {
+        const editor = document.querySelector(`#case-study-${caseNum}-editor`);
+        if (!editor) return;
+
+        const yamlContent = editor.editor ? editor.editor.getValue() : editor.value;
+
+        try {
+            localStorage.setItem(`case-study-${caseNum}-work`, yamlContent);
+            alert('Work saved successfully!');
+        } catch (error) {
+            console.error('Error saving work:', error);
+            alert('Failed to save work. Please try again.');
+        }
+    }
+
+    loadCaseStudyWork(caseNum) {
+        try {
+            const savedWork = localStorage.getItem(`case-study-${caseNum}-work`);
+            const savedNotes = localStorage.getItem(`case-study-${caseNum}-notes`);
+
+            if (savedWork) {
+                const editor = document.querySelector(`#case-study-${caseNum}-editor`);
+                if (editor) {
+                    if (editor.editor) {
+                        editor.editor.setValue(savedWork);
+                    } else {
+                        editor.value = savedWork;
+                    }
+                }
+            }
+
+            if (savedNotes) {
+                const notesArea = document.getElementById('case-study-notes');
+                if (notesArea) {
+                    notesArea.value = savedNotes;
+                }
+            }
+        } catch (error) {
+            console.error('Error loading saved work:', error);
+        }
+    }
+
+    saveNotes(caseNum) {
+        const notesArea = document.getElementById('case-study-notes');
+        if (!notesArea) return;
+
+        try {
+            localStorage.setItem(`case-study-${caseNum}-notes`, notesArea.value);
+            alert('Notes saved successfully!');
+        } catch (error) {
+            console.error('Error saving notes:', error);
+            alert('Failed to save notes. Please try again.');
+        }
+    }
+
+    submitCaseStudy(caseNum) {
+        const editor = document.querySelector(`#case-study-${caseNum}-editor`);
+        const feedback = document.getElementById('case-study-feedback');
+        const notesArea = document.getElementById('case-study-notes');
+
+        if (!editor || !feedback) return;
+
+        const yamlContent = editor.editor ? editor.editor.getValue() : editor.value;
+        const notes = notesArea ? notesArea.value : '';
+
+        const submissionData = {
+            caseStudyNumber: caseNum,
+            timestamp: new Date().toISOString(),
+            yamlContent: yamlContent,
+            notes: notes,
+            contentLength: yamlContent.length,
+            lineCount: yamlContent.split('\n').length
+        };
+
+        console.log('Case Study Submission:', submissionData);
+
+        try {
+            const submissions = JSON.parse(localStorage.getItem('caseStudySubmissions') || '{}');
+            submissions[`case-study-${caseNum}`] = submissionData;
+            localStorage.setItem('caseStudySubmissions', JSON.stringify(submissions));
+
+            feedback.className = 'exercise-feedback show success';
+            feedback.innerHTML = `
+                <h4>✓ Case Study Submitted Successfully!</h4>
+                <p>Your case study solution has been submitted and saved.</p>
+                <div class="submission-summary">
+                    <p><strong>Submission Summary:</strong></p>
+                    <ul>
+                        <li>Case Study: ${caseNum}</li>
+                        <li>Timestamp: ${new Date().toLocaleString()}</li>
+                        <li>Policy Lines: ${submissionData.lineCount}</li>
+                        <li>Notes: ${notes ? 'Included' : 'None'}</li>
+                    </ul>
+                </div>
+                <p><strong>Next Steps:</strong></p>
+                <ul>
+                    <li>Review your solution with AI assistance</li>
+                    <li>Compare with industry best practices</li>
+                    <li>Refine based on feedback</li>
+                    <li>Move on to the next case study or module</li>
+                </ul>
+                <button class="btn btn-primary" onclick="window.moduleManager.loadModule(5)">Return to Module 5</button>
+            `;
+        } catch (error) {
+            console.error('Error submitting case study:', error);
+            feedback.className = 'exercise-feedback show error';
+            feedback.innerHTML = `
+                <h4>✗ Submission Failed</h4>
+                <p>Failed to save your submission. Please try again.</p>
+            `;
+        }
     }
 
     getModule6Content() {
@@ -1677,8 +2747,4 @@ document.addEventListener('DOMContentLoaded', () => {
 window.app = window.app || {};
 window.app.startExercise = function(num) {
     alert(`Exercise ${num} would launch here with AI integration. Full implementation requires connecting to gemara-mcp-server.`);
-};
-
-window.app.loadCaseStudy = function(num) {
-    alert(`Case Study ${num} details would be loaded here.`);
 };
