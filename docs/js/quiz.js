@@ -117,7 +117,7 @@ class QuizManager {
                 questions: [
                     {
                         question: "Which of the following is NOT a common Layer 1 guidance framework?",
-                        options: ["NIST CSF", "ISO 27001", "CIS Controls", "Kubernetes"],
+                        options: ["NIST CSF", "ISO 27001", "PCI-DSS", "Kubernetes"],
                         correct: 3,
                         explanation: "Kubernetes is a container orchestration platform, not a compliance guidance framework."
                     },
@@ -133,29 +133,6 @@ class QuizManager {
                         explanation: "Threat-informed controls are designed based on real-world attack patterns and security research, addressing actual threats organizations face."
                     },
                     {
-                        question: "How many Layer 2 controls typically derive from a single Layer 1 guidance item?",
-                        options: [
-                            "Exactly one",
-                            "Always two",
-                            "Multiple controls can derive from one guidance item",
-                            "It must be a one-to-one mapping"
-                        ],
-                        correct: 2,
-                        explanation: "One piece of Layer 1 guidance typically maps to multiple Layer 2 controls, as guidance is high-level while controls are specific and technology-focused."
-                    },
-                    {
-                        question: "What field in a Layer 2 control artifact shows which Layer 1 guidance it comes from?",
-                        options: ["source_control", "derived_from", "parent_layer", "guidance_link"],
-                        correct: 1,
-                        explanation: "The 'derived_from' field in Layer 2 artifacts contains references to the Layer 1 guidance items that inform the control."
-                    },
-                    {
-                        question: "Which YAML field typically contains MITRE ATT&CK technique mappings in Layer 2 controls?",
-                        options: ["security_mappings", "threat_context", "attack_vectors", "mitre_references"],
-                        correct: 1,
-                        explanation: "The 'threat_context' field contains information about threats mitigated and MITRE ATT&CK technique mappings."
-                    },
-                    {
                         question: "What is the purpose of the 'applicability' field in controls and policies?",
                         options: [
                             "To specify which programming languages are supported",
@@ -165,28 +142,6 @@ class QuizManager {
                         ],
                         correct: 1,
                         explanation: "The 'applicability' field specifies which systems, users, or contexts the control applies to, helping determine scope."
-                    },
-                    {
-                        question: "ISO 27001 contains how many controls across how many domains?",
-                        options: [
-                            "18 controls across 5 domains",
-                            "50 controls across 10 domains",
-                            "114 controls across 14 domains",
-                            "200 controls across 20 domains"
-                        ],
-                        correct: 2,
-                        explanation: "ISO 27001 contains 114 controls organized across 14 security domains."
-                    },
-                    {
-                        question: "In the example multi-factor authentication control, which attack technique is mitigated?",
-                        options: [
-                            "SQL Injection",
-                            "Cross-Site Scripting",
-                            "Valid Accounts (T1078)",
-                            "Buffer Overflow"
-                        ],
-                        correct: 2,
-                        explanation: "The MFA control mitigates MITRE ATT&CK technique T1078 (Valid Accounts) by requiring additional authentication factors."
                     }
                 ]
             },

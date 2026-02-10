@@ -47,13 +47,15 @@ class ModuleManager {
                 exercises: ['exercise2', 'exercise3', 'exercise4']
             },
             4: {
-                title: "Advanced Policy Authoring with AI",
-                duration: "120 minutes",
-                type: "Hybrid CLI + Web with intensive AI interaction",
+                title: "Advanced Policy Authoring",
+                duration: "90 minutes",
+                type: "Interactive hands-on exercises",
                 objectives: [
-                    "Master the gemara-mcp-server tool suite",
-                    "Use AI to accelerate policy development",
-                    "Handle complex policy scenarios"
+                    "Transform legacy policies into Gemara format",
+                    "Build comprehensive policy families",
+                    "Create cross-layer traceability from guidance to policy",
+                    "Work with the complete Layer 3 policy schema",
+                    "Apply policy writing skills to practical scenarios"
                 ],
                 content: this.getModule4Content(),
                 quiz: 'module4-quiz',
@@ -291,8 +293,8 @@ class ModuleManager {
                 <h4>Definition Layers (1-3)</h4>
                 <p>These layers inform the execution of sensitive activities:</p>
                 <ol>
-                    <li><strong>Layer 1 (Vectors & Guidance)</strong> provides foundational knowledge and regulations from frameworks like NIST, ISO 27001, and CIS Controls</li>
-                    <li><strong>Layer 2 (Threats & Controls)</strong> translates guidance into technology-specific objectives addressing known threats</li>
+                    <li><strong>Layer 1 (Vectors & Guidance)</strong> provides foundational knowledge and regulations from frameworks like NIST, ISO 27001, PCI-DSS, and HIPAA</li>
+                    <li><strong>Layer 2 (Threats & Controls)</strong> translates guidance into technology-specific objectives addressing known threats, such as CIS Benchmarks and OSPS Baseline</li>
                     <li><strong>Layer 3 (Risk & Policy)</strong> tailors controls to your organization's specific risk appetite and operational context</li>
                 </ol>
             </div>
@@ -548,8 +550,8 @@ threats:
 
             <h3>Key Takeaways</h3>
             <ul>
-                <li>Layer 1 provides industry guidance from frameworks like NIST, ISO, and CIS</li>
-                <li>Layer 2 translates guidance into specific, threat-informed controls</li>
+                <li>Layer 1 provides industry guidance from frameworks like NIST, ISO, PCI-DSS, and HIPAA</li>
+                <li>Layer 2 translates guidance into specific, threat-informed controls such as CIS Benchmarks and OSPS Baseline</li>
                 <li>Controls are technology-specific and implementable</li>
                 <li>One piece of guidance typically maps to multiple controls</li>
                 <li>Understanding this relationship is essential for policy writing</li>
@@ -1162,171 +1164,18 @@ risks:
 
     getModule4Content() {
         return `
-            <h3>Mastering AI-Assisted Policy Development</h3>
-            <p>In this module, you'll learn to leverage the gemara-mcp-server and AI agents to accelerate your policy writing workflow while maintaining quality and compliance.</p>
+            <h3>Hands-On Policy Writing Exercises</h3>
+            <p>Put your skills into practice with these interactive exercises. Each exercise provides a complete policy schema template that you'll fill in with the appropriate data.</p>
 
             <div class="info-box">
-                <h4>What You'll Master</h4>
+                <h4>What You'll Practice</h4>
                 <ul>
-                    <li>Using gemara-mcp-server tools effectively</li>
-                    <li>Crafting effective prompts for policy generation</li>
-                    <li>Iterative refinement with AI feedback</li>
-                    <li>Validating and storing policy artifacts</li>
-                    <li>Building reusable policy templates</li>
+                    <li>Transforming legacy policies into Gemara format</li>
+                    <li>Building comprehensive policy families</li>
+                    <li>Creating cross-layer traceability from guidance to policy</li>
+                    <li>Working with the complete Layer 3 policy schema</li>
                 </ul>
             </div>
-
-            <h3>Gemara MCP Server Tools</h3>
-            <p>The MCP server provides these key capabilities:</p>
-
-            <div class="tools-reference">
-                <div class="tool-card">
-                    <h4>store_layer3_yaml</h4>
-                    <p class="tool-desc">Store a Layer 3 policy artifact</p>
-                    <div class="tool-usage">
-                        <strong>When to use:</strong> After creating or updating a policy
-                    </div>
-                </div>
-                <div class="tool-card">
-                    <h4>validate_gemara_yaml</h4>
-                    <p class="tool-desc">Validate YAML syntax and schema compliance</p>
-                    <div class="tool-usage">
-                        <strong>When to use:</strong> Before storing to catch errors early
-                    </div>
-                </div>
-                <div class="tool-card">
-                    <h4>query_artifacts</h4>
-                    <p class="tool-desc">Search and filter stored artifacts</p>
-                    <div class="tool-usage">
-                        <strong>When to use:</strong> Finding related policies or controls
-                    </div>
-                </div>
-                <div class="tool-card">
-                    <h4>check_applicability</h4>
-                    <p class="tool-desc">Determine which policies apply to a context</p>
-                    <div class="tool-usage">
-                        <strong>When to use:</strong> Scoping compliance requirements
-                    </div>
-                </div>
-            </div>
-
-            <style>
-                .tools-reference {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-                    gap: var(--spacing-md);
-                    margin: var(--spacing-xl) 0;
-                }
-                .tool-card {
-                    background-color: var(--surface-color);
-                    border: 1px solid var(--border-color);
-                    border-radius: var(--radius-md);
-                    padding: var(--spacing-lg);
-                }
-                .tool-card h4 {
-                    color: var(--primary-color);
-                    font-family: var(--font-mono);
-                    font-size: 1rem;
-                    margin-bottom: var(--spacing-sm);
-                }
-                .tool-desc {
-                    color: var(--text-secondary);
-                    margin-bottom: var(--spacing-md);
-                }
-                .tool-usage {
-                    font-size: 0.875rem;
-                    padding-top: var(--spacing-md);
-                    border-top: 1px solid var(--border-color);
-                }
-            </style>
-
-            <h3>AI-Assisted Workflow</h3>
-            <p>Follow this proven workflow for policy development:</p>
-
-            <div class="workflow-steps">
-                <div class="workflow-step">
-                    <div class="step-num">1</div>
-                    <div class="step-content">
-                        <h4>Identify Source Controls</h4>
-                        <p>Ask AI to query Layer 2 controls related to your policy domain</p>
-                        <code>Example: "Show me all Layer 2 controls related to data encryption"</code>
-                    </div>
-                </div>
-                <div class="workflow-step">
-                    <div class="step-num">2</div>
-                    <div class="step-content">
-                        <h4>Generate Draft Policy</h4>
-                        <p>Provide AI with controls and organizational context to generate initial draft</p>
-                        <code>Example: "Create a Layer 3 policy for encryption at rest, suitable for a healthcare organization"</code>
-                    </div>
-                </div>
-                <div class="workflow-step">
-                    <div class="step-num">3</div>
-                    <div class="step-content">
-                        <h4>Refine with Feedback</h4>
-                        <p>Iteratively improve the policy based on AI suggestions and validation</p>
-                        <code>Example: "Make the policy statement more specific about key management"</code>
-                    </div>
-                </div>
-                <div class="workflow-step">
-                    <div class="step-num">4</div>
-                    <div class="step-content">
-                        <h4>Validate Schema</h4>
-                        <p>Use validate_gemara_yaml to ensure correctness</p>
-                        <code>Example: "Validate this policy against the Gemara schema"</code>
-                    </div>
-                </div>
-                <div class="workflow-step">
-                    <div class="step-num">5</div>
-                    <div class="step-content">
-                        <h4>Store Artifact</h4>
-                        <p>Save the final policy using store_layer3_yaml</p>
-                        <code>Example: "Store this policy as pol-data-encryption-001"</code>
-                    </div>
-                </div>
-            </div>
-
-            <style>
-                .workflow-steps {
-                    margin: var(--spacing-xl) 0;
-                }
-                .workflow-step {
-                    display: flex;
-                    gap: var(--spacing-lg);
-                    margin-bottom: var(--spacing-lg);
-                    padding: var(--spacing-lg);
-                    background-color: var(--bg-color);
-                    border-radius: var(--radius-md);
-                }
-                .step-num {
-                    flex-shrink: 0;
-                    width: 48px;
-                    height: 48px;
-                    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-                    color: white;
-                    border-radius: 50%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 1.25rem;
-                    font-weight: 700;
-                }
-                .step-content h4 {
-                    margin-bottom: var(--spacing-sm);
-                }
-                .step-content code {
-                    display: block;
-                    margin-top: var(--spacing-sm);
-                    padding: var(--spacing-sm);
-                    background-color: var(--surface-color);
-                    border-radius: var(--radius-sm);
-                    font-size: 0.875rem;
-                    color: var(--primary-color);
-                }
-            </style>
-
-            <h3>Hands-On Exercises</h3>
-            <p>Complete these exercises to master AI-assisted policy authoring:</p>
 
             <div class="exercises-list">
                 <div class="exercise-card">
@@ -1382,14 +1231,218 @@ risks:
             </style>
 
             <div class="info-box success">
-                <h4>Pro Tips</h4>
+                <h4>Exercise Tips</h4>
                 <ul>
-                    <li>Always validate before storing - catch errors early</li>
-                    <li>Use AI to explain validation errors and suggest fixes</li>
-                    <li>Build a library of prompt templates for common policy types</li>
-                    <li>Review AI-generated content critically - you're the expert!</li>
-                    <li>Save successful prompts for reuse</li>
+                    <li>Read the scenario carefully before starting</li>
+                    <li>Fill in all fields marked with "# TODO" comments</li>
+                    <li>Use the validation button to check your YAML syntax</li>
+                    <li>Remember: all policies require title, metadata, contacts, and scope</li>
+                    <li>Optional fields can be left empty or removed if not applicable</li>
                 </ul>
+            </div>
+
+            <div class="optional-content-section">
+                <h3>Optional: Advanced Policy Authoring with AI</h3>
+                <p>Want to learn more about leveraging AI and gemara-mcp-server tools? Click below to explore advanced techniques.</p>
+                <button class="btn btn-secondary" onclick="window.moduleManager.showAdvancedContent()">View Advanced Policy Authoring with AI</button>
+            </div>
+
+            <style>
+                .optional-content-section {
+                    margin: var(--spacing-xl) 0;
+                    padding: var(--spacing-xl);
+                    background-color: var(--bg-color);
+                    border-radius: var(--radius-lg);
+                    border: 2px dashed var(--border-color);
+                    text-align: center;
+                }
+                .optional-content-section h3 {
+                    margin-bottom: var(--spacing-md);
+                }
+                .optional-content-section p {
+                    color: var(--text-secondary);
+                    margin-bottom: var(--spacing-lg);
+                }
+            </style>
+
+            <div id="advanced-content" style="display: none;">
+                <hr style="margin: var(--spacing-xl) 0; border: none; border-top: 2px solid var(--border-color);">
+
+                <h3>Advanced Policy Authoring with AI</h3>
+                <p>Leverage the gemara-mcp-server and AI agents to accelerate your policy writing workflow while maintaining quality and compliance.</p>
+
+                <div class="info-box">
+                    <h4>What You'll Learn</h4>
+                    <ul>
+                        <li>Using gemara-mcp-server tools effectively</li>
+                        <li>Crafting effective prompts for policy generation</li>
+                        <li>Iterative refinement with AI feedback</li>
+                        <li>Validating and storing policy artifacts</li>
+                        <li>Building reusable policy templates</li>
+                    </ul>
+                </div>
+
+                <h4>Gemara MCP Server Tools</h4>
+                <p>The MCP server provides these key capabilities:</p>
+
+                <div class="tools-reference">
+                    <div class="tool-card">
+                        <h4>store_layer3_yaml</h4>
+                        <p class="tool-desc">Store a Layer 3 policy artifact</p>
+                        <div class="tool-usage">
+                            <strong>When to use:</strong> After creating or updating a policy
+                        </div>
+                    </div>
+                    <div class="tool-card">
+                        <h4>validate_gemara_yaml</h4>
+                        <p class="tool-desc">Validate YAML syntax and schema compliance</p>
+                        <div class="tool-usage">
+                            <strong>When to use:</strong> Before storing to catch errors early
+                        </div>
+                    </div>
+                    <div class="tool-card">
+                        <h4>query_artifacts</h4>
+                        <p class="tool-desc">Search and filter stored artifacts</p>
+                        <div class="tool-usage">
+                            <strong>When to use:</strong> Finding related policies or controls
+                        </div>
+                    </div>
+                    <div class="tool-card">
+                        <h4>check_applicability</h4>
+                        <p class="tool-desc">Determine which policies apply to a context</p>
+                        <div class="tool-usage">
+                            <strong>When to use:</strong> Scoping compliance requirements
+                        </div>
+                    </div>
+                </div>
+
+                <style>
+                    .tools-reference {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                        gap: var(--spacing-md);
+                        margin: var(--spacing-xl) 0;
+                    }
+                    .tool-card {
+                        background-color: var(--surface-color);
+                        border: 1px solid var(--border-color);
+                        border-radius: var(--radius-md);
+                        padding: var(--spacing-lg);
+                    }
+                    .tool-card h4 {
+                        color: var(--primary-color);
+                        font-family: var(--font-mono);
+                        font-size: 1rem;
+                        margin-bottom: var(--spacing-sm);
+                    }
+                    .tool-desc {
+                        color: var(--text-secondary);
+                        margin-bottom: var(--spacing-md);
+                    }
+                    .tool-usage {
+                        font-size: 0.875rem;
+                        padding-top: var(--spacing-md);
+                        border-top: 1px solid var(--border-color);
+                    }
+                </style>
+
+                <h4>AI-Assisted Workflow</h4>
+                <p>Follow this proven workflow for policy development:</p>
+
+                <div class="workflow-steps">
+                    <div class="workflow-step">
+                        <div class="step-num">1</div>
+                        <div class="step-content">
+                            <h4>Identify Source Controls</h4>
+                            <p>Ask AI to query Layer 2 controls related to your policy domain</p>
+                            <code>Example: "Show me all Layer 2 controls related to data encryption"</code>
+                        </div>
+                    </div>
+                    <div class="workflow-step">
+                        <div class="step-num">2</div>
+                        <div class="step-content">
+                            <h4>Generate Draft Policy</h4>
+                            <p>Provide AI with controls and organizational context to generate initial draft</p>
+                            <code>Example: "Create a Layer 3 policy for encryption at rest, suitable for a healthcare organization"</code>
+                        </div>
+                    </div>
+                    <div class="workflow-step">
+                        <div class="step-num">3</div>
+                        <div class="step-content">
+                            <h4>Refine with Feedback</h4>
+                            <p>Iteratively improve the policy based on AI suggestions and validation</p>
+                            <code>Example: "Make the policy statement more specific about key management"</code>
+                        </div>
+                    </div>
+                    <div class="workflow-step">
+                        <div class="step-num">4</div>
+                        <div class="step-content">
+                            <h4>Validate Schema</h4>
+                            <p>Use validate_gemara_yaml to ensure correctness</p>
+                            <code>Example: "Validate this policy against the Gemara schema"</code>
+                        </div>
+                    </div>
+                    <div class="workflow-step">
+                        <div class="step-num">5</div>
+                        <div class="step-content">
+                            <h4>Store Artifact</h4>
+                            <p>Save the final policy using store_layer3_yaml</p>
+                            <code>Example: "Store this policy as pol-data-encryption-001"</code>
+                        </div>
+                    </div>
+                </div>
+
+                <style>
+                    .workflow-steps {
+                        margin: var(--spacing-xl) 0;
+                    }
+                    .workflow-step {
+                        display: flex;
+                        gap: var(--spacing-lg);
+                        margin-bottom: var(--spacing-lg);
+                        padding: var(--spacing-lg);
+                        background-color: var(--bg-color);
+                        border-radius: var(--radius-md);
+                    }
+                    .step-num {
+                        flex-shrink: 0;
+                        width: 48px;
+                        height: 48px;
+                        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+                        color: white;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 1.25rem;
+                        font-weight: 700;
+                    }
+                    .step-content h4 {
+                        margin-bottom: var(--spacing-sm);
+                    }
+                    .step-content code {
+                        display: block;
+                        margin-top: var(--spacing-sm);
+                        padding: var(--spacing-sm);
+                        background-color: var(--surface-color);
+                        border-radius: var(--radius-sm);
+                        font-size: 0.875rem;
+                        color: var(--primary-color);
+                    }
+                </style>
+
+                <div class="info-box success">
+                    <h4>Pro Tips for AI Assistance</h4>
+                    <ul>
+                        <li>Always validate before storing - catch errors early</li>
+                        <li>Use AI to explain validation errors and suggest fixes</li>
+                        <li>Build a library of prompt templates for common policy types</li>
+                        <li>Review AI-generated content critically - you're the expert!</li>
+                        <li>Save successful prompts for reuse</li>
+                    </ul>
+                </div>
+
+                <button class="btn btn-secondary" onclick="window.moduleManager.hideAdvancedContent()">Hide Advanced Content</button>
             </div>
         `;
     }
@@ -1594,27 +1647,123 @@ risks:
                     </div>
                     <p><strong>Your Task:</strong> Convert this legacy policy into a proper Gemara Layer 3 YAML artifact. Include all required metadata, scope, adherence requirements, and map it to appropriate controls.</p>
                 `,
-                starterCode: `metadata:
-  id: "password-policy-001"
-  description: "Password requirements for user accounts"
-  version: "2.0.0"
+                starterCode: `# Layer 3 Policy Schema Template
+# Fill in all required fields marked with "# TODO"
+
+title: "" # TODO: Policy title
+
+metadata:
+  id: "" # TODO: Unique policy identifier (e.g., "password-policy-001")
+  description: "" # TODO: Brief description of the policy
+  version: "" # TODO: Version number (e.g., "1.0.0")
   author:
-    id: security-team
-    name: "Security Team"
+    id: "" # TODO: Author identifier
+    name: "" # TODO: Author name
     type: Human
-    contact:
-      name: "IT Security Manager"
-      affiliation: "IT Department"
-      email: "security@company.com"
-  date:
-    created: "2024-01-15"
-    modified: "2024-01-15"
-  draft: false
+  contact: # OPTIONAL: Primary contact (separate from author)
+    name: "" # TODO: Contact name
+    affiliation: "" # TODO: Department or organization
+    email: "" # TODO: Contact email
+  date: # OPTIONAL
+    created: "" # TODO: Creation date (YYYY-MM-DD)
+    modified: "" # TODO: Last modified date (YYYY-MM-DD)
+  mapping-references: # OPTIONAL: External frameworks referenced
+    - id: "" # TODO: Framework ID
+      title: "" # TODO: Framework title
+      version: "" # TODO: Framework version
+      description: "" # TODO: Framework description
+      url: "" # TODO: Framework URL
+  applicability-categories: # OPTIONAL: Classification tags
+    - id: "" # TODO: Category ID
+      title: "" # TODO: Category title
+      description: "" # TODO: Category description
+  draft: false # TODO: Set to true if draft, false if final
 
-title: "Password Security Policy"
-purpose: ""
+organization-id: "" # OPTIONAL: Organization identifier
 
-# Add contacts, scope, adherence, and other required sections below
+purpose: "" # OPTIONAL: High-level purpose statement
+
+contacts: # REQUIRED: RACI roles
+  responsible:
+    - name: "" # TODO: Name
+      affiliation: "" # TODO: Department
+      email: "" # TODO: Email
+  accountable:
+    - name: ""
+      affiliation: ""
+      email: ""
+  consulted:
+    - name: ""
+      affiliation: ""
+  informed:
+    - name: ""
+      affiliation: ""
+
+scope: # REQUIRED: Policy applicability
+  boundaries: # OPTIONAL: Geographic regions or jurisdictions
+    - "" # TODO: Add boundaries (e.g., "United States")
+  technologies: # OPTIONAL: Technology categories
+    - "" # TODO: Add technologies (e.g., "Cloud Computing")
+  providers: # OPTIONAL: Service providers
+    - "" # TODO: Add providers (e.g., "Amazon Web Services")
+
+guidance-references: # OPTIONAL: Layer 1 references
+  - reference-id: "" # TODO: Reference ID
+    in-scope:
+      boundaries: []
+      technologies: []
+      providers: []
+    out-of-scope:
+      boundaries: []
+      technologies: []
+      providers: []
+    control-modifications: # OPTIONAL
+      - target-id: ""
+        modification-type: "" # enhancement, clarification, constraint
+        modification-rationale: ""
+        title: ""
+        objective: ""
+
+control-references: # OPTIONAL: Layer 2 references
+  - reference-id: "" # TODO: Control catalog reference
+    in-scope:
+      boundaries: []
+      technologies: []
+      providers: []
+    out-of-scope:
+      boundaries: []
+      technologies: []
+      providers: []
+    control-modifications: # OPTIONAL
+      - target-id: ""
+        modification-type: ""
+        modification-rationale: ""
+        title: ""
+        objective: ""
+
+adherence: # OPTIONAL: Compliance mechanisms
+  evaluation:
+    frequency: "" # TODO: How often evaluated (e.g., "quarterly")
+    method: "" # TODO: Evaluation method
+  enforcement:
+    automated: false # TODO: true/false
+    manual: false # TODO: true/false
+    preventive: false # TODO: true/false
+    detective: false # TODO: true/false
+
+implementation-plan: # OPTIONAL
+  phases:
+    - phase: "" # TODO: Phase name
+      timeline: "" # TODO: Timeline
+      milestones:
+        - "" # TODO: Milestone description
+
+risks: # OPTIONAL
+  - id: "" # TODO: Risk ID
+    description: "" # TODO: Risk description
+    likelihood: "" # TODO: low, medium, high
+    impact: "" # TODO: low, medium, high
+    mitigation: "" # TODO: Mitigation strategy
 `
             },
             7: {
@@ -1638,22 +1787,123 @@ purpose: ""
                         <li>All actions must be logged and auditable</li>
                     </ul>
                 `,
-                starterCode: `metadata:
-  id: "iam-account-lifecycle-001"
-  description: ""
-  version: "1.0.0"
+                starterCode: `# Layer 3 Policy Schema Template
+# Fill in all required fields marked with "# TODO"
+
+title: "" # TODO: Policy title
+
+metadata:
+  id: "" # TODO: Unique policy identifier (e.g., "iam-account-lifecycle-001")
+  description: "" # TODO: Brief description of the policy
+  version: "" # TODO: Version number (e.g., "1.0.0")
   author:
-    id: security-team
-    name: "Security Team"
+    id: "" # TODO: Author identifier
+    name: "" # TODO: Author name
     type: Human
-  date:
-    created: "2024-01-15"
-    modified: "2024-01-15"
+  contact: # OPTIONAL: Primary contact (separate from author)
+    name: "" # TODO: Contact name
+    affiliation: "" # TODO: Department or organization
+    email: "" # TODO: Contact email
+  date: # OPTIONAL
+    created: "" # TODO: Creation date (YYYY-MM-DD)
+    modified: "" # TODO: Last modified date (YYYY-MM-DD)
+  mapping-references: # OPTIONAL: External frameworks referenced
+    - id: "" # TODO: Framework ID
+      title: "" # TODO: Framework title
+      version: "" # TODO: Framework version
+      description: "" # TODO: Framework description
+      url: "" # TODO: Framework URL
+  applicability-categories: # OPTIONAL: Classification tags
+    - id: "" # TODO: Category ID
+      title: "" # TODO: Category title
+      description: "" # TODO: Category description
+  draft: false # TODO: Set to true if draft, false if final
 
-title: "User Account Lifecycle Management Policy"
-purpose: ""
+organization-id: "" # OPTIONAL: Organization identifier
 
-# Define the complete policy structure
+purpose: "" # OPTIONAL: High-level purpose statement
+
+contacts: # REQUIRED: RACI roles
+  responsible:
+    - name: "" # TODO: Name
+      affiliation: "" # TODO: Department
+      email: "" # TODO: Email
+  accountable:
+    - name: ""
+      affiliation: ""
+      email: ""
+  consulted:
+    - name: ""
+      affiliation: ""
+  informed:
+    - name: ""
+      affiliation: ""
+
+scope: # REQUIRED: Policy applicability
+  boundaries: # OPTIONAL: Geographic regions or jurisdictions
+    - "" # TODO: Add boundaries (e.g., "United States")
+  technologies: # OPTIONAL: Technology categories
+    - "" # TODO: Add technologies (e.g., "Identity Management Systems")
+  providers: # OPTIONAL: Service providers
+    - "" # TODO: Add providers (e.g., "Okta", "Azure AD")
+
+guidance-references: # OPTIONAL: Layer 1 references
+  - reference-id: "" # TODO: Reference ID
+    in-scope:
+      boundaries: []
+      technologies: []
+      providers: []
+    out-of-scope:
+      boundaries: []
+      technologies: []
+      providers: []
+    control-modifications: # OPTIONAL
+      - target-id: ""
+        modification-type: "" # enhancement, clarification, constraint
+        modification-rationale: ""
+        title: ""
+        objective: ""
+
+control-references: # OPTIONAL: Layer 2 references
+  - reference-id: "" # TODO: Control catalog reference
+    in-scope:
+      boundaries: []
+      technologies: []
+      providers: []
+    out-of-scope:
+      boundaries: []
+      technologies: []
+      providers: []
+    control-modifications: # OPTIONAL
+      - target-id: ""
+        modification-type: ""
+        modification-rationale: ""
+        title: ""
+        objective: ""
+
+adherence: # OPTIONAL: Compliance mechanisms
+  evaluation:
+    frequency: "" # TODO: How often evaluated (e.g., "quarterly")
+    method: "" # TODO: Evaluation method
+  enforcement:
+    automated: false # TODO: true/false
+    manual: false # TODO: true/false
+    preventive: false # TODO: true/false
+    detective: false # TODO: true/false
+
+implementation-plan: # OPTIONAL
+  phases:
+    - phase: "" # TODO: Phase name
+      timeline: "" # TODO: Timeline
+      milestones:
+        - "" # TODO: Milestone description
+
+risks: # OPTIONAL
+  - id: "" # TODO: Risk ID
+    description: "" # TODO: Risk description
+    likelihood: "" # TODO: low, medium, high
+    impact: "" # TODO: low, medium, high
+    mitigation: "" # TODO: Mitigation strategy
 `
             },
             8: {
@@ -1675,32 +1925,124 @@ purpose: ""
                         <li>Address exceptions for emergency access</li>
                     </ul>
                 `,
-                starterCode: `metadata:
-  id: "certificate-auth-policy-001"
-  description: "Certificate-based authentication requirements for privileged access"
-  version: "1.0.0"
+                starterCode: `# Layer 3 Policy Schema Template
+# Fill in all required fields marked with "# TODO"
+# This exercise focuses on cross-layer traceability
+
+title: "" # TODO: Policy title
+
+metadata:
+  id: "" # TODO: Unique policy identifier (e.g., "certificate-auth-policy-001")
+  description: "" # TODO: Brief description of the policy
+  version: "" # TODO: Version number (e.g., "1.0.0")
   author:
-    id: security-team
-    name: "Security Team"
+    id: "" # TODO: Author identifier
+    name: "" # TODO: Author name
     type: Human
-  mapping-references:
-    - id: "NIST-CSF"
-      title: "NIST Cybersecurity Framework"
-      version: "1.1"
-      url: "https://www.nist.gov/cyberframework"
+  contact: # OPTIONAL: Primary contact (separate from author)
+    name: "" # TODO: Contact name
+    affiliation: "" # TODO: Department or organization
+    email: "" # TODO: Contact email
+  date: # OPTIONAL
+    created: "" # TODO: Creation date (YYYY-MM-DD)
+    modified: "" # TODO: Last modified date (YYYY-MM-DD)
+  mapping-references: # OPTIONAL: External frameworks referenced
+    - id: "" # TODO: Framework ID (e.g., "NIST-CSF")
+      title: "" # TODO: Framework title
+      version: "" # TODO: Framework version
+      description: "" # TODO: Framework description
+      url: "" # TODO: Framework URL
+  applicability-categories: # OPTIONAL: Classification tags
+    - id: "" # TODO: Category ID
+      title: "" # TODO: Category title
+      description: "" # TODO: Category description
+  draft: false # TODO: Set to true if draft, false if final
 
-title: "Certificate-Based Authentication Policy"
-purpose: ""
+organization-id: "" # OPTIONAL: Organization identifier
 
-imports:
-  catalogs:
-    - id: "iam-controls"
-      location: "https://company.com/catalogs/iam-controls.yaml"
-  guidance:
-    - id: "nist-csf"
-      location: "https://company.com/guidance/nist-csf.yaml"
+purpose: "" # OPTIONAL: High-level purpose statement
 
-# Complete the policy with proper scope, adherence, and risk sections
+contacts: # REQUIRED: RACI roles
+  responsible:
+    - name: "" # TODO: Name
+      affiliation: "" # TODO: Department
+      email: "" # TODO: Email
+  accountable:
+    - name: ""
+      affiliation: ""
+      email: ""
+  consulted:
+    - name: ""
+      affiliation: ""
+  informed:
+    - name: ""
+      affiliation: ""
+
+scope: # REQUIRED: Policy applicability
+  boundaries: # OPTIONAL: Geographic regions or jurisdictions
+    - "" # TODO: Add boundaries
+  technologies: # OPTIONAL: Technology categories
+    - "" # TODO: Add technologies (e.g., "Production Systems")
+  providers: # OPTIONAL: Service providers
+    - "" # TODO: Add providers
+
+guidance-references: # OPTIONAL: Layer 1 references
+  - reference-id: "" # TODO: Reference to Layer 1 guidance (e.g., "NIST-CSF")
+    in-scope:
+      boundaries: []
+      technologies: []
+      providers: []
+    out-of-scope:
+      boundaries: []
+      technologies: []
+      providers: []
+    control-modifications: # OPTIONAL
+      - target-id: "" # TODO: Specific guidance item (e.g., "PR.AC-7")
+        modification-type: "" # enhancement, clarification, constraint
+        modification-rationale: ""
+        title: ""
+        objective: ""
+
+control-references: # OPTIONAL: Layer 2 references
+  - reference-id: "" # TODO: Control catalog reference (e.g., "iam-controls")
+    in-scope:
+      boundaries: []
+      technologies: []
+      providers: []
+    out-of-scope:
+      boundaries: []
+      technologies: []
+      providers: []
+    control-modifications: # OPTIONAL
+      - target-id: "" # TODO: Specific control (e.g., "IAM-AUTH-002")
+        modification-type: ""
+        modification-rationale: ""
+        title: ""
+        objective: ""
+
+adherence: # OPTIONAL: Compliance mechanisms
+  evaluation:
+    frequency: "" # TODO: How often evaluated
+    method: "" # TODO: Evaluation method
+  enforcement:
+    automated: false # TODO: true/false
+    manual: false # TODO: true/false
+    preventive: false # TODO: true/false
+    detective: false # TODO: true/false
+
+implementation-plan: # OPTIONAL
+  phases:
+    - phase: "" # TODO: Phase name
+      timeline: "" # TODO: Timeline
+      milestones:
+        - "" # TODO: Milestone description
+
+risks: # OPTIONAL
+  - id: "" # TODO: Risk ID
+    description: "" # TODO: Risk description (e.g., "Emergency access scenarios")
+    likelihood: "" # TODO: low, medium, high
+    impact: "" # TODO: low, medium, high
+    mitigation: "" # TODO: Mitigation strategy
 `
             }
         };
@@ -2655,6 +2997,24 @@ purpose: ""
                 <h4>✗ Submission Failed</h4>
                 <p>Failed to save your submission. Please try again.</p>
             `;
+        }
+    }
+
+    showAdvancedContent() {
+        const advancedContent = document.getElementById('advanced-content');
+        if (advancedContent) {
+            advancedContent.style.display = 'block';
+            // Scroll to the advanced content section
+            advancedContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+
+    hideAdvancedContent() {
+        const advancedContent = document.getElementById('advanced-content');
+        if (advancedContent) {
+            advancedContent.style.display = 'none';
+            // Scroll back to top of module
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     }
 }

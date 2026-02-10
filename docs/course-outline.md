@@ -150,76 +150,48 @@ This interactive hybrid training course teaches compliance professionals how to 
 
 ---
 
-## Module 4: Advanced Policy Authoring with AI
-**Duration**: 120 minutes | **Type**: Hybrid CLI + Web with intensive AI interaction
+## Module 4: Advanced Policy Authoring
+**Duration**: 90 minutes | **Type**: Interactive hands-on exercises
 
 ### Learning Objectives
-- Master the gemara-mcp-server tool suite
-- Use AI to accelerate policy development
-- Validate and refine policies programmatically
-- Handle complex policy scenarios
-- Build policy libraries
+- Transform legacy policies into Gemara format
+- Build comprehensive policy families
+- Create cross-layer traceability from guidance to policy
+- Work with the complete Layer 3 policy schema
+- Apply policy writing skills to practical scenarios
 
-### Content
-4.1. Gemara MCP Server Deep Dive
-   - Available tools and their uses
-   - Storage and validation workflows
-   - Query and discovery patterns
-   - Working with the MCP protocol
+### Primary Content: Hands-On Exercises
+This module focuses on practical application through three interactive exercises. Each exercise provides a complete Layer 3 policy schema template that learners fill in with appropriate data.
 
-4.2. AI-Assisted Policy Workflows
-   - Prompt engineering for policy writing
-   - Iterative refinement with AI
-   - Using AI for compliance gap analysis
-   - Generating policy documentation
+**Exercise 6**: Policy Modernization (Intermediate)
+- Given: Legacy password policy document from 2015
+- Task: Convert into proper Gemara Layer 3 YAML artifact
+- Skills: Schema understanding, metadata creation, policy translation
+- Deliverable: Modern, machine-readable policy artifact
 
-4.3. Advanced Policy Scenarios
-   - Policies spanning multiple controls
-   - Exception handling and risk acceptance
-   - Policy versioning and change management
-   - Cross-functional policy requirements
+**Exercise 7**: Policy Family Creation (Advanced)
+- Given: Requirements for access control policy family
+- Task: Create user account lifecycle management policy
+- Skills: Policy family design, RACI assignment, implementation planning
+- Deliverable: Complete policy with contacts, scope, and adherence
 
-4.4. Policy Library Management
-   - Organizing policy artifacts
-   - Maintaining consistency across policies
-   - Building reusable policy templates
-   - Documentation and knowledge sharing
+**Exercise 8**: Cross-Layer Integration (Advanced)
+- Given: Layer 1 guidance (NIST CSF PR.AC-7) and Layer 2 control (IAM-AUTH-002)
+- Task: Create Layer 3 policy with full traceability chain
+- Skills: Cross-layer mapping, certificate authentication requirements
+- Deliverable: Policy with complete guidance-to-control-to-policy traceability
 
-### Interactive Elements
-- CLI playground for gemara-mcp-server commands
-- Policy workflow simulator
-- Version control integration demonstration
-- Template library builder
-
-### AI Agent Exercises
-**Exercise 5**: Compliance Gap Analysis
-- Load organizational control set
-- Use AI to identify missing policies
-- Generate draft policies for gaps
-- Validate and store complete policy set
-
-**Exercise 6**: Policy Modernization
-- Analyze legacy policy document
-- Transform into Gemara Layer 3 format
-- Map to current controls
-- Identify outdated requirements
-
-**Exercise 7**: Policy Family Creation
-- Create related policies for access control domain
-- Ensure consistency across policy family
-- Build traceability matrix
-- Generate compliance documentation
-
-**Exercise 8**: Cross-Layer Integration
-- Start with Layer 1 guidance requirement
-- Identify relevant Layer 2 controls
-- Author comprehensive Layer 3 policies
-- Validate complete chain with MCP server
+### Optional Content: Advanced Policy Authoring with AI
+Available via clickable section for learners who want to explore:
+- Gemara MCP Server tools (store_layer3_yaml, validate_gemara_yaml, query_artifacts)
+- AI-assisted workflow (5-step process from control identification to artifact storage)
+- Prompt engineering techniques
+- Policy library management
 
 ### Assessment
-- Practical exam: Complete policy authoring scenario (60 minutes)
-- Tool proficiency check: Demonstrate MCP server usage
-- Portfolio review: Collection of created policies
+- Completion of all three hands-on exercises
+- YAML validation for each exercise
+- Practical demonstration of schema understanding
 
 ---
 
