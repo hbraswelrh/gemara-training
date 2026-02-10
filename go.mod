@@ -1,3 +1,3 @@
-module github.com/hbraswel/gemara-training
+module gemara-training
 
 go 1.24

@@ -71,19 +71,6 @@ class ModuleManager {
                 content: this.getModule5Content(),
                 quiz: 'module5-quiz',
                 exercises: ['exercise9', 'exercise10']
-            },
-            6: {
-                title: "Continuous Improvement and Mastery",
-                duration: "30 minutes",
-                type: "Resources and ongoing learning",
-                objectives: [
-                    "Establish ongoing policy maintenance practices",
-                    "Stay current with evolving guidance and controls",
-                    "Build advanced AI-assisted workflows"
-                ],
-                content: this.getModule6Content(),
-                quiz: 'final-exam',
-                exercises: []
             }
         };
     }
@@ -559,13 +546,6 @@ threats:
                 }
             </style>
 
-            <h3>AI-Assisted Exploration</h3>
-            <div class="info-box warning">
-                <h4>Exercise 1: Query and Explore</h4>
-                <p>This is an AI-assisted exercise. Click the button below to open the AI assistant and begin exploring Layer 1 and Layer 2 artifacts.</p>
-                <button class="btn btn-primary" id="start-exercise-1">Start Exercise 1</button>
-            </div>
-
             <h3>Key Takeaways</h3>
             <ul>
                 <li>Layer 1 provides industry guidance from frameworks like NIST, ISO, and CIS</li>
@@ -901,6 +881,278 @@ risks:
                 }
             </style>
 
+            <h3>Interactive Activity: Analyzing a Real Policy</h3>
+            <div class="info-box">
+                <h4>Learning from a Well-Written Policy</h4>
+                <p>Let's analyze a real Gemara policy to understand how all these concepts come together. We'll be examining the <code>good-policy.yaml</code> from the official Gemara repository.</p>
+            </div>
+
+            <div class="policy-activity">
+                <div class="activity-section">
+                    <h4>Part 1: Metadata & Mapping References</h4>
+                    <p>The policy includes mapping references to compliance frameworks:</p>
+                    <pre class="code-block">mapping-references:
+  - id: "NIST-800-53"
+    title: "NIST Special Publication 800-53"
+    version: "Rev. 5"
+  - id: "ISO-27001"
+    title: "ISO/IEC 27001"
+    version: "2022"</pre>
+
+                    <div class="activity-question">
+                        <strong>Question 1:</strong> Your organization also needs to comply with PCI-DSS v4.0. Add a new mapping-reference entry for PCI-DSS that follows the same structure.
+                        <details>
+                            <summary>Show Answer</summary>
+                            <pre class="code-block">  - id: "PCI-DSS"
+    title: "Payment Card Industry Data Security Standard"
+                    version: "4.0"
+    description: "Security standards for organizations that handle credit cards"
+    url: "https://www.pcisecuritystandards.org/"</pre>
+                        </details>
+                    </div>
+                </div>
+
+                <div class="activity-section">
+                    <h4>Part 2: Scope Definition</h4>
+                    <p>The policy defines scope across boundaries, technologies, and providers:</p>
+                    <pre class="code-block">scope:
+  boundaries:
+    - "United States"
+    - "European Union"
+    - "Canada"
+  technologies:
+    - "Cloud Computing"
+    - "Mobile Devices"
+    - "Web Applications"
+    - "Database Systems"
+  providers:
+    - "Amazon Web Services"
+    - "Microsoft Azure"
+    - "Google Cloud Platform"</pre>
+
+                    <div class="activity-question">
+                        <strong>Question 2:</strong> Your organization is expanding to Asia-Pacific and will use Salesforce as a provider. Update the scope section accordingly.
+                        <details>
+                            <summary>Show Answer</summary>
+                            <pre class="code-block">scope:
+  boundaries:
+    - "United States"
+    - "European Union"
+    - "Canada"
+    - "Asia-Pacific"  # Added
+  technologies:
+    - "Cloud Computing"
+    - "Mobile Devices"
+    - "Web Applications"
+    - "Database Systems"
+  providers:
+    - "Amazon Web Services"
+    - "Microsoft Azure"
+    - "Google Cloud Platform"
+    - "Salesforce"  # Added</pre>
+                        </details>
+                    </div>
+                </div>
+
+                <div class="activity-section">
+                    <h4>Part 3: Guidance References & In-Scope Analysis</h4>
+                    <p>The policy specifies what's in-scope for NIST 800-53:</p>
+                    <pre class="code-block">guidance-references:
+  - reference-id: "NIST-800-53"
+    in-scope:
+      boundaries: ["United States"]
+      technologies: ["Cloud Computing", "Web Applications"]
+      providers: ["Amazon Web Services", "Microsoft Azure"]
+    out-of-scope:
+      boundaries: ["International"]
+      technologies: ["Legacy Systems"]
+      providers: ["On-premises Infrastructure"]</pre>
+
+                    <div class="activity-question">
+                        <strong>Question 3:</strong> Based on your Asia-Pacific expansion (Question 2), is NIST 800-53 in-scope for that region? Why or why not? Should you add PCI-DSS to guidance-references?
+                        <details>
+                            <summary>Show Answer</summary>
+                            <p><strong>NIST 800-53 Scope:</strong> No, NIST 800-53 is currently out-of-scope for Asia-Pacific because only "United States" is listed in the in-scope boundaries. Asia-Pacific would fall under "International" which is explicitly out-of-scope.</p>
+                            <p><strong>PCI-DSS:</strong> Yes, you should add PCI-DSS to guidance-references if you process payment cards. Here's an example:</p>
+                            <pre class="code-block">  - reference-id: "PCI-DSS"
+    in-scope:
+      boundaries: ["United States", "European Union", "Canada", "Asia-Pacific"]
+      technologies: ["Web Applications", "Database Systems"]
+      providers: ["Amazon Web Services", "Microsoft Azure", "Google Cloud Platform"]
+    out-of-scope:
+      boundaries: []
+      technologies: ["Legacy Systems"]
+      providers: ["On-premises Infrastructure"]</pre>
+                        </details>
+                    </div>
+                </div>
+
+                <div class="activity-section">
+                    <h4>Part 4: Control Modifications</h4>
+                    <p>The policy enhances NIST 800-53 AC-1 (Access Control) for cloud environments:</p>
+                    <pre class="code-block">control-modifications:
+  - target-id: "AC-1"
+    modification-type: "enhancement"
+    modification-rationale: "Enhanced access control requirements for cloud environments"
+    title: "Enhanced Access Control"
+    objective: "Implement enhanced access controls for cloud environments"</pre>
+
+                    <div class="activity-question">
+                        <strong>Question 4:</strong> Based on the PCI-DSS mapping-reference you added, create a control-modification for PCI-DSS Requirement 8.3 (Multi-Factor Authentication). Your modification should enhance it for mobile device access.
+                        <details>
+                            <summary>Show Answer</summary>
+                            <pre class="code-block">control-modifications:
+  - target-id: "8.3"
+    modification-type: "enhancement"
+    modification-rationale: "Enhanced MFA requirements for mobile device access to cardholder data"
+    title: "Enhanced Multi-Factor Authentication for Mobile"
+    objective: "Require biometric or hardware token MFA for all mobile device access to payment systems"
+    assessment-requirement-modifications:
+      - target-id: "8.3.1"
+        modification-type: "enhancement"
+        modification-rationale: "Mobile devices pose higher risk due to potential loss or theft"
+        text: "Mobile device access must use biometric authentication (fingerprint, face recognition) OR hardware security key in addition to password"
+        applicability: ["mobile", "BYOD", "payment-systems"]
+        recommendation: "Implement device attestation to verify device security posture"</pre>
+                        </details>
+                    </div>
+                </div>
+
+                <div class="activity-section">
+                    <h4>Part 5: RACI Contacts</h4>
+                    <p>The policy uses the RACI model for accountability:</p>
+                    <pre class="code-block">contacts:
+  responsible:  # Who does the work
+    - name: "IT Director"
+      primary: true
+  accountable:  # Who is ultimately answerable
+    - name: "Chief Information Security Officer"
+      primary: true
+  consulted:  # Who provides input
+    - name: "Legal Counsel"
+  informed:  # Who is kept updated
+    - name: "All Employees"</pre>
+
+                    <div class="activity-question">
+                        <strong>Question 5:</strong> For PCI-DSS compliance, you need to add a PCI Compliance Manager who will be responsible for day-to-day compliance activities, while the CISO remains accountable. Update the contacts section.
+                        <details>
+                            <summary>Show Answer</summary>
+                            <pre class="code-block">contacts:
+  responsible:
+    - name: "IT Director"
+      primary: true
+      affiliation: "Information Technology"
+      email: "it-director@company.com"
+    - name: "PCI Compliance Manager"  # Added
+      primary: false
+      affiliation: "Security & Compliance"
+      email: "pci-compliance@company.com"
+  accountable:
+    - name: "Chief Information Security Officer"
+      primary: true
+      affiliation: "Executive Team"
+      email: "ciso@company.com"
+  consulted:
+    - name: "Legal Counsel"
+      affiliation: "Legal Department"
+      email: "legal@company.com"
+  informed:
+    - name: "All Employees"
+      affiliation: "Company-wide"</pre>
+                            <p><strong>Key Points:</strong></p>
+                            <ul>
+                                <li>Responsible = Does the work (can have multiple, one should be primary)</li>
+                                <li>Accountable = Ultimately answerable (typically only one)</li>
+                                <li>Consulted = Provides expert input</li>
+                                <li>Informed = Kept in the loop</li>
+                            </ul>
+                        </details>
+                    </div>
+                </div>
+
+                <div class="activity-section">
+                    <h4>Part 6: Putting It All Together</h4>
+                    <div class="activity-question">
+                        <strong>Capstone Question:</strong> Now that you've added PCI-DSS compliance to this policy, write a brief summary (3-5 sentences) explaining:
+                        <ul>
+                            <li>How the policy scope changed</li>
+                            <li>Which controls were enhanced and why</li>
+                            <li>Who is responsible vs. accountable for PCI compliance</li>
+                        </ul>
+                        <details>
+                            <summary>Show Example Answer</summary>
+                            <p><strong>Summary:</strong> The policy scope expanded to include Asia-Pacific operations and Salesforce as a cloud provider to support business growth. We added PCI-DSS v4.0 as a mapping reference since the organization processes payment cards, applying it globally across all regions and web/database technologies. Control 8.3 (Multi-Factor Authentication) was enhanced specifically for mobile device access to payment systems due to the increased security risk of mobile devices. The PCI Compliance Manager is responsible for day-to-day compliance activities, while the CISO remains accountable for overall compliance and security posture.</p>
+                        </details>
+                    </div>
+                </div>
+
+                <div class="info-box success">
+                    <h4>View the Complete Policy</h4>
+                    <p>You can view the full <code>good-policy.yaml</code> file in the Gemara repository:</p>
+                    <a href="https://github.com/gemaraproj/gemara/blob/main/test-data/good-policy.yaml" target="_blank" class="btn btn-secondary btn-small">View on GitHub →</a>
+                </div>
+            </div>
+
+            <style>
+                .policy-activity {
+                    margin: var(--spacing-xl) 0;
+                }
+                .activity-section {
+                    background-color: var(--surface-color);
+                    padding: var(--spacing-lg);
+                    margin-bottom: var(--spacing-lg);
+                    border-radius: var(--radius-md);
+                    border-left: 4px solid var(--primary-color);
+                }
+                .activity-section h4 {
+                    color: var(--primary-color);
+                    margin-bottom: var(--spacing-md);
+                }
+                .code-block {
+                    background-color: #2d3748;
+                    color: #e2e8f0;
+                    padding: var(--spacing-md);
+                    border-radius: var(--radius-sm);
+                    font-family: 'Courier New', Consolas, Monaco, monospace;
+                    font-size: 0.9rem;
+                    line-height: 1.6;
+                    overflow-x: auto;
+                    margin: var(--spacing-md) 0;
+                    border: 1px solid #4a5568;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                }
+                .activity-question {
+                    background-color: var(--bg-color);
+                    padding: var(--spacing-md);
+                    margin-top: var(--spacing-md);
+                    border-radius: var(--radius-sm);
+                    border-left: 3px solid var(--accent-color);
+                }
+                .activity-question strong {
+                    color: black;
+                    display: block;
+                    margin-bottom: var(--spacing-sm);
+                }
+                .activity-question details {
+                    margin-top: var(--spacing-md);
+                }
+                .activity-question summary {
+                    cursor: pointer;
+                    color: var(--primary-color);
+                    font-weight: 600;
+                    padding: var(--spacing-sm);
+                    background-color: var(--surface-color);
+                    border-radius: var(--radius-sm);
+                    user-select: none;
+                }
+                .activity-question summary:hover {
+                    background-color: rgba(37, 99, 235, 0.1);
+                }
+                .activity-question details[open] summary {
+                    margin-bottom: var(--spacing-md);
+                }
+            </style>
+
             <div class="info-box success">
                 <h4>Ready to Practice?</h4>
                 <p>You now have the foundational knowledge to write Layer 3 policies. Complete the quiz to test your understanding, then move on to the hands-on exercises where you'll write real policies with AI assistance!</p>
@@ -1224,23 +1476,23 @@ risks:
             <div class="challenges">
                 <div class="challenge-item">
                     <h4>1. Stakeholder Resistance</h4>
-                    <p><strong>Problem:</strong> Department heads push back on security policies that impact productivity</p>
-                    <p><strong>Solution:</strong> Include business impact analysis in policies, offer exceptions process, communicate trade-offs clearly</p>
+                    <p><strong class="problem-label">Problem:</strong> Department heads push back on security policies that impact productivity</p>
+                    <p><strong class="solution-label">Solution:</strong> Include business impact analysis in policies, offer exceptions process, communicate trade-offs clearly</p>
                 </div>
                 <div class="challenge-item">
                     <h4>2. Conflicting Requirements</h4>
-                    <p><strong>Problem:</strong> Different compliance frameworks have overlapping but not identical requirements</p>
-                    <p><strong>Solution:</strong> Map all requirements, identify common denominators, write policies that satisfy multiple frameworks</p>
+                    <p><strong class="problem-label">Problem:</strong> Different compliance frameworks have overlapping but not identical requirements</p>
+                    <p><strong class="solution-label">Solution:</strong> Map all requirements, identify common denominators, write policies that satisfy multiple frameworks</p>
                 </div>
                 <div class="challenge-item">
                     <h4>3. Resource Constraints</h4>
-                    <p><strong>Problem:</strong> Limited budget and staff to implement all desired controls</p>
-                    <p><strong>Solution:</strong> Risk-based prioritization, phased implementation, document compensating controls for gaps</p>
+                    <p><strong class="problem-label">Problem:</strong> Limited budget and staff to implement all desired controls</p>
+                    <p><strong class="solution-label">Solution:</strong> Risk-based prioritization, phased implementation, document compensating controls for gaps</p>
                 </div>
                 <div class="challenge-item">
                     <h4>4. Legacy Systems</h4>
-                    <p><strong>Problem:</strong> Old systems can't meet modern security requirements</p>
-                    <p><strong>Solution:</strong> Network segmentation, additional monitoring, planned sunset dates, exception management</p>
+                    <p><strong class="problem-label">Problem:</strong> Old systems can't meet modern security requirements</p>
+                    <p><strong class="solution-label">Solution:</strong> Network segmentation, additional monitoring, planned sunset dates, exception management</p>
                 </div>
             </div>
 
@@ -1255,23 +1507,16 @@ risks:
                     border-radius: var(--radius-md);
                 }
                 .challenge-item h4 {
-                    color: var(--accent-color);
+                    color: black;
                     margin-bottom: var(--spacing-sm);
                 }
+                .problem-label {
+                    color: darkred;
+                }
+                .solution-label {
+                    color: darkgreen;
+                }
             </style>
-
-            <h3>Hands-On Exercises</h3>
-            <div class="info-box warning">
-                <h4>Exercise 9: Case Study Application</h4>
-                <p>Choose one of the case studies above and develop a complete policy set with AI assistance. Address all scenario-specific challenges.</p>
-                <button class="btn btn-primary" onclick="window.app.startExercise(9)">Start Exercise 9</button>
-            </div>
-
-            <div class="info-box warning">
-                <h4>Exercise 10: Audit Preparation</h4>
-                <p>Use AI to review policy completeness, generate compliance matrices, and prepare for an audit simulation.</p>
-                <button class="btn btn-primary" onclick="window.app.startExercise(10)">Start Exercise 10</button>
-            </div>
 
             <h3>Communicating Policies Effectively</h3>
             <p>Writing the policy is only half the battle. You need to communicate it effectively:</p>
@@ -2411,330 +2656,6 @@ purpose: ""
                 <p>Failed to save your submission. Please try again.</p>
             `;
         }
-    }
-
-    getModule6Content() {
-        return `
-            <h3>Mastery and Beyond</h3>
-            <p>Congratulations on making it to the final module! Here you'll learn how to maintain and continuously improve your policy framework.</p>
-
-            <h3>Policy Lifecycle Management</h3>
-            <div class="lifecycle-diagram">
-                <div class="lifecycle-phase">
-                    <div class="phase-icon">📝</div>
-                    <h4>Create/Update</h4>
-                    <p>Write new policies or update existing ones based on changes in business, technology, or threat landscape</p>
-                </div>
-                <div class="lifecycle-arrow">→</div>
-                <div class="lifecycle-phase">
-                    <div class="phase-icon">✓</div>
-                    <h4>Review/Approve</h4>
-                    <p>Stakeholder review and management approval process</p>
-                </div>
-                <div class="lifecycle-arrow">→</div>
-                <div class="lifecycle-phase">
-                    <div class="phase-icon">📢</div>
-                    <h4>Communicate</h4>
-                    <p>Roll out to affected teams with training and documentation</p>
-                </div>
-                <div class="lifecycle-arrow">→</div>
-                <div class="lifecycle-phase">
-                    <div class="phase-icon">⚙️</div>
-                    <h4>Implement</h4>
-                    <p>Deploy technical controls and processes to enforce the policy</p>
-                </div>
-                <div class="lifecycle-arrow">→</div>
-                <div class="lifecycle-phase">
-                    <div class="phase-icon">📊</div>
-                    <h4>Monitor</h4>
-                    <p>Track compliance, measure effectiveness, gather feedback</p>
-                </div>
-                <div class="lifecycle-arrow">→</div>
-                <div class="lifecycle-phase">
-                    <div class="phase-icon">🔄</div>
-                    <h4>Review</h4>
-                    <p>Periodic review (annually or as triggered by changes)</p>
-                </div>
-            </div>
-
-            <style>
-                .lifecycle-diagram {
-                    display: flex;
-                    flex-wrap: wrap;
-                    align-items: center;
-                    margin: var(--spacing-xl) 0;
-                    padding: var(--spacing-lg);
-                    background-color: var(--bg-color);
-                    border-radius: var(--radius-lg);
-                }
-                .lifecycle-phase {
-                    flex: 1;
-                    min-width: 200px;
-                    text-align: center;
-                    padding: var(--spacing-md);
-                }
-                .phase-icon {
-                    font-size: 2rem;
-                    margin-bottom: var(--spacing-sm);
-                }
-                .lifecycle-phase h4 {
-                    color: var(--primary-color);
-                    margin-bottom: var(--spacing-xs);
-                }
-                .lifecycle-arrow {
-                    font-size: 1.5rem;
-                    color: var(--primary-color);
-                    font-weight: bold;
-                }
-            </style>
-
-            <h3>Staying Current</h3>
-            <p>The compliance landscape is always evolving. Here's how to stay ahead:</p>
-
-            <div class="staying-current-grid">
-                <div class="current-item">
-                    <h4>Monitor Framework Updates</h4>
-                    <ul>
-                        <li>Subscribe to NIST, ISO, CIS update notifications</li>
-                        <li>Review framework changes quarterly</li>
-                        <li>Assess impact on your policies</li>
-                    </ul>
-                </div>
-                <div class="current-item">
-                    <h4>Track Threat Intelligence</h4>
-                    <ul>
-                        <li>Follow security research and incident reports</li>
-                        <li>Update threat context in policies</li>
-                        <li>Adjust controls based on emerging threats</li>
-                    </ul>
-                </div>
-                <div class="current-item">
-                    <h4>Engage with Community</h4>
-                    <ul>
-                        <li>Join Gemara community discussions</li>
-                        <li>Share policy templates and lessons learned</li>
-                        <li>Contribute to framework improvements</li>
-                    </ul>
-                </div>
-                <div class="current-item">
-                    <h4>Continuous Learning</h4>
-                    <ul>
-                        <li>Attend compliance conferences</li>
-                        <li>Take advanced GRC courses</li>
-                        <li>Earn relevant certifications (CISA, CRISC, etc.)</li>
-                    </ul>
-                </div>
-            </div>
-
-            <style>
-                .staying-current-grid {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                    gap: var(--spacing-lg);
-                    margin: var(--spacing-xl) 0;
-                }
-                .current-item {
-                    background-color: var(--surface-color);
-                    padding: var(--spacing-lg);
-                    border-radius: var(--radius-md);
-                    border: 1px solid var(--border-color);
-                }
-                .current-item h4 {
-                    color: var(--primary-color);
-                    margin-bottom: var(--spacing-md);
-                }
-            </style>
-
-            <h3>Advanced Topics</h3>
-            <div class="advanced-topics">
-                <div class="topic-card">
-                    <h4>Policy-as-Code</h4>
-                    <p>Store policies in version control, use CI/CD pipelines to validate and deploy policy updates automatically.</p>
-                    <a href="#" class="learn-more">Learn More →</a>
-                </div>
-                <div class="topic-card">
-                    <h4>Custom MCP Tools</h4>
-                    <p>Extend gemara-mcp-server with custom tools specific to your organization's needs.</p>
-                    <a href="#" class="learn-more">Learn More →</a>
-                </div>
-                <div class="topic-card">
-                    <h4>GRC Platform Integration</h4>
-                    <p>Connect Gemara policies to platforms like ServiceNow GRC, Archer, or OneTrust.</p>
-                    <a href="#" class="learn-more">Learn More →</a>
-                </div>
-                <div class="topic-card">
-                    <h4>Automated Compliance Reporting</h4>
-                    <p>Generate compliance matrices, audit reports, and evidence packages automatically from Gemara artifacts.</p>
-                    <a href="#" class="learn-more">Learn More →</a>
-                </div>
-            </div>
-
-            <style>
-                .advanced-topics {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                    gap: var(--spacing-lg);
-                    margin: var(--spacing-xl) 0;
-                }
-                .topic-card {
-                    background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%);
-                    color: white;
-                    padding: var(--spacing-xl);
-                    border-radius: var(--radius-lg);
-                    text-align: center;
-                }
-                .topic-card h4 {
-                    color: white;
-                    margin-bottom: var(--spacing-md);
-                    font-size: 1.25rem;
-                }
-                .topic-card p {
-                    color: rgba(255, 255, 255, 0.9);
-                    margin-bottom: var(--spacing-md);
-                }
-                .learn-more {
-                    color: white;
-                    text-decoration: none;
-                    font-weight: 600;
-                    border-bottom: 2px solid white;
-                }
-            </style>
-
-            <h3>Community & Resources</h3>
-            <div class="community-section">
-                <div class="community-card">
-                    <h4>Gemara GitHub</h4>
-                    <p>Main framework repository</p>
-                    <a href="https://github.com/ossf/gemara" target="_blank" class="btn btn-secondary btn-small">Visit →</a>
-                </div>
-                <div class="community-card">
-                    <h4>MCP Server GitHub</h4>
-                    <p>AI integration tools</p>
-                    <a href="https://github.com/complytime/gemara-mcp-server" target="_blank" class="btn btn-secondary btn-small">Visit →</a>
-                </div>
-                <div class="community-card">
-                    <h4>Policy Templates</h4>
-                    <p>Community-contributed examples</p>
-                    <a href="#" class="btn btn-secondary btn-small">Browse →</a>
-                </div>
-                <div class="community-card">
-                    <h4>Discussion Forum</h4>
-                    <p>Ask questions, share insights</p>
-                    <a href="#" class="btn btn-secondary btn-small">Join →</a>
-                </div>
-            </div>
-
-            <style>
-                .community-section {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                    gap: var(--spacing-md);
-                    margin: var(--spacing-xl) 0;
-                }
-                .community-card {
-                    background-color: var(--bg-color);
-                    padding: var(--spacing-lg);
-                    border-radius: var(--radius-md);
-                    text-align: center;
-                }
-                .community-card h4 {
-                    margin-bottom: var(--spacing-sm);
-                }
-                .community-card p {
-                    font-size: 0.875rem;
-                    color: var(--text-secondary);
-                    margin-bottom: var(--spacing-md);
-                }
-            </style>
-
-            <h3>Final Assessment</h3>
-            <div class="info-box">
-                <h4>Comprehensive Exam</h4>
-                <p>Test your knowledge across all modules with our comprehensive final exam. You'll need 80% or higher to pass.</p>
-                <button class="btn btn-primary" id="start-final-exam">Take Final Exam</button>
-            </div>
-
-            <div class="info-box success">
-                <h4>Capstone Project</h4>
-                <p>Put everything together by creating a complete policy framework for a fictional organization. This project demonstrates mastery of:</p>
-                <ul>
-                    <li>Gemara framework understanding</li>
-                    <li>Policy writing skills</li>
-                    <li>AI-assisted development workflows</li>
-                    <li>Compliance mapping and traceability</li>
-                </ul>
-                <button class="btn btn-primary" id="start-capstone">Start Capstone Project</button>
-            </div>
-
-            <h3>Certification</h3>
-            <p>Upon successful completion of all modules, quizzes, exercises, the final exam (80%+), and the capstone project, you'll earn:</p>
-
-            <div class="certification-info">
-                <h4>Gemara Policy Writing Certification</h4>
-                <p>This certificate demonstrates your ability to:</p>
-                <ul>
-                    <li>Understand and apply the Gemara 7-layer model</li>
-                    <li>Write effective Layer 3 organizational policies</li>
-                    <li>Leverage AI assistance for policy development</li>
-                    <li>Map policies to compliance frameworks</li>
-                    <li>Use gemara-mcp-server tools proficiently</li>
-                </ul>
-                <p class="certificate-note">Your certificate will be available for download and sharing on LinkedIn.</p>
-            </div>
-
-            <style>
-                .certification-info {
-                    background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
-                    padding: var(--spacing-xl);
-                    border-radius: var(--radius-lg);
-                    border: 2px solid var(--primary-color);
-                    margin: var(--spacing-xl) 0;
-                }
-                .certification-info h4 {
-                    color: var(--primary-color);
-                    font-size: 1.5rem;
-                    margin-bottom: var(--spacing-md);
-                }
-                .certificate-note {
-                    margin-top: var(--spacing-md);
-                    font-style: italic;
-                    color: var(--text-secondary);
-                }
-            </style>
-
-            <div class="completion-message">
-                <h3>Congratulations on Completing the Course!</h3>
-                <p>You now have the knowledge and skills to write effective Gemara Layer 3 policies with AI assistance. Keep practicing, stay engaged with the community, and continue refining your craft.</p>
-                <p><strong>Next steps:</strong></p>
-                <ol>
-                    <li>Complete the final exam and capstone project</li>
-                    <li>Download your certificate</li>
-                    <li>Apply these skills in your organization</li>
-                    <li>Share your experience with the Gemara community</li>
-                    <li>Consider contributing policy templates back to the project</li>
-                </ol>
-            </div>
-
-            <style>
-                .completion-message {
-                    background-color: var(--surface-color);
-                    padding: var(--spacing-2xl);
-                    border-radius: var(--radius-lg);
-                    text-align: center;
-                    margin-top: var(--spacing-2xl);
-                    box-shadow: var(--shadow-lg);
-                }
-                .completion-message h3 {
-                    color: var(--secondary-color);
-                    margin-bottom: var(--spacing-lg);
-                }
-                .completion-message ol {
-                    text-align: left;
-                    max-width: 600px;
-                    margin: var(--spacing-lg) auto;
-                }
-            </style>
-        `;
     }
 }
 

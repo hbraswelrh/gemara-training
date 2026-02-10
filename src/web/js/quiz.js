@@ -239,39 +239,6 @@ class QuizManager {
                         explanation: "Detailed technical implementation steps belong in procedures or standards, not in the high-level policy document."
                     },
                     {
-                        question: "What should the 'derived_from_controls' field contain in a Layer 3 policy?",
-                        options: [
-                            "The names of people who wrote the controls",
-                            "References to Layer 2 control IDs that the policy implements",
-                            "A list of all possible controls",
-                            "The policy's approval date"
-                        ],
-                        correct: 1,
-                        explanation: "The 'derived_from_controls' field contains references to the Layer 2 control IDs that inform and are implemented by the policy."
-                    },
-                    {
-                        question: "Why is it important to include a 'risk_context' section in policies?",
-                        options: [
-                            "It's required by all compliance frameworks",
-                            "It helps stakeholders understand the 'why' behind the policy",
-                            "It makes the policy longer and more impressive",
-                            "It's only needed for technical policies"
-                        ],
-                        correct: 1,
-                        explanation: "The risk context section explains the reasoning behind the policy, helping stakeholders understand why it's necessary and gaining buy-in."
-                    },
-                    {
-                        question: "What is the purpose of documenting 'compensating_controls' in exception management?",
-                        options: [
-                            "To completely replace the original requirement",
-                            "To provide alternative security measures when the primary control can't be implemented",
-                            "To eliminate the need for the policy",
-                            "To punish those who request exceptions"
-                        ],
-                        correct: 1,
-                        explanation: "Compensating controls provide alternative security measures that achieve similar risk reduction when the primary control cannot be implemented."
-                    },
-                    {
                         question: "How often should policies typically be reviewed?",
                         options: [
                             "Never, once written they are permanent",
@@ -303,17 +270,6 @@ class QuizManager {
                         ],
                         correct: 0,
                         explanation: "Policies should be understandable by all affected stakeholders, not just technical staff. Technical implementation details belong in procedures and standards."
-                    },
-                    {
-                        question: "What is the benefit of including 'compliance_mappings' in a Layer 3 policy?",
-                        options: [
-                            "It makes the policy longer",
-                            "It shows which compliance frameworks (SOC 2, ISO 27001, etc.) the policy helps satisfy",
-                            "It's required by law",
-                            "It replaces the need for audits"
-                        ],
-                        correct: 1,
-                        explanation: "Compliance mappings show which requirements from various frameworks (SOC 2, ISO 27001, PCI-DSS, etc.) the policy helps satisfy, aiding in compliance reporting."
                     },
                     {
                         question: "When writing a policy for a specific risk appetite, what should you consider?",
