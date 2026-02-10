@@ -172,8 +172,8 @@ Explore industry guidance and threat-informed controls with AI-assisted discover
 ### Module 3: Layer 3 Policy Writing Fundamentals (90 min)
 Master policy structure, writing effective statements, and creating valid YAML artifacts. Includes guided policy creation exercises.
 
-### Module 4: Advanced Policy Authoring with AI (120 min)
-Deep dive into gemara-mcp-server tools, AI-assisted workflows, and complex policy scenarios. Features 4 intensive exercises.
+### Module 4: Advanced Policy Authoring (90 min)
+Hands-on policy writing with three interactive exercises: transform legacy policies, build policy families, and create cross-layer traceability. Optional advanced AI content available.
 
 ### Module 5: Real-World Policy Implementation (60 min)
 Apply skills to industry case studies (finance, healthcare, technology). Practice audit preparation and stakeholder communication.

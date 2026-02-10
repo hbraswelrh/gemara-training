@@ -7,11 +7,9 @@ class ProgressTracker {
                 2: { status: 'not-started', quizPassed: false, exercisesCompleted: [] },
                 3: { status: 'not-started', quizPassed: false, exercisesCompleted: [] },
                 4: { status: 'not-started', quizPassed: false, exercisesCompleted: [] },
-                5: { status: 'not-started', quizPassed: false, exercisesCompleted: [] },
-                6: { status: 'not-started', quizPassed: false, exercisesCompleted: [] }
+                5: { status: 'not-started', quizPassed: false, exercisesCompleted: [] }
             },
             finalExamPassed: false,
-            capstoneCompleted: false,
             certificateEarned: false,
             startDate: null,
             completionDate: null
@@ -71,19 +69,12 @@ class ProgressTracker {
         this.checkOverallCompletion();
     }
 
-    markCapstoneCompleted() {
-        this.progress.capstoneCompleted = true;
-        this.saveProgress();
-        this.updateUI();
-        this.checkOverallCompletion();
-    }
-
     checkOverallCompletion() {
         // Check if all requirements met for certification
         const allModulesCompleted = Object.values(this.progress.modules).every(m => m.status === 'completed');
         const allQuizzesPassed = Object.values(this.progress.modules).every(m => m.quizPassed);
 
-        if (allModulesCompleted && allQuizzesPassed && this.progress.finalExamPassed && this.progress.capstoneCompleted) {
+        if (allModulesCompleted && allQuizzesPassed && this.progress.finalExamPassed) {
             this.earnCertificate();
         }
     }
@@ -108,10 +99,9 @@ class ProgressTracker {
                 <p class="celebration-text">You've earned your Gemara Policy Writing Certification!</p>
                 <p>You've successfully completed:</p>
                 <ul class="achievement-list">
-                    <li>✓ All 6 course modules</li>
+                    <li>✓ All 5 course modules</li>
                     <li>✓ All module quizzes (80%+)</li>
                     <li>✓ Final comprehensive exam</li>
-                    <li>✓ Capstone project</li>
                 </ul>
                 <p>Your certificate is ready to download and share!</p>
                 <div class="cta-section">
@@ -124,20 +114,15 @@ class ProgressTracker {
     }
 
     getOverallProgress() {
-        const totalModules = 6;
+        const totalModules = 5;
         const completedModules = Object.values(this.progress.modules).filter(m => m.status === 'completed').length;
-        const finalExamWeight = 0.1; // 10% of total
-        const capstoneWeight = 0.1; // 10% of total
+        const finalExamWeight = 0.2; // 20% of total
         const modulesWeight = 0.8; // 80% of total
 
         let progress = (completedModules / totalModules) * modulesWeight;
 
         if (this.progress.finalExamPassed) {
             progress += finalExamWeight;
-        }
-
-        if (this.progress.capstoneCompleted) {
-            progress += capstoneWeight;
         }
 
         return Math.round(progress * 100);
@@ -230,7 +215,7 @@ class ProgressTracker {
     }
 
     getStatistics() {
-        const totalModules = 6;
+        const totalModules = 5;
         const completedModules = Object.values(this.progress.modules).filter(m => m.status === 'completed').length;
         const quizzesPassed = Object.values(this.progress.modules).filter(m => m.quizPassed).length;
 
@@ -243,8 +228,7 @@ class ProgressTracker {
                 2: 1,
                 3: 3,
                 4: 4,
-                5: 2,
-                6: 0
+                5: 2
             };
 
             totalExercises += exerciseCount[module] || 0;
@@ -273,7 +257,6 @@ class ProgressTracker {
             completedExercises,
             totalExercises,
             finalExamPassed: this.progress.finalExamPassed,
-            capstoneCompleted: this.progress.capstoneCompleted,
             certificateEarned: this.progress.certificateEarned,
             overallProgress: this.getOverallProgress(),
             timeSpent,
@@ -316,9 +299,6 @@ class ProgressTracker {
                     <ul>
                         <li class="${stats.finalExamPassed ? 'completed' : ''}">
                             ${stats.finalExamPassed ? '✓' : '○'} Final Exam Passed
-                        </li>
-                        <li class="${stats.capstoneCompleted ? 'completed' : ''}">
-                            ${stats.capstoneCompleted ? '✓' : '○'} Capstone Project Completed
                         </li>
                         <li class="${stats.certificateEarned ? 'completed' : ''}">
                             ${stats.certificateEarned ? '✓' : '○'} Certificate Earned
