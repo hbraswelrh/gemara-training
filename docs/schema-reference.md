@@ -15,10 +15,13 @@ This document describes the official Gemara Layer 3 Policy schema as defined in 
 # Layer 3 Policy Document (from layer-3.cue)
 title: string                      # REQUIRED: Policy title
 metadata: #Metadata                # REQUIRED: Policy metadata
+organization-id: string            # OPTIONAL: Organization identifier
+purpose: string                    # OPTIONAL: Policy purpose statement
 contacts: #Contacts                # REQUIRED: RACI roles
 scope: #Scope                      # REQUIRED: Applicability
-imports: #Imports                  # REQUIRED: Dependencies
-adherence: #Adherence              # REQUIRED: Compliance mechanisms
+guidance-references: [#GuidanceReference]  # OPTIONAL: Layer 1 references
+control-references: [#ControlReference]    # OPTIONAL: Layer 2 references
+adherence: #Adherence              # OPTIONAL: Compliance mechanisms
 implementation-plan: #ImplementationPlan  # OPTIONAL
 risks: #Risks                      # OPTIONAL
 ```
@@ -32,10 +35,26 @@ risks: #Risks                      # OPTIONAL
 The human-readable name of the policy.
 
 ```yaml
-title: "Multi-Factor Authentication Policy"
+title: "Information Security Policy"
 ```
 
-### 2. `metadata` (#Metadata)
+### 2. `organization-id` (string) - OPTIONAL
+
+Unique identifier for the organization implementing the policy.
+
+```yaml
+organization-id: "org-12345"
+```
+
+### 3. `purpose` (string) - OPTIONAL
+
+High-level purpose statement for the policy.
+
+```yaml
+purpose: "Establish comprehensive information security controls and procedures to protect organizational assets"
+```
+
+### 4. `metadata` (#Metadata)
 
 Descriptive information about the policy artifact.
 
@@ -47,8 +66,12 @@ Descriptive information about the policy artifact.
 **Optional metadata fields:**
 - `version` (string) - Version identifier
 - `date` (#Date) - ISO 8601 date
+- `contact` (#Contact) - Primary contact information (separate from author)
 - `mapping-references` - External standards/frameworks referenced
-- `applicability-categories` - Classification tags
+- `applicability-categories` - Classification tags (e.g., TLP levels, data sensitivity)
+  - `id` (string) - Category identifier
+  - `title` (string) - Category title
+  - `description` (string) - Category description
 - `draft` (boolean) - Draft status indicator
 - `lexicon` (string) - Terms and definitions
 
@@ -57,25 +80,30 @@ Descriptive information about the policy artifact.
 ```yaml
 metadata:
   id: "security-policy-001"
-  description: "Establish comprehensive information security controls"
+  description: "Establish comprehensive information security controls and procedures to protect organizational assets"
   version: "2.1.0"
   author:
     id: security-team
     name: "Security Team"
     type: Human
-    contact:
-      name: "Security Team Lead"
-      affiliation: "Security Department"
-      email: "security-lead@company.com"
+  contact:
+    name: "Security Team Lead"
+    affiliation: "Security Department"
+    email: "security-lead@company.com"
   mapping-references:
     - id: "NIST-800-53"
       title: "NIST Special Publication 800-53"
       version: "Rev. 5"
-      description: "Security and Privacy Controls"
+      description: "Security and Privacy Controls for Federal Information Systems"
       url: "https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final"
+    - id: "ISO-27001"
+      title: "ISO/IEC 27001"
+      version: "2022"
+      description: "Information security management systems"
+      url: "https://www.iso.org/standard/27001"
 ```
 
-### 3. `contacts` (#Contacts)
+### 5. `contacts` (#Contacts)
 
 RACI (Responsible, Accountable, Consulted, Informed) framework for policy roles.
 
@@ -114,90 +142,103 @@ contacts:
       affiliation: "Company-wide"
 ```
 
-### 4. `scope` (#Scope)
+### 6. `scope` (#Scope)
 
-Defines what is included (`in`) and excluded (`out`) from policy applicability.
+Defines the boundaries and dimensions of policy applicability.
 
 **Dimensions available:**
+- `boundaries` - Geographic regions or jurisdictions
 - `technologies` - Technology categories or services
-- `geopolitical` - Geographic regions
-- `sensitivity` - Data classification levels
-- `users` - User roles
-- `groups` - User groups
+- `providers` - Service providers or platforms
 
 #### Example:
 
 ```yaml
 scope:
-  in:
-    technologies:
-      - "Cloud Computing"
-      - "Mobile Devices"
-      - "Web Applications"
-    geopolitical:
-      - "United States"
-      - "European Union"
-    sensitivity:
-      - "PHI"
-      - "PII"
-      - "Confidential"
-    users:
-      - "Employees"
-      - "Contractors"
-  out:
-    technologies:
-      - "Legacy Systems"
-    sensitivity:
-      - "Public"
+  boundaries:
+    - "United States"
+    - "European Union"
+    - "Canada"
+  technologies:
+    - "Cloud Computing"
+    - "Mobile Devices"
+    - "Web Applications"
+    - "Database Systems"
+  providers:
+    - "Amazon Web Services"
+    - "Microsoft Azure"
+    - "Google Cloud Platform"
 ```
 
-### 5. `imports` (#Imports)
+### 7. `guidance-references` and `control-references` - OPTIONAL
 
-External dependencies: policies, control catalogs, and guidance documents.
+External dependencies to Layer 1 guidance and Layer 2 control catalogs.
 
-**Import types:**
-- `policies` - Other Layer 3 policies
-- `catalogs` - Layer 2 control catalogs
-- `guidance` - Layer 1 guidance documents
+#### Guidance References (#GuidanceReference):
 
-#### Catalog Imports (#CatalogImport):
+References to Layer 1 guidance documents with scoping and modifications.
 
 ```yaml
-imports:
-  catalogs:
-    - reference-id: "internal-controls-catalog"
-      exclusions:
-        - "LEGACY-001"
-        - "DEPRECATED-002"
-      constraints:
-        - id: "constraint-001"
-          target-id: "CTRL-IAM-001"
-          text: "MFA MUST be enforced for all privileged access"
-      assessment-requirement-modifications:
-        - id: "mod-001"
-          target-id: "CTRL-IAM-001.1"
-          modification-type: "clarification"
-          modification-rationale: "Clarify MFA methods"
-          text: "Use FIDO2 or TOTP; SMS only as fallback"
-          applicability: ["production"]
-          recommendation: "Prefer hardware tokens"
+guidance-references:
+  - reference-id: "NIST-800-53"
+    in-scope:
+      boundaries: ["United States"]
+      technologies: ["Cloud Computing", "Web Applications"]
+      providers: ["Amazon Web Services", "Microsoft Azure"]
+    out-of-scope:
+      boundaries: ["International"]
+      technologies: ["Legacy Systems"]
+      providers: ["On-premises Infrastructure"]
+    control-modifications:
+      - target-id: "AC-1"
+        modification-type: "enhancement"
+        modification-rationale: "Enhanced access control requirements for cloud environments"
+        title: "Enhanced Access Control"
+        objective: "Implement enhanced access controls for cloud environments"
+        assessment-requirement-modifications:
+          - target-id: "AC-1.1"
+            modification-type: "clarification"
+            modification-rationale: "Clarified assessment procedures for multi-cloud environments"
+            text: "Assessment procedures must include multi-cloud environment considerations"
+            applicability: ["cloud", "multi-cloud"]
+            recommendation: "Conduct quarterly assessments"
 ```
 
-#### Guidance Imports (#GuidanceImport):
+#### Control References (#ControlReference):
+
+References to Layer 2 control catalogs with scoping and modifications.
 
 ```yaml
-imports:
-  guidance:
-    - reference-id: "NIST-800-53"
-      exclusions:
-        - "AC-25"  # Out of scope
-      constraints:
-        - id: "audit-frequency"
-          target-id: "AU-2"
-          text: "Audit logs MUST be reviewed at least weekly"
+control-references:
+  - reference-id: "ISO-27001"
+    in-scope:
+      boundaries: ["European Union"]
+      technologies: ["Database Systems", "Mobile Devices"]
+      providers: ["Google Cloud Platform"]
+    out-of-scope:
+      boundaries: ["United States"]
+      technologies: ["Legacy Systems"]
+      providers: ["On-premises Infrastructure"]
+    control-modifications:
+      - target-id: "A.8.1.1"
+        modification-type: "enhancement"
+        modification-rationale: "Enhanced mobile device management requirements"
+        title: "Enhanced Mobile Device Management"
+        objective: "Implement comprehensive mobile device management controls"
+        assessment-requirement-modifications:
+          - target-id: "A.8.1.1.1"
+            modification-type: "clarification"
+            modification-rationale: "Clarified mobile device encryption requirements"
+            text: "All mobile devices must use strong encryption for data at rest and in transit"
+            applicability: ["mobile", "BYOD"]
+            recommendation: "Use FIPS 140-2 validated encryption"
 ```
 
-### 6. `adherence` (#Adherence)
+---
+
+## Optional Fields
+
+### 8. `adherence` (#Adherence)
 
 Defines how the policy is evaluated and enforced.
 
@@ -261,11 +302,7 @@ adherence:
     MEDIUM: 90-day remediation deadline
 ```
 
----
-
-## Optional Fields
-
-### 7. `implementation-plan` (#ImplementationPlan)
+### 9. `implementation-plan` (#ImplementationPlan)
 
 Timeline for policy rollout and enforcement.
 
@@ -281,7 +318,7 @@ implementation-plan:
     notes: "Full enforcement begins; non-compliant systems blocked"
 ```
 
-### 8. `risks` (#Risks)
+### 10. `risks` (#Risks)
 
 Documents mitigated and accepted risks.
 
@@ -349,6 +386,14 @@ controls: [#Control]               # Control definitions
 imported-controls: [#MultiEntryMapping]  # External controls
 ```
 
+### Family Structure (#Family)
+
+```yaml
+id: string                         # REQUIRED: Unique family ID
+title: string                      # REQUIRED: Family title
+description: string                # OPTIONAL: Family description
+```
+
 ### Control Structure (#Control)
 
 ```yaml
@@ -394,8 +439,33 @@ document-type: string              # Type of document
 ### Optional Fields
 
 ```yaml
-categories: [#Category]            # Organization structure
-guidance-items: [#GuidanceItem]    # Specific guidance entries
+front-matter: string               # Introductory text or preamble
+families: [#Family]                # Organization structure (control families)
+guidelines: [#GuidanceItem]        # Specific guidance entries
+```
+
+### Guidance Item Structure (#GuidanceItem)
+
+```yaml
+id: string                         # REQUIRED: Unique ID
+family: string                     # REQUIRED: Family reference
+title: string                      # REQUIRED: Guideline title
+objective: string                  # REQUIRED: What it achieves
+rationale:                         # OPTIONAL: Justification
+  importance: string
+  goals: [string]
+statements:                        # OPTIONAL: Detailed guidance
+  - id: string
+    title: string
+    text: string
+    recommendations: [string]
+guideline-mappings:                # OPTIONAL: Cross-references
+  - reference-id: string
+    entries:
+      - reference-id: string
+        strength: 1-10             # 1=weak, 10=strong
+        remarks: string
+see-also: [string]                 # OPTIONAL: Related guidelines
 ```
 
 ---
@@ -432,6 +502,13 @@ primary: boolean                   # Optional
 
 ## Important Notes
 
+### Schema Source
+
+This documentation is based on the **official test data** from the Gemara repository, specifically:
+- Layer 1: `test-data/good-aigf.yaml` (AI Governance Framework)
+- Layer 2: `test-data/good-ccc.yaml` (Cloud Control Catalog) and `test-data/good-osps.yml` (Open Source Project Security)
+- Layer 3: `test-data/good-policy.yaml` (Information Security Policy)
+
 ### Schema Status
 
 The Gemara schema is marked as **experimental** and may change without notice. Always refer to the official repository for the latest schema definitions:
@@ -439,6 +516,7 @@ The Gemara schema is marked as **experimental** and may change without notice. A
 - **Repository:** https://github.com/gemaraproj/gemara
 - **Documentation:** https://gemara.openssf.org
 - **Schemas:** https://github.com/gemaraproj/gemara/tree/main (*.cue files)
+- **Test Data:** https://github.com/gemaraproj/gemara/tree/main/test-data
 
 ### Tool Compatibility
 
@@ -470,6 +548,6 @@ If you have existing policies in a different format:
 
 ---
 
-*Last updated: 2026-02-05*
+*Last updated: 2026-02-10*
 *Schema version: v0.17.0-dev*
-*Source: github.com/gemaraproj/gemara*
+*Source: github.com/gemaraproj/gemara test-data files*
