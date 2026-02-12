@@ -450,86 +450,272 @@ Transparency about risk acceptance builds trust:
 
 ---
 
-## Interactive Activity: Analyze the MFA Policy
+## Interactive Activity: The Story of the High-Privilege Pivot
 
-Now that you understand the role-based perspectives, let's practice analyzing the policy:
+Now that you understand the role-based perspectives, let's explore a real-world scenario at **Nexus Tech**, where three professionals collaborate to build a comprehensive password policy. You'll see how each persona works with different sections of the `layer3-policy.yaml` to address the same threat from their unique perspective.
 
-### Question 1: Security Engineer Perspective
-**Scenario:** Your organization wants to add protection against "account takeover via OAuth token theft" to the threat model.
+**The Threat:** An attacker attempting to use **Brute Force attacks (MITRE T1110)** to compromise high-privilege accounts at Nexus Tech.
 
-**Task:** Should this threat be added to `risks.mitigated`? Why or why not?
+---
 
-<details>
-<summary>Show Answer</summary>
+### Act 1: Sarah (Risk Manager) - Assessing the Threat Landscape
 
-**Answer:** Not necessarily. MFA protects the **initial authentication** but doesn't prevent OAuth token theft **after** successful login. This would require additional controls like:
-- Token rotation policies
-- Device binding
-- Continuous authentication
-- Session timeout controls
+**Sarah's Morning Challenge:**
 
-You would need to create a separate policy or enhance this one with additional controls beyond MFA.
+Sarah, the Risk Manager, starts her day reviewing the organization's threat landscape. She identifies that **Brute Force attacks (MITRE T1110)** pose a primary threat to Nexus Tech's infrastructure. However, she discovers a complication: **RISK-402** indicates that a legacy finance application cannot support complex password requirements.
 
-**Key Insight:** Understand the **scope of protection** each control provides. Don't claim to mitigate threats that controls don't actually address.
-</details>
+**Sarah's Questions:**
+- What threats are we mitigating with this policy?
+- What risks must we accept, and under what conditions?
+- How do I limit the scope of accepted risks?
 
-### Question 2: Compliance Manager Perspective
-**Scenario:** Your auditor asks for evidence that privileged users are using MFA.
-
-**Task:** Which assessment plan provides this evidence? How often is it checked?
-
-<details>
-<summary>Show Answer</summary>
-
-**Answer:**
-- **Assessment Plan:** `assess-privileged-mfa` (line 166-172)
-- **Frequency:** Weekly
-- **Evidence:** "100% of privileged account authentications show MFA factors used"
-- **Method:** Automated log analysis
-
-**How to provide evidence:** Export authentication logs from your identity provider showing:
-1. List of privileged accounts
-2. Authentication events for those accounts
-3. MFA factors used (TOTP, FIDO2, etc.)
-4. 100% compliance rate
-
-**Key Insight:** Evidence requirements are specified in the policy, so you know exactly what auditors need before they ask.
-</details>
-
-### Question 3: Risk Manager Perspective
-**Scenario:** Your organization wants to allow SMS MFA indefinitely for all users (not just as a fallback).
-
-**Task:** How would you update the `risks.accepted` section? What additional considerations arise?
-
-<details>
-<summary>Show Answer</summary>
-
-**Answer:** You would need to expand the accepted risk:
+**Sarah's Work - The `risks` Section:**
 
 ```yaml
-risks:
-  accepted:
+risks: # Risk Manager - What are my risks?
+  mitigated: # What threats does this policy address?
+    - reference-id: "MITRE-ATT&CK"
+      item-id: "T1110" # Brute Force
+
+  accepted: # What risks am I accepting?
     - risk:
-        reference-id: "threat-model-iam"
-        entry-id: "sms-interception"
-      scope:
-        technologies:
-          - "SMS-based MFA (all users)"  # Expanded scope
-        users:
-          - "Employees"
-          - "Contractors"
-          - "Developers"
-      justification: "SMS-based MFA is vulnerable to SIM swapping and interception attacks. This risk is accepted due to user convenience and limited availability of hardware tokens. Compensating controls include: (1) SMS provider uses anti-fraud detection, (2) Users trained to recognize SIM swap indicators, (3) High-value accounts (executives, admins) still required to use FIDO2."
+        reference-id: "internal-risk-registry"
+        item-id: "RISK-402"
+      justification: "Legacy system does not support MFA; risk accepted until migration in Q3."
+      scope: # Limit where this risk is accepted
+        in:
+          technologies: ["Legacy-App-01"]
 ```
 
-**Additional Considerations:**
-1. Does this violate compliance requirements? (Check PCI-DSS, NIST AAL2)
-2. What compensating controls are needed?
-3. Should different user groups have different requirements?
-4. What's the business justification?
+**Your Task:**
 
-**Key Insight:** Risk acceptance requires **business justification** and often **compensating controls**. You can't just accept risks without documented reasoning.
+<details>
+<summary>Question 1: Why does Sarah use the `scope` field within the `accepted` risk block?</summary>
+
+**Answer:** Sarah uses `scope` to **"fence in"** the accepted risk so it only applies to `Legacy-App-01` and doesn't bleed into the rest of the organization. Without this scope limitation, the accepted risk would apply broadly, creating unnecessary security exposure across all systems.
+
+**Key Insight:** Accepted risks should always be scoped as narrowly as possible. Never accept a risk globally if you can limit it to specific technologies, users, or data classifications.
 </details>
+
+---
+
+### Act 2: Marcus (Security Engineer) - Building the Technical Blueprint
+
+**Marcus's Challenge:**
+
+Marcus, the Security Engineer, takes Sarah's threat assessment and transforms it into technical controls. He needs to strengthen the standard CIS Benchmark requirements for high-privilege AWS accounts, which require more frequent verification than standard quarterly checks.
+
+**Marcus's Questions:**
+- How do I import and customize industry controls?
+- How do I express control modifications for high-risk environments?
+- What's my rationale for deviating from standard requirements?
+
+**Marcus's Work - The `imports` Section:**
+
+```yaml
+imports: # External controls required by this policy
+  catalogs:
+    - reference-id: "cis-benchmark-v8"
+      constraints: # Define minimum requirements
+        - id: "min-length-12"
+          target-id: "password-complexity"
+          text: "Passwords must be at least 12 characters long."
+
+      assessment-requirement-modifications: # Customize how we verify controls
+        - id: "password-audit-mod-01"
+          target-id: "cis-password-audit-original"
+          modification-type: "replace"
+          modification-rationale: "Standard quarterly audits are insufficient for high-privilege IAM roles; increasing frequency to monthly."
+          text: "Perform a manual verification of IAM direct settings to ensure 12-character minimums are enforced."
+          applicability: ["Cloud Infrastructure", "High-Privilege Accounts"]
+```
+
+**Your Task:**
+
+<details>
+<summary>Question 2: What is the purpose of the `assessment-requirement-modifications` section, and how does it differ from `constraints`?</summary>
+
+**Answer:**
+
+- **`constraints`:** Define **WHAT** the minimum requirements are (e.g., "passwords must be at least 12 characters")
+- **`assessment-requirement-modifications`:** Define **HOW** you verify those requirements and allows you to customize the assessment method based on risk (e.g., changing quarterly automated checks to monthly manual verification for high-privilege accounts)
+
+**Marcus's Modification:**
+- **What he's changing:** The verification frequency and method from the original CIS requirement
+- **Why:** High-privilege roles require more scrutiny than standard accounts
+- **How:** Monthly manual verification instead of quarterly automated scans
+- **Where:** Only for Cloud Infrastructure and High-Privilege Accounts
+
+**Key Insight:** This is Marcus's "control expression"—he's telling the system exactly how the standard should be strengthened for Nexus Tech's specific risk profile.
+</details>
+
+---
+
+### Act 3: Elena (Compliance Manager) - Proving It Works
+
+**Elena's Challenge:**
+
+Elena, the Compliance Manager, must prove that Sarah's risk decisions and Marcus's technical controls are actually working. She needs to know where to look for evidence and how often to check, especially for Marcus's modified requirements.
+
+**Elena's Questions:**
+- What is my compliance scope?
+- How do I create different assessment plans for different risk levels?
+- What evidence do I need to collect for auditors?
+
+**Elena's Work - The `scope` and `adherence` Sections:**
+
+```yaml
+scope: # Compliance Manager - Where do I look?
+  in:
+    technologies: ["Identity Providers", "Cloud Infrastructure"]
+    geopolitical: ["Global"]
+    sensitivity: ["Confidential", "Internal"]
+  out:
+    technologies: ["Legacy Air-gapped Systems"]
+
+adherence: # Compliance Manager - How do I verify compliance?
+  evaluation-methods:
+    - id: "automated-config-audit"
+      type: "automated"
+    - id: "manual-screenshot-verification"
+      type: "manual"
+
+  assessment-plans:
+    # High-Privilege Plan - Consumes Marcus's modifier
+    - id: "monthly-high-privilege-audit"
+      requirement-id: "password-audit-mod-01" # Links to Marcus's modification
+      frequency: "monthly"
+      scope:
+        in:
+          technologies: ["Cloud Infrastructure"]
+      evaluation-methods:
+        - id: "manual-screenshot-verification"
+      evidence-requirements: "Visual confirmation of IAM password policy console."
+
+    # Standard Plan - For general users
+    - id: "quarterly-iam-review"
+      requirement-id: "password-policy-audit"
+      frequency: "quarterly"
+      scope:
+        in:
+          technologies: ["Identity Providers"]
+      evaluation-methods:
+        - id: "iam-policy-scanner"
+          type: "automated"
+      evidence-requirements: "JSON exports of IAM password policy settings."
+```
+
+**Your Task:**
+
+<details>
+<summary>Question 3: How does Elena's `monthly-high-privilege-audit` plan connect to Marcus's work? What would happen without this assessment plan?</summary>
+
+**Answer:**
+
+**The Connection:**
+- Marcus created an `assessment-requirement-modification` with `id: "password-audit-mod-01"`
+- Elena creates an `assessment-plan` that references `requirement-id: "password-audit-mod-01"`
+- This linkage ensures Marcus's modified requirement is actually verified
+
+**What Elena Does Differently:**
+1. **Frequency:** Monthly (not quarterly) to match the higher risk
+2. **Scope:** Only Cloud Infrastructure (where high-privilege accounts live)
+3. **Method:** Manual verification (not automated) for higher assurance
+4. **Evidence:** Screenshots of IAM console (visual proof)
+
+**Without This Plan:**
+- Marcus's modification would exist in the policy but never be verified
+- Auditors wouldn't know how often to check or what evidence to collect
+- The heightened security requirement would be unenforceable
+- The policy would be "write-only"—defined but not validated
+
+**Key Insight:** Assessment plans are where the policy becomes **executable**. Elena translates Marcus's technical requirements into operational verification activities. She creates a "Special Ops" plan for high-risk environments and a "Standard" plan for general users.
+</details>
+
+---
+
+### The Climax: Implementation Day
+
+**November 1st** - The `implementation-plan` activates:
+
+```yaml
+implementation-plan:
+  notification-process: "Email blast to all employees and updates to the internal wiki."
+  evaluation-timeline:
+    start: "2023-11-01T00:00:00Z"
+    notes: "Initial baseline scan of current configurations."
+  enforcement-timeline:
+    start: "2024-01-01T00:00:00Z"
+    notes: "Mandatory rotation enforced via IAM policy."
+```
+
+Elena sends the notification email. By January 1st, enforcement begins.
+
+**The Catch:**
+
+A developer tries to set a 10-character password on a production database. Because of the `enforcement-methods`, the system automatically blocks the change:
+
+```yaml
+  enforcement-methods:
+    - id: "iam-policy-deny"
+      type: "automated"
+  non-compliance: "Users with non-compliant passwords will be locked out of SSO after 3 grace period notifications."
+```
+
+**Your Task:**
+
+<details>
+<summary>Question 4: Trace the complete path from threat to enforcement. How do Sarah's, Marcus's, and Elena's sections work together?</summary>
+
+**Answer:**
+
+**The Complete Path:**
+
+1. **Sarah (Risk Manager)** identifies the threat:
+   - `risks.mitigated` → MITRE T1110 (Brute Force)
+   - `risks.accepted` → RISK-402 (Legacy app limitation, scoped to Legacy-App-01 only)
+
+2. **Marcus (Security Engineer)** creates technical controls:
+   - `imports.catalogs` → References CIS Benchmark v8
+   - `constraints` → Defines 12-character minimum
+   - `assessment-requirement-modifications` → Strengthens verification for high-privilege accounts
+
+3. **Elena (Compliance Manager)** makes it verifiable:
+   - `scope` → Defines where to look (Cloud Infrastructure + Identity Providers)
+   - `assessment-plans` → Creates two plans:
+     - Monthly manual checks for Cloud Infrastructure (high-privilege)
+     - Quarterly automated checks for Identity Providers (general users)
+   - `enforcement-methods` → Automated blocking via IAM policies
+   - `non-compliance` → Defines consequences (lockout after warnings)
+
+4. **Implementation Plan** → Defines when (Nov 1 evaluation, Jan 1 enforcement)
+
+**The Developer Scenario:**
+- Developer tries 10-character password on production DB
+- System checks `constraints` → Requires 12 characters
+- System applies `enforcement-methods` → Automated IAM policy deny
+- Action is blocked immediately
+- If developer persists with non-compliant credentials → `non-compliance` → 3 warnings then SSO lockout
+
+**Key Insight:** This is a risk-focused, threat-informed policy where all three personas contribute their expertise. Sarah identifies the threat and acceptable risk boundaries, Marcus builds the technical defenses with risk-based customizations, and Elena creates the verification and enforcement mechanisms. They all speak the same language through the YAML structure.
+</details>
+
+---
+
+### Reflection: Understanding the Three Perspectives
+
+By following Sarah, Marcus, and Elena through this scenario, you can see how:
+
+1. **Risk Managers** use `risks` to document threat mitigation and risk acceptance with narrow scoping
+2. **Security Engineers** use `imports` and `assessment-requirement-modifications` to customize controls based on risk
+3. **Compliance Managers** use `scope`, `assessment-plans`, and `adherence` to make policies verifiable and enforceable
+
+**The Power of This Structure:**
+- Sarah's fears (brute force attacks)
+- Marcus's technical controls (modified CIS requirements)
+- Elena's audit evidence (monthly verification logs)
+
+All three are speaking the same language, documented in the same policy, traceable from threat → control → verification → enforcement.
 
 ---
 
