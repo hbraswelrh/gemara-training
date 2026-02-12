@@ -1164,47 +1164,722 @@ risks:
 
     getModule4Content() {
         return `
-            <h3>Hands-On Policy Writing Exercises</h3>
-            <p>Put your skills into practice with these interactive exercises. Each exercise provides a complete policy schema template that you'll fill in with the appropriate data.</p>
+            <h3>Interactive Activity: The Story of the High-Privilege Pivot</h3>
+            <p>Now that you understand the role-based perspectives, let's explore a real-world scenario at <strong>Nexus Tech</strong>, where three professionals collaborate to build a comprehensive password policy. You'll see how each persona works with different sections of the <code>layer3-policy.yaml</code> to address the same threat from their unique perspective.</p>
 
             <div class="info-box">
-                <h4>What You'll Practice</h4>
-                <ul>
-                    <li>Transforming legacy policies into Gemara format</li>
-                    <li>Building comprehensive policy families</li>
-                    <li>Creating cross-layer traceability from guidance to policy</li>
-                    <li>Working with the complete Layer 3 policy schema</li>
-                </ul>
+                <h4>The Threat</h4>
+                <p>An attacker attempting to use <strong>Brute Force attacks (MITRE T1110)</strong> to compromise high-privilege accounts at Nexus Tech.</p>
             </div>
 
-            <div class="exercises-list">
-                <div class="exercise-card">
-                    <div class="exercise-header">
-                        <h4>Exercise 6: Policy Modernization</h4>
-                        <span class="difficulty">Intermediate</span>
+            <hr style="margin: var(--spacing-xl) 0;">
+
+            <h4>Act 1: Sarah (Risk Manager) - Assessing the Threat Landscape</h4>
+
+            <div class="persona-card risk">
+                <h5>Sarah's Morning Challenge</h5>
+                <p>Sarah, the Risk Manager, starts her day reviewing the organization's threat landscape. She identifies that <strong>Brute Force attacks (MITRE T1110)</strong> pose a primary threat to Nexus Tech's infrastructure. However, she discovers a complication: <strong>RISK-402</strong> indicates that a legacy finance application cannot support complex password requirements.</p>
+
+                <h5>Sarah's Questions:</h5>
+                <ul>
+                    <li>What threats are we mitigating with this policy?</li>
+                    <li>What risks must we accept, and under what conditions?</li>
+                    <li>How do I limit the scope of accepted risks?</li>
+                </ul>
+
+                <h5>Sarah's Work - The <code>risks</code> Section:</h5>
+                <pre><code class="language-yaml">risks: # Risk Manager - What are my risks?
+  mitigated: # What threats does this policy address?
+    - reference-id: "MITRE-ATT&CK"
+      item-id: "T1110" # Brute Force
+
+  accepted: # What risks am I accepting?
+    - risk:
+        reference-id: "internal-risk-registry"
+        item-id: "RISK-402"
+      justification: "Legacy system does not support MFA; risk accepted until migration in Q3."
+      scope: # Limit where this risk is accepted
+        in:
+          technologies: ["Legacy-App-01"]</code></pre>
+
+                <details>
+                    <summary><strong>Question 1:</strong> Why does Sarah use the <code>scope</code> field within the <code>accepted</code> risk block?</summary>
+                    <div class="answer-box">
+                        <p><strong>Answer:</strong> Sarah uses <code>scope</code> to <strong>"fence in"</strong> the accepted risk so it only applies to <code>Legacy-App-01</code> and doesn't bleed into the rest of the organization. Without this scope limitation, the accepted risk would apply broadly, creating unnecessary security exposure across all systems.</p>
+                        <p><strong>Key Insight:</strong> Accepted risks should always be scoped as narrowly as possible. Never accept a risk globally if you can limit it to specific technologies, users, or data classifications.</p>
                     </div>
-                    <p>Transform a legacy policy document into Gemara format</p>
-                    <button class="btn btn-primary btn-small" onclick="window.moduleManager.startInteractiveExercise(6)">Start Exercise</button>
-                </div>
-                <div class="exercise-card">
-                    <div class="exercise-header">
-                        <h4>Exercise 7: Policy Family Creation</h4>
-                        <span class="difficulty">Advanced</span>
+                </details>
+            </div>
+
+            <hr style="margin: var(--spacing-xl) 0;">
+
+            <h4>Act 2: Marcus (Security Engineer) - Building the Technical Blueprint</h4>
+
+            <div class="persona-card security">
+                <h5>Marcus's Challenge</h5>
+                <p>Marcus, the Security Engineer, takes Sarah's threat assessment and transforms it into technical controls. He needs to strengthen the standard CIS Benchmark requirements for high-privilege AWS accounts, which require more frequent verification than standard quarterly checks.</p>
+
+                <h5>Marcus's Questions:</h5>
+                <ul>
+                    <li>How do I import and customize industry controls?</li>
+                    <li>How do I express control modifications for high-risk environments?</li>
+                    <li>What's my rationale for deviating from standard requirements?</li>
+                </ul>
+
+                <h5>Marcus's Work - The <code>imports</code> Section:</h5>
+                <pre><code class="language-yaml">imports: # External controls required by this policy
+  catalogs:
+    - reference-id: "cis-benchmark-v8"
+      constraints: # Define minimum requirements
+        - id: "min-length-12"
+          target-id: "password-complexity"
+          text: "Passwords must be at least 12 characters long."
+
+      assessment-requirement-modifications: # Customize how we verify controls
+        - id: "password-audit-mod-01"
+          target-id: "cis-password-audit-original"
+          modification-type: "replace"
+          modification-rationale: "Standard quarterly audits are insufficient for high-privilege IAM roles; increasing frequency to monthly."
+          text: "Perform a manual verification of IAM direct settings to ensure 12-character minimums are enforced."
+          applicability: ["Cloud Infrastructure", "High-Privilege Accounts"]</code></pre>
+
+                <details>
+                    <summary><strong>Question 2:</strong> What is the purpose of the <code>assessment-requirement-modifications</code> section, and how does it differ from <code>constraints</code>?</summary>
+                    <div class="answer-box">
+                        <p><strong>Answer:</strong></p>
+                        <ul>
+                            <li><strong><code>constraints</code>:</strong> Define <strong>WHAT</strong> the minimum requirements are (e.g., "passwords must be at least 12 characters")</li>
+                            <li><strong><code>assessment-requirement-modifications</code>:</strong> Define <strong>HOW</strong> you verify those requirements and allows you to customize the assessment method based on risk (e.g., changing quarterly automated checks to monthly manual verification for high-privilege accounts)</li>
+                        </ul>
+                        <p><strong>Marcus's Modification:</strong></p>
+                        <ul>
+                            <li><strong>What he's changing:</strong> The verification frequency and method from the original CIS requirement</li>
+                            <li><strong>Why:</strong> High-privilege roles require more scrutiny than standard accounts</li>
+                            <li><strong>How:</strong> Monthly manual verification instead of quarterly automated scans</li>
+                            <li><strong>Where:</strong> Only for Cloud Infrastructure and High-Privilege Accounts</li>
+                        </ul>
+                        <p><strong>Key Insight:</strong> This is Marcus's "control expression"—he's telling the system exactly how the standard should be strengthened for Nexus Tech's specific risk profile.</p>
                     </div>
-                    <p>Build a complete policy family for access control</p>
-                    <button class="btn btn-primary btn-small" onclick="window.moduleManager.startInteractiveExercise(7)">Start Exercise</button>
-                </div>
-                <div class="exercise-card">
-                    <div class="exercise-header">
-                        <h4>Exercise 8: Cross-Layer Integration</h4>
-                        <span class="difficulty">Advanced</span>
+                </details>
+            </div>
+
+            <hr style="margin: var(--spacing-xl) 0;">
+
+            <h4>Act 3: Elena (Compliance Manager) - Proving It Works</h4>
+
+            <div class="persona-card compliance">
+                <h5>Elena's Challenge</h5>
+                <p>Elena, the Compliance Manager, must prove that Sarah's risk decisions and Marcus's technical controls are actually working. She needs to know where to look for evidence and how often to check, especially for Marcus's modified requirements.</p>
+
+                <h5>Elena's Questions:</h5>
+                <ul>
+                    <li>What is my compliance scope?</li>
+                    <li>How do I create different assessment plans for different risk levels?</li>
+                    <li>What evidence do I need to collect for auditors?</li>
+                </ul>
+
+                <h5>Elena's Work - The <code>scope</code> and <code>adherence</code> Sections:</h5>
+                <pre><code class="language-yaml">scope: # Compliance Manager - Where do I look?
+  in:
+    technologies: ["Identity Providers", "Cloud Infrastructure"]
+    geopolitical: ["Global"]
+    sensitivity: ["Confidential", "Internal"]
+  out:
+    technologies: ["Legacy Air-gapped Systems"]
+
+adherence: # Compliance Manager - How do I verify compliance?
+  evaluation-methods:
+    - id: "automated-config-audit"
+      type: "automated"
+    - id: "manual-screenshot-verification"
+      type: "manual"
+
+  assessment-plans:
+    # High-Privilege Plan - Consumes Marcus's modifier
+    - id: "monthly-high-privilege-audit"
+      requirement-id: "password-audit-mod-01" # Links to Marcus's modification
+      frequency: "monthly"
+      scope:
+        in:
+          technologies: ["Cloud Infrastructure"]
+      evaluation-methods:
+        - id: "manual-screenshot-verification"
+      evidence-requirements: "Visual confirmation of IAM password policy console."
+
+    # Standard Plan - For general users
+    - id: "quarterly-iam-review"
+      requirement-id: "password-policy-audit"
+      frequency: "quarterly"
+      scope:
+        in:
+          technologies: ["Identity Providers"]
+      evaluation-methods:
+        - id: "iam-policy-scanner"
+          type: "automated"
+      evidence-requirements: "JSON exports of IAM password policy settings."</code></pre>
+
+                <details>
+                    <summary><strong>Question 3:</strong> How does Elena's <code>monthly-high-privilege-audit</code> plan connect to Marcus's work? What would happen without this assessment plan?</summary>
+                    <div class="answer-box">
+                        <p><strong>The Connection:</strong></p>
+                        <ul>
+                            <li>Marcus created an <code>assessment-requirement-modification</code> with <code>id: "password-audit-mod-01"</code></li>
+                            <li>Elena creates an <code>assessment-plan</code> that references <code>requirement-id: "password-audit-mod-01"</code></li>
+                            <li>This linkage ensures Marcus's modified requirement is actually verified</li>
+                        </ul>
+                        <p><strong>What Elena Does Differently:</strong></p>
+                        <ol>
+                            <li><strong>Frequency:</strong> Monthly (not quarterly) to match the higher risk</li>
+                            <li><strong>Scope:</strong> Only Cloud Infrastructure (where high-privilege accounts live)</li>
+                            <li><strong>Method:</strong> Manual verification (not automated) for higher assurance</li>
+                            <li><strong>Evidence:</strong> Screenshots of IAM console (visual proof)</li>
+                        </ol>
+                        <p><strong>Without This Plan:</strong></p>
+                        <ul>
+                            <li>Marcus's modification would exist in the policy but never be verified</li>
+                            <li>Auditors wouldn't know how often to check or what evidence to collect</li>
+                            <li>The heightened security requirement would be unenforceable</li>
+                            <li>The policy would be "write-only"—defined but not validated</li>
+                        </ul>
+                        <p><strong>Key Insight:</strong> Assessment plans are where the policy becomes <strong>executable</strong>. Elena translates Marcus's technical requirements into operational verification activities. She creates a "Special Ops" plan for high-risk environments and a "Standard" plan for general users.</p>
                     </div>
-                    <p>Create end-to-end traceability from guidance to policy</p>
-                    <button class="btn btn-primary btn-small" onclick="window.moduleManager.startInteractiveExercise(8)">Start Exercise</button>
+                </details>
+            </div>
+
+            <hr style="margin: var(--spacing-xl) 0;">
+
+            <h4>The Climax: Implementation Day</h4>
+
+            <div class="info-box success">
+                <p><strong>November 1st</strong> - The <code>implementation-plan</code> activates:</p>
+                <pre><code class="language-yaml">implementation-plan:
+  notification-process: "Email blast to all employees and updates to the internal wiki."
+  evaluation-timeline:
+    start: "2023-11-01T00:00:00Z"
+    notes: "Initial baseline scan of current configurations."
+  enforcement-timeline:
+    start: "2024-01-01T00:00:00Z"
+    notes: "Mandatory rotation enforced via IAM policy."</code></pre>
+                <p>Elena sends the notification email. By January 1st, enforcement begins.</p>
+            </div>
+
+            <div class="warning-box">
+                <h5>The Catch</h5>
+                <p>A developer tries to set a 10-character password on a production database. Because of the <code>enforcement-methods</code>, the system automatically blocks the change:</p>
+                <pre><code class="language-yaml">  enforcement-methods:
+    - id: "iam-policy-deny"
+      type: "automated"
+  non-compliance: "Users with non-compliant passwords will be locked out of SSO after 3 grace period notifications."</code></pre>
+            </div>
+
+            <details>
+                <summary><strong>Question 4:</strong> Trace the complete path from threat to enforcement. How do Sarah's, Marcus's, and Elena's sections work together?</summary>
+                <div class="answer-box">
+                    <h5>The Complete Path:</h5>
+                    <ol>
+                        <li><strong>Sarah (Risk Manager)</strong> identifies the threat:
+                            <ul>
+                                <li><code>risks.mitigated</code> → MITRE T1110 (Brute Force)</li>
+                                <li><code>risks.accepted</code> → RISK-402 (Legacy app limitation, scoped to Legacy-App-01 only)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Marcus (Security Engineer)</strong> creates technical controls:
+                            <ul>
+                                <li><code>imports.catalogs</code> → References CIS Benchmark v8</li>
+                                <li><code>constraints</code> → Defines 12-character minimum</li>
+                                <li><code>assessment-requirement-modifications</code> → Strengthens verification for high-privilege accounts</li>
+                            </ul>
+                        </li>
+                        <li><strong>Elena (Compliance Manager)</strong> makes it verifiable:
+                            <ul>
+                                <li><code>scope</code> → Defines where to look (Cloud Infrastructure + Identity Providers)</li>
+                                <li><code>assessment-plans</code> → Creates two plans:
+                                    <ul>
+                                        <li>Monthly manual checks for Cloud Infrastructure (high-privilege)</li>
+                                        <li>Quarterly automated checks for Identity Providers (general users)</li>
+                                    </ul>
+                                </li>
+                                <li><code>enforcement-methods</code> → Automated blocking via IAM policies</li>
+                                <li><code>non-compliance</code> → Defines consequences (lockout after warnings)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Implementation Plan</strong> → Defines when (Nov 1 evaluation, Jan 1 enforcement)</li>
+                    </ol>
+                    <h5>The Developer Scenario:</h5>
+                    <ul>
+                        <li>Developer tries 10-character password on production DB</li>
+                        <li>System checks <code>constraints</code> → Requires 12 characters</li>
+                        <li>System applies <code>enforcement-methods</code> → Automated IAM policy deny</li>
+                        <li>Action is blocked immediately</li>
+                        <li>If developer persists with non-compliant credentials → <code>non-compliance</code> → 3 warnings then SSO lockout</li>
+                    </ul>
+                    <p><strong>Key Insight:</strong> This is a risk-focused, threat-informed policy where all three personas contribute their expertise. Sarah identifies the threat and acceptable risk boundaries, Marcus builds the technical defenses with risk-based customizations, and Elena creates the verification and enforcement mechanisms. They all speak the same language through the YAML structure.</p>
                 </div>
+            </details>
+
+            <hr style="margin: var(--spacing-xl) 0;">
+
+            <div class="info-box">
+                <h4>Reflection: Understanding the Three Perspectives</h4>
+                <p>By following Sarah, Marcus, and Elena through this scenario, you can see how:</p>
+                <ol>
+                    <li><strong>Risk Managers</strong> use <code>risks</code> to document threat mitigation and risk acceptance with narrow scoping</li>
+                    <li><strong>Security Engineers</strong> use <code>imports</code> and <code>assessment-requirement-modifications</code> to customize controls based on risk</li>
+                    <li><strong>Compliance Managers</strong> use <code>scope</code>, <code>assessment-plans</code>, and <code>adherence</code> to make policies verifiable and enforceable</li>
+                </ol>
+                <p><strong>The Power of This Structure:</strong></p>
+                <ul>
+                    <li>Sarah's fears (brute force attacks)</li>
+                    <li>Marcus's technical controls (modified CIS requirements)</li>
+                    <li>Elena's audit evidence (monthly verification logs)</li>
+                </ul>
+                <p>All three are speaking the same language, documented in the same policy, traceable from threat → control → verification → enforcement.</p>
+            </div>
+
+            <hr style="margin: var(--spacing-xl) 0; border: 3px double var(--border-color);">
+
+            <h3>Choose Your Adventure: Persona-Based Exercises</h3>
+            <p>Now it's your turn! Choose your persona and work on the specific YAML sections that your role owns. Each exercise focuses on the fields you saw Sarah, Marcus, and Elena working with in the storyline.</p>
+
+            <div class="info-box">
+                <h4>📖 How This Works</h4>
+                <p>Select your persona below to start your customized exercise. You'll work directly with the layer3-policy.yaml fields relevant to your role, just like Sarah, Marcus, and Elena did in the storyline.</p>
+            </div>
+
+            <div class="persona-selection">
+                <div class="persona-exercise-card risk">
+                    <div class="persona-icon">⚖️</div>
+                    <h4>Risk Manager (Sarah)</h4>
+                    <p class="persona-desc">Identify threats, document risk acceptance, and define risk boundaries</p>
+
+                    <div class="exercise-details">
+                        <h5>Your YAML Sections:</h5>
+                        <ul>
+                            <li><code>risks.mitigated</code> - What threats are you addressing?</li>
+                            <li><code>risks.accepted</code> - What risks must you accept?</li>
+                            <li><code>scope</code> - Where does accepted risk apply?</li>
+                        </ul>
+
+                        <h5>Your Exercise:</h5>
+                        <p><strong>Scenario:</strong> Your organization faces a data exfiltration threat (MITRE T1048) but legacy SCADA systems cannot support modern encryption.</p>
+
+                        <details>
+                            <summary>View Exercise Details</summary>
+                            <div class="exercise-content">
+                                <p><strong>Your Tasks:</strong></p>
+                                <ol>
+                                    <li>Add <code>risks.mitigated</code> for T1048 (Data Exfiltration)</li>
+                                    <li>Document an accepted risk (RISK-801: Legacy SCADA encryption limitation)</li>
+                                    <li>Write justification explaining why you're accepting this risk</li>
+                                    <li>Use <code>scope</code> to "fence in" the accepted risk to only Manufacturing SCADA systems</li>
+                                </ol>
+
+                                <h5>YAML Template:</h5>
+<pre><code class="language-yaml">risks:
+  mitigated:
+    - reference-id: "MITRE-ATT&CK"
+      item-id: # TODO: Add T1048 here
+
+  accepted:
+    - risk:
+        reference-id: "internal-risk-registry"
+        item-id: # TODO: Add RISK-801
+      justification: # TODO: Why are you accepting this risk?
+      scope:
+        in:
+          technologies: # TODO: Limit to Manufacturing SCADA only
+</code></pre>
+
+                                <h5>Success Criteria:</h5>
+                                <ul>
+                                    <li>✓ Threat T1048 listed in mitigated risks</li>
+                                    <li>✓ RISK-801 documented with clear justification</li>
+                                    <li>✓ Accepted risk scoped narrowly (not organization-wide)</li>
+                                    <li>✓ Justification mentions compensating controls or timeline</li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="window.moduleManager.loadPersonaExercise('risk')">Start as Risk Manager</button>
+                </div>
+
+                <div class="persona-exercise-card security">
+                    <div class="persona-icon">🔒</div>
+                    <h4>Security Engineer (Marcus)</h4>
+                    <p class="persona-desc">Import controls, customize requirements, and express technical implementations</p>
+
+                    <div class="exercise-details">
+                        <h5>Your YAML Sections:</h5>
+                        <ul>
+                            <li><code>imports.catalogs</code> - Which control frameworks?</li>
+                            <li><code>constraints</code> - Minimum requirements (WHAT)</li>
+                            <li><code>assessment-requirement-modifications</code> - Custom verification (HOW)</li>
+                        </ul>
+
+                        <h5>Your Exercise:</h5>
+                        <p><strong>Scenario:</strong> You need to implement SSH key rotation policy with different verification frequencies for production vs. development servers.</p>
+
+                        <details>
+                            <summary>View Exercise Details</summary>
+                            <div class="exercise-content">
+                                <p><strong>Your Tasks:</strong></p>
+                                <ol>
+                                    <li>Import NIST 800-53 control catalog</li>
+                                    <li>Add constraint requiring SSH key rotation every 90 days</li>
+                                    <li>Create an assessment-requirement-modification for production servers</li>
+                                    <li>Increase verification frequency to weekly (instead of monthly) for high-risk production</li>
+                                    <li>Document your modification-rationale</li>
+                                </ol>
+
+                                <h5>YAML Template:</h5>
+<pre><code class="language-yaml">imports:
+  catalogs:
+    - reference-id: # TODO: Add NIST-800-53
+      constraints:
+        - id: "ssh-rotation-90"
+          target-id: "IA-5"
+          text: # TODO: Describe 90-day rotation requirement
+
+      assessment-requirement-modifications:
+        - id: "ssh-prod-weekly-check"
+          target-id: # TODO: What requirement are you modifying?
+          modification-type: "replace"
+          modification-rationale: # TODO: Why weekly for production?
+          text: # TODO: Describe weekly automated verification
+          applicability: # TODO: Production Servers, High-Risk
+</code></pre>
+
+                                <h5>Success Criteria:</h5>
+                                <ul>
+                                    <li>✓ NIST 800-53 catalog imported</li>
+                                    <li>✓ 90-day rotation constraint defined</li>
+                                    <li>✓ Assessment modification created for production</li>
+                                    <li>✓ Rationale explains risk-based frequency increase</li>
+                                    <li>✓ Applicability targets production/high-risk scope</li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="window.moduleManager.loadPersonaExercise('security')">Start as Security Engineer</button>
+                </div>
+
+                <div class="persona-exercise-card compliance">
+                    <div class="persona-icon">📋</div>
+                    <h4>Compliance Manager (Elena)</h4>
+                    <p class="persona-desc">Define scope, create assessment plans, and specify evidence requirements</p>
+
+                    <div class="exercise-details">
+                        <h5>Your YAML Sections:</h5>
+                        <ul>
+                            <li><code>scope</code> - What's in/out of policy coverage?</li>
+                            <li><code>adherence.evaluation-methods</code> - How to check?</li>
+                            <li><code>adherence.assessment-plans</code> - When and where?</li>
+                            <li><code>evidence-requirements</code> - What proof do auditors need?</li>
+                        </ul>
+
+                        <h5>Your Exercise:</h5>
+                        <p><strong>Scenario:</strong> You need to create assessment plans for an API security policy with different risk levels (Customer PII APIs vs. Internal APIs).</p>
+
+                        <details>
+                            <summary>View Exercise Details</summary>
+                            <div class="exercise-content">
+                                <p><strong>Your Tasks:</strong></p>
+                                <ol>
+                                    <li>Define <code>scope.in</code> to include API Gateways and Microservices</li>
+                                    <li>Define <code>scope.out</code> to exclude legacy monolith systems</li>
+                                    <li>Create HIGH-RISK assessment plan for Customer PII APIs (daily checks)</li>
+                                    <li>Create STANDARD-RISK assessment plan for Internal APIs (weekly checks)</li>
+                                    <li>Specify different evidence requirements for each risk level</li>
+                                    <li>Link your plans to Marcus's modifications (if applicable)</li>
+                                </ol>
+
+                                <h5>YAML Template:</h5>
+<pre><code class="language-yaml">scope:
+  in:
+    technologies: # TODO: API Gateways, Microservices
+    sensitivity: # TODO: What data classifications?
+  out:
+    technologies: # TODO: Legacy monolith
+
+adherence:
+  evaluation-methods:
+    - id: # TODO: automated-api-scanner
+      type: "automated"
+    - id: # TODO: manual-code-review
+      type: "manual"
+
+  assessment-plans:
+    # HIGH-RISK: Customer PII APIs
+    - id: "daily-pii-api-check"
+      requirement-id: # TODO: Link to security requirement
+      frequency: # TODO: daily
+      scope:
+        in:
+          technologies: # TODO: API Gateways
+          sensitivity: # TODO: Customer PII
+      evaluation-methods:
+        - id: # TODO: automated-api-scanner
+      evidence-requirements: # TODO: What proof? (API logs, auth tokens, encryption status)
+
+    # STANDARD-RISK: Internal APIs
+    - id: "weekly-internal-api-check"
+      requirement-id: # TODO: Link to requirement
+      frequency: # TODO: weekly
+      scope:
+        in:
+          technologies: # TODO: Microservices
+          sensitivity: # TODO: Internal
+      evaluation-methods:
+        - id: # TODO: automated-api-scanner
+      evidence-requirements: # TODO: What proof? (Config snapshots)
+</code></pre>
+
+                                <h5>Success Criteria:</h5>
+                                <ul>
+                                    <li>✓ Scope clearly defines in/out boundaries</li>
+                                    <li>✓ Two assessment plans with different frequencies</li>
+                                    <li>✓ High-risk APIs checked more frequently (daily)</li>
+                                    <li>✓ Evidence requirements match risk level (detailed for high-risk)</li>
+                                    <li>✓ Scope within plans targets specific technologies</li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="window.moduleManager.loadPersonaExercise('compliance')">Start as Compliance Manager</button>
+                </div>
+            </div>
+
+            <div class="info-box success" style="margin-top: var(--spacing-xl);">
+                <h4>💡 Collaboration Tip</h4>
+                <p>In a real organization, these three personas work together! After completing your exercise, try doing the other two to see how all the sections interconnect to form a complete policy.</p>
             </div>
 
             <style>
+                /* Persona Cards */
+                .persona-card {
+                    background-color: var(--surface-color);
+                    border: 1px solid var(--border-color);
+                    border-left: 4px solid var(--primary-color);
+                    border-radius: var(--radius-md);
+                    padding: var(--spacing-xl);
+                    margin: var(--spacing-lg) 0;
+                    color: #000;
+                }
+                .persona-card.risk {
+                    border-left-color: #f39c12;
+                }
+                .persona-card.security {
+                    border-left-color: #e74c3c;
+                }
+                .persona-card.compliance {
+                    border-left-color: #2ecc71;
+                }
+                .persona-card h5 {
+                    color: #000;
+                    margin-top: var(--spacing-lg);
+                    margin-bottom: var(--spacing-sm);
+                    font-size: 1.3rem;
+                    font-weight: 600;
+                }
+                .persona-card h5:first-child {
+                    margin-top: 0;
+                }
+                .persona-card p,
+                .persona-card ul,
+                .persona-card li {
+                    color: #000;
+                }
+                .persona-card ul li {
+                    color: #2c5282;
+                    font-weight: 500;
+                    margin-bottom: 0.5rem;
+                }
+
+                /* Act Headings */
+                h4 {
+                    font-size: 1.5rem;
+                    font-weight: 700;
+                    color: #000;
+                    margin: var(--spacing-xl) 0 var(--spacing-md) 0;
+                }
+
+                /* Interactive Details/Summary */
+                details {
+                    background: #f8f9fa;
+                    padding: var(--spacing-md);
+                    margin: var(--spacing-lg) 0;
+                    border-radius: var(--radius-md);
+                    border-left: 4px solid var(--primary-color);
+                }
+                summary {
+                    cursor: pointer;
+                    font-weight: 600;
+                    color: var(--text-color);
+                    padding: var(--spacing-sm);
+                    list-style: none;
+                }
+                summary::-webkit-details-marker {
+                    display: none;
+                }
+                summary:before {
+                    content: "▶ ";
+                    display: inline-block;
+                    transition: transform 0.2s;
+                }
+                details[open] summary:before {
+                    transform: rotate(90deg);
+                }
+                summary:hover {
+                    color: var(--primary-color);
+                }
+
+                /* Answer Boxes */
+                .answer-box {
+                    margin-top: var(--spacing-md);
+                    padding: var(--spacing-md);
+                    background: white;
+                    border-radius: var(--radius-sm);
+                }
+                .answer-box p:first-child {
+                    margin-top: 0;
+                }
+                .answer-box p:last-child {
+                    margin-bottom: 0;
+                }
+
+                /* Warning Box */
+                .warning-box {
+                    background: #fff3cd;
+                    border: 1px solid #ffc107;
+                    border-radius: var(--radius-md);
+                    padding: var(--spacing-lg);
+                    margin: var(--spacing-lg) 0;
+                }
+                .warning-box h5 {
+                    color: #856404;
+                    margin-top: 0;
+                }
+
+                /* Code Blocks in Activity */
+                .persona-card pre {
+                    margin: var(--spacing-md) 0;
+                }
+
+                /* Persona Selection Grid */
+                .persona-selection {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+                    gap: var(--spacing-xl);
+                    margin: var(--spacing-xl) 0;
+                }
+
+                .persona-exercise-card {
+                    background: white;
+                    border: 2px solid var(--border-color);
+                    border-radius: var(--radius-lg);
+                    padding: var(--spacing-xl);
+                    transition: all 0.3s ease;
+                    position: relative;
+                    overflow: hidden;
+                }
+
+                .persona-exercise-card::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 5px;
+                }
+
+                .persona-exercise-card.risk::before {
+                    background: #f39c12;
+                }
+
+                .persona-exercise-card.security::before {
+                    background: #e74c3c;
+                }
+
+                .persona-exercise-card.compliance::before {
+                    background: #2ecc71;
+                }
+
+                .persona-exercise-card:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+                }
+
+                .persona-icon {
+                    font-size: 3rem;
+                    text-align: center;
+                    margin-bottom: var(--spacing-md);
+                }
+
+                .persona-exercise-card h4 {
+                    color: #000;
+                    margin: var(--spacing-md) 0;
+                    text-align: center;
+                }
+
+                .persona-desc {
+                    color: #666;
+                    text-align: center;
+                    margin-bottom: var(--spacing-lg);
+                    font-style: italic;
+                }
+
+                .exercise-details {
+                    background: #f8f9fa;
+                    padding: var(--spacing-md);
+                    border-radius: var(--radius-md);
+                    margin: var(--spacing-lg) 0;
+                }
+
+                .exercise-details h5 {
+                    color: #000;
+                    margin-top: var(--spacing-md);
+                    margin-bottom: var(--spacing-sm);
+                }
+
+                .exercise-details h5:first-child {
+                    margin-top: 0;
+                }
+
+                .exercise-details ul,
+                .exercise-details ol,
+                .exercise-details p {
+                    color: #000;
+                }
+
+                .exercise-details code {
+                    background: #fff;
+                    padding: 2px 6px;
+                    border-radius: 3px;
+                    font-family: 'Courier New', monospace;
+                    color: #e74c3c;
+                }
+
+                .exercise-content {
+                    margin-top: var(--spacing-md);
+                }
+
+                .exercise-content ol {
+                    padding-left: var(--spacing-lg);
+                }
+
+                .exercise-content ol li {
+                    margin-bottom: var(--spacing-sm);
+                }
+
+                .persona-exercise-card .btn {
+                    width: 100%;
+                    margin-top: var(--spacing-md);
+                }
+
+                /* Exercises List */
                 .exercises-list {
                     margin: var(--spacing-xl) 0;
                 }
@@ -3016,6 +3691,22 @@ purpose: ""
             // Scroll back to top of module
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+    }
+
+    loadPersonaExercise(persona) {
+        alert(`Persona-based exercise for ${persona} is coming soon! For now, use your AI assistant to work through the exercise template shown above.`);
+
+        // Scroll to the selected persona card
+        const personaCards = document.querySelectorAll('.persona-exercise-card');
+        personaCards.forEach(card => {
+            if (card.classList.contains(persona)) {
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                card.style.boxShadow = '0 12px 24px rgba(0,0,0,0.2)';
+                setTimeout(() => {
+                    card.style.boxShadow = '';
+                }, 2000);
+            }
+        });
     }
 }
 

@@ -1,0 +1,108 @@
+# Policy is risk-focused.
+# Risk appetite is the level of risk that the organization is willing to accept in pursuit of its objectives.
+# Identify Personas and where they fit into the policy
+title: "Example Corporate Password Policy"
+metadata:
+  id: "policy-001"
+  version: "1.0.0"
+  date: "2023-10-27"
+  description: "Organizational policy for password complexity and rotation."
+  author:
+    id: "sec-ops-team"
+    name: "Security Operations"
+    type: "group"
+  mapping-references:
+    - reference-id: "NIST-SP-800-53"
+      item-id: "IA-5" # IA-5 Authenticator management https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53Ar5.pdf pg 268
+
+contacts: # RACI roles for policy compliance and notification
+  responsible: # Who is responsible for implementing controls for technical requirements
+    - name: "IT Administration Team"
+      email: "it-admins@example.com"
+  accountable: # The person or group accountable for evaluating and enforcing the efficacy of technical controls
+    - name: "Chief Information Security Officer"
+      email: "ciso@example.com"
+  consulted: # Optional person or group who must receive updates about compliance with this policy
+    - name: "Legal Department"
+      affiliation: "Corporate Legal"
+
+scope: # Compliance Managers - what is my scope? What do I include and exclude for this policy?
+  in: # What is in-scope?
+    technologies: ["Identity Providers", "Cloud Infrastructure"] # Technology categories or services
+    geopolitical: ["Global"] # Optional list of geopolitical regions
+    sensitivity: ["Confidential", "Internal"] # Optional list of data classification levels )
+  out: # What is out-of-scope?
+    technologies: ["Legacy Air-gapped Systems"]
+
+imports: # External policies, controls, and guidelines required by this policy.
+  policies: ["global-security-framework-v2"] # Policies to be imported to complement this policy.
+  catalogs: # Threat-informed control catalogs to include for this policy.
+    - reference-id: "cis-benchmark-v8"
+      constraints: # Define ad-hoc minimum requirements (e.g. "Review at least x times per year")
+        - id: "min-length-12"
+          target-id: "password-complexity"
+          text: "Passwords must be at least 12 characters long." # Updated text of the assessment requirement within the cis-benchmark-v8
+      assessment-requirement-modifications: # Assessment Requirement Modifier - customize assessment requirements based on how the organization wants to gather evidence for the objective.
+        - id: "password-audit-mod-01" # Modification to the target-id from the cis-benchmark-v8
+          target-id: "cis-password-audit-original" # The ID of the requirement in the source catalog (what you are changing)
+          modification-type: "replace" # Replace or add will trigger a review of "what to replace for the requirement" (How)
+          modification-rationale: "Standard quarterly audits are insufficient for high-privilege IAM roles; increasing frequency to monthly." # Why
+          text: "Perform a manual verification of IAM direct settings to ensure 12-character minimums are enforced."
+          applicability: [ "Cloud Infrastructure", "High-Privilege Accounts" ]
+          # Actual modified content
+
+implementation-plan: # Compliance Managers - defines when and how the policy becomes active.
+  notification-process: "Email blast to all employees and updates to the internal wiki." # The how
+  evaluation-timeline: # Timeline for Policy implementation
+    start: "2023-11-01T00:00:00Z"
+    notes: "Initial baseline scan of current configurations." # The when
+  enforcement-timeline: # Timeline for Enforcement of Policy implementation
+    start: "2024-01-01T00:00:00Z"
+    notes: "Mandatory rotation enforced via IAM policy." # The enforcement timeline
+
+risks: # Risk Manager - What are my risks? Mitigated and accepted risks addressed by this policy.
+  mitigated: # Risk Manager - What are my mitigated risks?
+    - reference-id: "MITRE-ATT&CK" # Controls addressing risks are identified through threat mappings.
+      item-id: "T1110" # Brute Force
+  accepted: # Risk Manager - What are my accepted risks?
+    - risk: # Controls addressing risks are identified through threat mappings.
+        reference-id: "internal-risk-registry"
+        item-id: "RISK-402"
+      justification: "Legacy system does not support MFA; risk accepted until migration in Q3."
+      scope: # Scope and justification are only required for accepted risks (e.g., risk is accepted for TLP:Green and TLP:Clear because they contain non-sensitive data)
+        in:
+          technologies: ["Legacy-App-01"]
+
+adherence: # Compliance Managers - what is my adherence? How do I verify those subject to the policy? Execution of those imports requirements.
+  evaluation-methods: # What method will I use to evaluate my adherence? Behavioral, Manual, Automated, Auto-remediation, Gate?
+    - id: "automated-config-audit" # Automation for evaluation
+      type: "automated"
+    - id: "manual-screenshot-verification" # Added to match the assessment requirement modifier's method
+      type: "manual"
+  assessment-plans: # Defines how specific assessment requirements are evaluated.
+    # New Plan - consume Assessment Requirement Modifier for Targeted High-Privilege Plan environments using modifier
+    - id: "monthly-high-privilege-audit"
+      requirement-id: "password-audit-mod-01" # Matches the requirement-id of the assessment requirement modifier
+      frequency: "monthly" # Matches the frequency in the assessment requirement modifier
+      scope:
+        in: # If the auditor asks to prove compliance for AWS Prod Env, a system pulls the "monthly" plan; For corporate SSO (Identity Provider), it pulls the "quarterly" plan
+          technologies: ["Cloud Infrastructure"] # Specifically, targeting the high privilege (Think AWS Prod Env)
+      evaluation-methods:
+        - id: "manual-screenshot-verification" # Assessment Requirement Modifier isn't just a global change - it's a risk-based adjustment applied specifically where the highest threat exists.
+      evidence-requirements: "Visual confirmation of IAM password policy console."
+
+    # Standard Plan - References Non High-Privileged users for remaining scope and baseline requirements
+    - id: "quarterly-iam-review"
+      requirement-id: "password-policy-audit"
+      frequency: "quarterly"
+      scope:
+        in:
+          technologies: ["Identity Providers"] # General targeting
+      evaluation-methods:
+        - id: "iam-policy-scanner"
+          type: "automated"
+      evidence-requirements: "JSON exports of IAM password policy settings."
+  enforcement-methods: # What method will I use to enforce my adherence?
+    - id: "iam-policy-deny" # Accepted Method for enforcement - automatic
+      type: "automated" # Behavioral, Manual, Automated, Auto-remediation, Gate?
+  non-compliance: "Users with non-compliant passwords will be locked out of SSO after 3 grace period notifications." # Notifications
